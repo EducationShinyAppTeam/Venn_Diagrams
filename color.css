@@ -1,0 +1,26 @@
+.skin-black .main-header>.navbar { 
+  background-color: #B2B2FF; 
+} 
+
+.content-wrapper,.right-side { 
+  background-color: white; 
+} 
+
+.skin-black .main-header .logo { 
+  background-color: #B2B2FF; 
+    color: white; 
+} 
+.skin-black .main-header .logo:hover { 
+  background-color: black; 
+} 
+
+aside.main-sidebar { 
+  background-color: black !important; 
+} 
+
+.main-header .logo { 
+  font-family: "Georgia", Times, "Times New Roman", serif; 
+  font-weight: bold; 
+  font-size: 15px; 
+  
+} 
