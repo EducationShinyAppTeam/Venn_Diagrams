@@ -107,8 +107,8 @@ shinyUI(fluidPage(
                         fluidRow(
                           column(4, uiOutput("labeldol1")),
                           column(6, offset= 0, uiOutput("PA11")),
-                          column(6, numericInput("PA",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 )),
-                          column(12, verbatimTextOutput("Feed1"))
+                          column(6, numericInput("PA",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
+                          #column(12, verbatimTextOutput("Feed1"))
                           )
                         
                       ),
@@ -480,12 +480,17 @@ shinyUI(fluidPage(
                       ),
                       conditionalPanel(
                         condition = "input.check1 == 'enter'",
+                        useShinyjs(),
+                        verticalLayout(
+                          div(style="display: inline-block; vertical-align: top; width: 200px" , 
+                              actionButton("pic11", "Sample Answer", style="color: black; background-color: #fff; ")),
+                          hidden(div(id='pic11_div', htmlOutput("Feed1")))),
                         h4(textOutput("answerl11")),
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            actionButton("next11","Next Question")),
-                        div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            prettyCheckbox("pic1","Venn Diagram for Answer",value = F,status = "info",shape = "curve"))
-                       # htmlOutput("Feed11")
+                            actionButton("next11","Next Question"))
+                       #  div(style="display: inline-block;vertical-align:top; width: 200px;",
+                       #      prettyCheckbox("pic1","Venn Diagram for Answer",value = F,status = "info",shape = "curve"))
+                       # # htmlOutput("Feed11")
 
                       )
                       
@@ -536,7 +541,7 @@ shinyUI(fluidPage(
                                 actionButton("pic22", "Sample Answer", style="color: black; background-color: #fff; ")),
                             hidden(div(id='pic22_div', htmlOutput("Feed2")))
                           )),
-                        p("The plot does not reflect true scale", style = "color:grey; font-size: 16px;"),
+                        p("The generated plot does not reflect true scale", style = "color:grey; font-size: 16px;"),
                         br(),
                         textOutput("answerl22"),
                         br(),
@@ -595,7 +600,7 @@ shinyUI(fluidPage(
                             hidden(div(id='pic33_div', htmlOutput("Feed3")))
                           )
                         ),
-                        p("The plot does not reflect true scale", style = "color:grey; font-size: 16px;"),
+                        p("The generated plot does not reflect true scale", style = "color:grey; font-size: 16px;"),
                         br(),
                         textOutput("answerl33"),
                         br(),

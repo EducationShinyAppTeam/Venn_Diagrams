@@ -213,7 +213,7 @@ shinyServer(function(session, input, output) {
         updateButton(session, "next11", disabled = F)
       }
       else{
-        updateButton(session, "next11", disabled = T)
+        updateButton(session, "next11", disabled = F)
         cat("Please adjust your answer")
       }
   })
@@ -221,7 +221,14 @@ shinyServer(function(session, input, output) {
   observeEvent(input$pic1,{
     toggle('pic1_div')
     output$Feed11 <- renderUI({
-      img(src = bank[numbersl1$quesanswerl1, 19],  height = "75%",  width = "75%")
+      img(src = bank[numbersl1$quesanswerl1, 19],  height = "40%",  width = "40%")
+    })
+  })
+  
+  observeEvent(input$pic11,{
+    toggle('pic11_div')
+    output$Feed1 <- renderUI({
+      img(src = bank[numbersl1$quesanswerl1, 19],  height = "40%",  width = "40%")
     })
   })
   
@@ -229,7 +236,7 @@ shinyServer(function(session, input, output) {
     numbersl1$quesanswerl1 <- sample(space[-numbersl1$quesanswerl1],1)
     updateNumericInput(session, "PA", label = NULL, value = 0,
                        min = 0, max = 1, step = 0.01)
-    updateButton(session, "next11", disabled = T)
+    updateButton(session, "next11", disabled = F)
     updateCheckboxInput(session, "pic1", value = F)
   })
   
@@ -419,7 +426,7 @@ shinyServer(function(session, input, output) {
     toggle('pic2_div')
     output$Feed22 <- renderUI({
       
-      img(src = bank[numbersl2$quesanswerl2,19], height = 200, width = 230)
+      img(src = bank[numbersl2$quesanswerl2,19], height = "40%", width = "40%")
       
     })
   })
@@ -428,7 +435,7 @@ shinyServer(function(session, input, output) {
     toggle('pic22_div')
     output$Feed2 <- renderUI({
       
-      img(src = bank[numbersl2$quesanswerl2,19], height = 200, width = 230)
+      img(src = bank[numbersl2$quesanswerl2,19], height = "40%", width = "40%")
       
     })
   })
@@ -458,7 +465,7 @@ shinyServer(function(session, input, output) {
     )
     if ((min(input$P2A, input$P2B) == 0 ) & (input$A2B == 0) ) {
       isolate({plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)})
-      text(1,1,"Note that there are two events",cex = 1.5, col = "red")
+      text(1,1,"Note that there are two events",cex = 1, col = "red")
     }
     else if ((input$P2A == input$P2B ) & (input$P2A == input$A2B) & (input$P2B == input$A2B)) {
       isolate({plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)})
@@ -473,10 +480,10 @@ shinyServer(function(session, input, output) {
     }
     else{
       plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)
-      text(1,1,"Error: impossible to exist",cex = 1.5, col = "red")
+      text(1,1,"Error: impossible to exist",cex = 1, col = "red")
     }
     
-  },width = 430, height = 380)
+  },width = 300, height = 280)
 
 
   observeEvent(input$next22,{
@@ -809,7 +816,7 @@ shinyServer(function(session, input, output) {
     toggle('pic3_div')
     output$Feed33 <- renderUI({
       
-      img(src = bank[numbersl3$quesanswerl3,19], height = 200, width = 230)
+      img(src = bank[numbersl3$quesanswerl3,19], height = "40%", width = "40%")
       
     })
   })
@@ -821,7 +828,7 @@ shinyServer(function(session, input, output) {
     toggle('pic33_div')
     output$Feed3 <- renderUI({
       
-      img(src = bank[numbersl3$quesanswerl3,19], height = 200, width = 230)
+      img(src = bank[numbersl3$quesanswerl3,19], height = "40%", width = "40%")
       
     })
   })
@@ -844,7 +851,7 @@ shinyServer(function(session, input, output) {
     )
     if ((min(input$P3A, input$P3B, input$P3C) == 0 ) & (input$A3B == 0) & (input$A3C == 0) & (input$B3C == 0) & (input$A3BC == 0)) {
       isolate({plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)})
-      text(1,1,"Note that there are three events",cex = 1.5, col = "red")
+      text(1,1,"Note that there are three events",cex = 1, col = "red")
     }
     else if ((input$P3A + input$P3B + input$P3C - input$A3B - input$A3C - input$B3C + input$A3BC <=1)
              & (input$A3B <= min(input$P3A, input$P3B)) & (input$A3C <= min(input$P3A, input$P3C)) 
@@ -861,9 +868,9 @@ shinyServer(function(session, input, output) {
     }
     else{
       plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)
-      text(1,1,"Error: impossible to exist",cex = 1.5, col = "red")
+      text(1,1,"Error: impossible to exist",cex = 1, col = "red")
     }
-  },width = 430, height = 380)
+  },width = 300, height = 280)
 
   
 
@@ -929,8 +936,8 @@ shinyServer(function(session, input, output) {
       updateSliderInput(session, "radiusl1",min=0,max=1.2,step = 0.005,value = 0.05)
       updateSliderInput(session, "movel1",min=0,max=1,step=0.01,value=0.5)
       updateSliderInput(session, "move1l1",min=0,max=1,step=0.01,value=0.5)
-      updateButton(session, "next11", disabled = T)
-      updateButton(session, "next1", disabled = T)
+      updateButton(session, "next11", disabled = F)
+      updateButton(session, "next1", disabled = F)
     }
     else if(val==1){
       updateSelectInput(session, "modes", selected = "level2")
@@ -948,8 +955,8 @@ shinyServer(function(session, input, output) {
                          min = 0, max = 1, step = 0.01)
       updateNumericInput(session, "A2B", label = NULL, value = 0,
                          min = 0, max = 1, step = 0.01)
-      updateButton(session, "next22", disabled = T)
-      updateButton(session, "next2", disabled = T)
+      updateButton(session, "next22", disabled = F)
+      updateButton(session, "next2", disabled = F)
     }
     else if(val==2){
       updateSelectInput(session, "modes", selected = "level3")
@@ -979,8 +986,8 @@ shinyServer(function(session, input, output) {
                          min = 0, max = 1, step = 0.01)
       updateNumericInput(session, "A3BC", label = NULL, value = 0,
                          min = 0, max = 1, step = 0.01)
-      updateButton(session, "next33", disabled = T)
-      updateButton(session, "next3", disabled = T)
+      updateButton(session, "next33", disabled = F)
+      updateButton(session, "next3", disabled = F)
     }
   })
 })
