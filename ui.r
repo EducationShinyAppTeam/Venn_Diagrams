@@ -529,13 +529,14 @@ shinyUI(fluidPage(
                         flowLayout(
                           div(style="display: inline-block;vertical-align:top;", 
                               plotOutput("enterplot2")),
+                          
                           useShinyjs(),
                           verticalLayout(
                             div(style="display: inline-block; vertical-align: top; width: 200px" ,
                                 actionButton("pic22", "Sample Answer", style="color: black; background-color: #fff; ")),
                             hidden(div(id='pic22_div', htmlOutput("Feed2")))
                           )),
-                        
+                        p("The plot does not reflect true scale", style = "color:grey; font-size: 16px;"),
                         br(),
                         textOutput("answerl22"),
                         br(),
@@ -594,7 +595,7 @@ shinyUI(fluidPage(
                             hidden(div(id='pic33_div', htmlOutput("Feed3")))
                           )
                         ),
-                       
+                        p("The plot does not reflect true scale", style = "color:grey; font-size: 16px;"),
                         br(),
                         textOutput("answerl33"),
                         br(),
