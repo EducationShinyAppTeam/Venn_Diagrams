@@ -449,31 +449,34 @@ shinyServer(function(session, input, output) {
   #   compute.Venn(Venn(SetNames = c("", ""), Weight = c(`01` = input$P2B-input$A2B, `11` = input$A2B, `10` = input$P2A-input$A2B)), type ="circles", doEuler=TRUE)
   # })
   w2 = reactive({
-    compute.Venn(Venn(SetNames = c("", ""), Weight = c(`01` = input$P2B-input$A2B, `11` = input$A2B, `10` = input$P2A-input$A2B)), type ="circles")
+    compute.Venn(Venn(SetNames = c("", ""), Weight = c(`01` = input$P2B-input$A2B, `11` = input$A2B, `10` = input$P2A-input$A2B)), type ="circles", doEuler=TRUE)
   })
+  
+  output$enterplot2 = renderPlot({
+    validate(
+      need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "Please input the numbers")
+    )
+    if ((min(input$P2A, input$P2B) == 0 ) & (input$A2B == 0) ) {
+      isolate({plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)})
+      text(1,1,"Note that there are two events",cex = 1.5, col = "red")
+    }
+    else if ((input$P2A == input$P2B ) & (input$P2A == input$A2B) & (input$P2B == input$A2B)) {
+      isolate({plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)})
+      draw.circle(1,1,.1,col="#7cc9b2")
+    }
+    else if ((input$P2A + input$P2B - input$A2B <=1) & (input$A2B <= min(input$P2A, input$P2B)) ) {
+      gp <- VennThemes(w2())
+      gp[["Face"]][["11"]]$fill <-  "#7BC9B1"
+      gp[["Face"]][["01"]]$fill <-  "#b2ffb2"
+      gp[["Face"]][["10"]]$fill <-  "#B2B2FF"
+      plot(w2(), gp = gp, show = list(SetLabels = FALSE))
+    }
+    else{
+      plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)
+      text(1,1,"Error: impossible to exist",cex = 1.5, col = "red")
+    }
     
-      output$enterplot2 = renderPlot({
-        validate(
-          need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "Please input the numbers")
-        )
-        if ((input$P2A == input$P2B ) & (input$P2A == input$A2B) & (input$P2B == input$A2B)) {
-          isolate({plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)})
-          col3l3 <- rgb(red = 1, green = 0, blue = 0, alpha = 0.3)
-          draw.circle(1,1,.1,col=col3l3)
-        }
-        else if ((input$P2A + input$P2B - input$A2B <=1) & (input$A2B <= min(input$P2A, input$P2B)) ) {
-          gp <- VennThemes(w2())
-          gp[["Face"]][["11"]]$fill <-  "#7BC9B1"
-          gp[["Face"]][["01"]]$fill <-  "#b2ffb2"
-          gp[["Face"]][["10"]]$fill <-  "#B2B2FF"
-          plot(w2(), gp = gp, show = list(SetLabels = FALSE))
-          }
-        else{
-          plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)
-          text(1,1,"Error: impossible to exist",cex = 2, col = "red")
-        }
-       
-      },width = 430, height = 380)
+  },width = 430, height = 380)
 
 
   observeEvent(input$next22,{
@@ -825,13 +828,13 @@ shinyServer(function(session, input, output) {
   
   w3 = reactive({
     compute.Venn(Venn(SetNames = c("1", "2", "3"), Weight = c(
-                                                       `001` = input$P3B-input$A3B-input$B3C-input$A3BC, 
-                                                       `010` = input$P3C-input$A3C-input$B3C-input$A3BC, 
-                                                       `100` = input$P3A-input$A3B-input$A3C-input$A3BC,
-                                                       `101` = input$A3B, 
-                                                       `110` = input$A3C,
-                                                       `011` = input$B3C,
-                                                       `111` = input$A3BC )), type ="circles", doEuler=TRUE)
+      `001` = input$P3B-input$A3B-input$B3C-input$A3BC, 
+      `010` = input$P3C-input$A3C-input$B3C-input$A3BC, 
+      `100` = input$P3A-input$A3B-input$A3C-input$A3BC,
+      `101` = input$A3B, 
+      `110` = input$A3C,
+      `011` = input$B3C,
+      `111` = input$A3BC )), type ="circles", doEuler=TRUE)
   })
   
   output$enterplot3 = renderPlot({
@@ -839,22 +842,26 @@ shinyServer(function(session, input, output) {
       need(((input$P3A != "")&(input$P3B != "")&(input$P3C != "")&(input$A3B != "")&(input$A3C != "")&(input$B3C != "")&(input$A3BC != "")), 
            "Please enter all your probabilities")
     )
-    if ((input$P3A + input$P3B + input$P3C - input$A3B - input$A3C - input$B3C + input$A3BC <=1)
-        & (input$A3B <= min(input$P3A, input$P3B)) & (input$A3C <= min(input$P3A, input$P3C)) 
-        & (input$B3C <= min(input$P3B, input$P3C)) & (input$A3BC <= min(input$A3C, input$A3B, input$B3C)) ) {
-    gp <- VennThemes(w3())
-    gp[["Face"]][["101"]]$fill <-  "#7BC9B1"
-    gp[["Face"]][["001"]]$fill <-  "#b2ffb2"
-    gp[["Face"]][["100"]]$fill <-  "#B2B2FF"
-    gp[["Face"]][["010"]]$fill <-  "#ffb2b2"
-    gp[["Face"]][["110"]]$fill <-  "#c97cb2"
-    gp[["Face"]][["011"]]$fill <-  "#c9b37d"
-    gp[["Face"]][["111"]]$fill <-  "#a48d7e"
-    plot(w3(), gp = gp, show = list(SetLabels = FALSE))
+    if ((min(input$P3A, input$P3B, input$P3C) == 0 ) & (input$A3B == 0) & (input$A3C == 0) & (input$B3C == 0) & (input$A3BC == 0)) {
+      isolate({plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)})
+      text(1,1,"Note that there are three events",cex = 1.5, col = "red")
+    }
+    else if ((input$P3A + input$P3B + input$P3C - input$A3B - input$A3C - input$B3C + input$A3BC <=1)
+             & (input$A3B <= min(input$P3A, input$P3B)) & (input$A3C <= min(input$P3A, input$P3C)) 
+             & (input$B3C <= min(input$P3B, input$P3C)) & (input$A3BC <= min(input$A3C, input$A3B, input$B3C)) ) {
+      gp <- VennThemes(w3())
+      gp[["Face"]][["101"]]$fill <-  "#7BC9B1"
+      gp[["Face"]][["001"]]$fill <-  "#b2ffb2"
+      gp[["Face"]][["100"]]$fill <-  "#B2B2FF"
+      gp[["Face"]][["010"]]$fill <-  "#ffb2b2"
+      gp[["Face"]][["110"]]$fill <-  "#c97cb2"
+      gp[["Face"]][["011"]]$fill <-  "#c9b37d"
+      gp[["Face"]][["111"]]$fill <-  "#a48d7e"
+      plot(w3(), gp = gp, show = list(SetLabels = FALSE))
     }
     else{
       plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)
-      text(1,1,"ERROR: impossible to exist",cex = 2, col = "red")
+      text(1,1,"Error: impossible to exist",cex = 1.5, col = "red")
     }
   },width = 430, height = 380)
 
