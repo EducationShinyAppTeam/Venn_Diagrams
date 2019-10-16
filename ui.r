@@ -3,8 +3,8 @@ library(shiny)
 library(shinyjs)
 library(shinyBS)
 library(shinyWidgets)
-library(V8)
 library(Vennerable)
+
 #fresh the whole page
 jsResetCode <- "shinyjs.reset= function() {history.go(0)}"
 
@@ -485,6 +485,7 @@ shinyUI(fluidPage(
                           div(style="display: inline-block; vertical-align: top; width: 200px" , 
                               actionButton("pic11", "Sample Answer", style="color: black; background-color: #fff; ")),
                           hidden(div(id='pic11_div', htmlOutput("Feed1")))),
+                        
                         h4(textOutput("answerl11")),
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
                             actionButton("next11","Next Question"))
@@ -543,13 +544,20 @@ shinyUI(fluidPage(
                           )),
                         p("The generated plot does not reflect true scale", style = "color:grey; font-size: 16px;"),
                         br(),
-                        textOutput("answerl22"),
-                        br(),
+                        wellPanel(
+                          h4(textOutput("answerl22"))
+                          , style = "width : 70%;background-color: #ffffff;"
+                        ),
+                        useShinyjs(),
+                        div(style="display: inline-block;vertical-align:top; width: 200px;", 
+                            actionButton("feedback22", "Feedback", style="color: #fff; background-color: #337ab7")),
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            actionButton("next22","Next Question"))
+                            actionButton("next22","Next Question")),
                        #  div(style="display: inline-block;vertical-align:top; width: 200px;",
                        #      prettyCheckbox("pic2","Venn Diagram for Answer",value = F,status = "info",shape = "curve"))
                        # # htmlOutput("Feed22")
+                       br(), br(),
+                       hidden(div(id='feedback22_div', textOutput("fdbc22")))
                       )
                       ),
                     conditionalPanel(
@@ -602,13 +610,21 @@ shinyUI(fluidPage(
                         ),
                         p("The generated plot does not reflect true scale", style = "color:grey; font-size: 16px;"),
                         br(),
-                        textOutput("answerl33"),
+                        wellPanel(
+                          h4(textOutput("answerl33"))
+                          , style = "width : 70%;background-color: #ffffff;"
+                        ),
                         br(),
+                        useShinyjs(),
+                        div(style="display: inline-block;vertical-align:top; width: 200px;", 
+                            actionButton("feedback33", "Feedback", style="color: #fff; background-color: #337ab7")),
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            actionButton("next33","Next Question"))
+                            actionButton("next33","Next Question")),
                         # div(style="display: inline-block;vertical-align:top; width: 200px;",
                         #     actionButton("pic3","Venn Diagram for Answer",value = F,status = "info",shape = "curve"))
                        # htmlOutput("Feed33")
+                       br(),br(),
+                       hidden(div(id='feedback33_div', textOutput("fdbc33")))
                       ),
                       tags$head(
                         

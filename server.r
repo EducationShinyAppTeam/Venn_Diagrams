@@ -1,13 +1,10 @@
 library(shinydashboard)
 library(shiny)
 library(plotrix)
-library(grid)
 library(shinyjs)
 library(shinyBS)
 library(shinyWidgets)
-library(V8)
 library(Vennerable)
-library("VennDiagram")
 
 bank<- read.csv("questionbank.csv")
 bank= data.frame(lapply(bank,as.character),stringsAsFactors = FALSE)
@@ -21,24 +18,7 @@ shinyServer(function(session, input, output) {
     updateTabItems(session, "tabs", "circle")
   })
   
-  # observeEvent(input$hint1,{
-  #   sendSweetAlert(
-  #     session = session,
-  #     title = "Hints:",
-  #     text = "Check if you are dealing with one event or its complement",
-  #     type = "info"
-  #   )
-  # })
-  # observeEvent(input$hint2,{
-  #   sendSweetAlert(
-  #     session = session,
-  #     title = "Hints:",
-  #     text = "1. Understand if you are dealing with one event or multiple events.\n
-  #     2. Check if the relationship is mutually exclusive.\n
-  #     3. Check if the relationship is independent.",
-  #     type = "info"
-  #   )
-  # })
+  
   observeEvent(input$hint,{
     sendSweetAlert(
       session = session,
@@ -49,32 +29,7 @@ shinyServer(function(session, input, output) {
       type = "info"
     )
   })
-  # observeEvent(input$info1,{
-  #   sendSweetAlert(
-  #     session = session,
-  #     title = "Instructions:",
-  #     text = "If you want to adjust the circles in the Venn Diagram:\n
-  #             1.Move or change the size of the circles using sliders (accessed by the button).\n
-  #     2. The 'Reset' button lets you try again, the 'Next' button provides a new question.\n
-  #     If you want to enter the probabilities directly:\n
-  #     1. Enter your probability in the textbox.\n
-  #     2. If you want to get hints, please click 'Venn Diagram for Answer' button.",
-  #     type = "info"
-  #   )
-  # })
-  # observeEvent(input$info2,{
-  #   sendSweetAlert(
-  #     session = session,
-  #     title = "Instructions:",
-  #     text = "If you want to adjust the circles in the Venn Diagram:\n
-  #             1.Move or change the size of the circles using sliders (accessed by the button).\n
-  #     2. The 'Reset' button lets you try again, the 'Next' button provides a new question.\n
-  #     If you want to enter the probabilities directly:\n
-  #     1. Enter your probability in the textbox.\n
-  #     2. If you want to get hints, please click 'Venn Diagram for Answer' button.",
-  #     type = "info"
-  #   )
-  # })
+
   observeEvent(input$info,{
     sendSweetAlert(
       session = session,
@@ -140,7 +95,7 @@ shinyServer(function(session, input, output) {
   })
   
   observeEvent(input$reset_buttonl1,{
-    updateSliderInput(session, "radiusl1",min=0,max=1.2,step = 0.005,value = 0.05)
+    updateSliderInput(session, "radiusl1",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel1",min=0,max=1,step=0.01,value=0.5)
     updateSliderInput(session, "move1l1",min=0,max=1,step=0.01,value=0.5)
   })
@@ -162,7 +117,7 @@ shinyServer(function(session, input, output) {
   #Next question
   observeEvent(input$next1, {
     numbersl1$quesanswerl1 <- sample(space[-numbersl1$quesanswerl1],1)
-    updateSliderInput(session, "radiusl1",min=0,max=1.2,step = 0.005,value = 0.05)
+    updateSliderInput(session, "radiusl1",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel1",min=0,max=1,step=0.01,value=0.49)
     updateSliderInput(session, "move1l1",min=0,max=1,step=0.01,value=0.5)
   })
@@ -176,7 +131,7 @@ shinyServer(function(session, input, output) {
       updateButton(session, "next1", disabled = F)
     }
     else{
-      cat("Change the size of your circle to match the probability desired.")
+      cat("Keep changing the size of your circle to match the probability desired until .")
       updateButton(session, "next1", disabled = F)
     }
   })
@@ -221,14 +176,14 @@ shinyServer(function(session, input, output) {
   observeEvent(input$pic1,{
     toggle('pic1_div')
     output$Feed11 <- renderUI({
-      img(src = bank[numbersl1$quesanswerl1, 19],  height = "40%",  width = "40%")
+      img(src = bank[numbersl1$quesanswerl1, 19],  height = "70%",  width = "70%")
     })
   })
   
   observeEvent(input$pic11,{
     toggle('pic11_div')
     output$Feed1 <- renderUI({
-      img(src = bank[numbersl1$quesanswerl1, 19],  height = "40%",  width = "40%")
+      img(src = bank[numbersl1$quesanswerl1, 19],  height = "70%",  width = "70%")
     })
   })
   
@@ -340,11 +295,11 @@ shinyServer(function(session, input, output) {
   
   #reset 
   observeEvent(input$reset_buttonl2,{
-    updateSliderInput(session, "radiusl2",min=0,max=1.2,step = 0.005,value = 0.05)
+    updateSliderInput(session, "radiusl2",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel12",min=0,max=1,step=0.01,value=0.45)
     updateSliderInput(session, "move1l2",min=0,max=1,step=0.01,value=0.5)
     
-    updateSliderInput(session, "radius2l2",min=0,max=1.2,step = 0.005,value = 0.05)
+    updateSliderInput(session, "radius2l2",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel2",min=0,max=1,step=0.01,value=0.55)
     updateSliderInput(session, "move2l2",min=0,max=1,step=0.01,value=0.5)
   })
@@ -377,11 +332,11 @@ shinyServer(function(session, input, output) {
   #Generate next question
   observeEvent(input$next2,{
     numbersl2$quesanswerl2 <- sample(space2[-numbersl2$quesanswerl2],1)
-    updateSliderInput(session, "radiusl2",min=0,max=1.2,step = 0.005,value = 0.05)
+    updateSliderInput(session, "radiusl2",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel12",min=0,max=1,step=0.01,value=0.45)
     updateSliderInput(session, "move1l2",min=0,max=1,step=0.01,value=0.5)
     
-    updateSliderInput(session, "radius2l2",min=0,max=1.2,step = 0.005,value = 0.05)
+    updateSliderInput(session, "radius2l2",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel2",min=0,max=1,step=0.01,value=0.55)
     updateSliderInput(session, "move2l2",min=0,max=1,step=0.01,value=0.5)
   })
@@ -408,10 +363,33 @@ shinyServer(function(session, input, output) {
                    }
                  })
                })
+  observeEvent(input$feedback22, 
+               {
+                 toggle('feedback22_div')
+                 output$fdbc22 = renderPrint({
+                   
+                   if((probabilityl2$probc1l2==bank[numbersl2$quesanswerl2,5])&(probabilityl2$probc2l2==bank[numbersl2$quesanswerl2,6])& (probabilityl2$probintersectionl2 == bank[numbersl2$quesanswerl2,8])) 
+                   {cat("Great! You are right!")
+                     updateButton(session, "next2", disabled = F)
+                   }
+                   else if((probabilityl2$probc1l2==bank[numbersl2$quesanswerl2,5])&(probabilityl2$probc2l2==bank[numbersl2$quesanswerl2,6])&(probabilityl2$dl2 >= bank[numbersl2$quesanswerl2,8])) {
+                     cat("Probability is right, but the relationship is Wrong. Try again.")
+                     updateButton(session, "next2", disabled = F)
+                   }
+                   else if(((probabilityl2$probc1l2!=bank[numbersl2$quesanswerl2,5]) | (probabilityl2$probc2l2!=bank[numbersl2$quesanswerl2,6]) )&(probabilityl2$dl2 == bank[numbersl2$quesanswerl2,8])){
+                     cat("The relationship is right, but the probability is Wrong. Try again.")
+                     updateButton(session, "next2", disabled = F)
+                   }
+                   else{
+                     cat("Change the size and placement of your circles to match the probabilities desired.")
+                     updateButton(session, "next2", disabled = F)
+                   }
+                 })
+               })
   
   output$answerl2 <- renderPrint({
     
-    if((probabilityl2$probc1l2==bank[numbersl2$quesanswerl2,5])&(probabilityl2$probc2l2==bank[numbersl2$quesanswerl2,6])& (probabilityl2$probintersectionl2 == bank[numbersl2$quesanswerl2,8])) 
+    if ((probabilityl2$probc1l2==bank[numbersl2$quesanswerl2,5])&(probabilityl2$probc2l2==bank[numbersl2$quesanswerl2,6])& (probabilityl2$probintersectionl2 == bank[numbersl2$quesanswerl2,8])) 
     {cat("Great! You are right!")
       updateButton(session, "next2", disabled = F)
     }
@@ -426,7 +404,7 @@ shinyServer(function(session, input, output) {
     toggle('pic2_div')
     output$Feed22 <- renderUI({
       
-      img(src = bank[numbersl2$quesanswerl2,19], height = "40%", width = "40%")
+      img(src = bank[numbersl2$quesanswerl2,19], height = "70%", width = "70%")
       
     })
   })
@@ -435,13 +413,13 @@ shinyServer(function(session, input, output) {
     toggle('pic22_div')
     output$Feed2 <- renderUI({
       
-      img(src = bank[numbersl2$quesanswerl2,19], height = "40%", width = "40%")
+      img(src = bank[numbersl2$quesanswerl2,19], height = "70%", width = "70%")
       
     })
   })
   output$answerl22 <- renderPrint({
     validate(
-      need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "")
+      need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "Please enter all your probabilities")
     )
     if((input$P2A == bank[numbersl2$quesanswerl2,5])&(input$P2B == bank[numbersl2$quesanswerl2,6])&(input$A2B == bank[numbersl2$quesanswerl2,8])){
       cat("Great! You are right!")
@@ -474,8 +452,12 @@ shinyServer(function(session, input, output) {
     else if ((input$P2A + input$P2B - input$A2B <=1) & (input$A2B <= min(input$P2A, input$P2B)) ) {
       gp <- VennThemes(w2())
       gp[["Face"]][["11"]]$fill <-  "#7BC9B1"
-      gp[["Face"]][["01"]]$fill <-  "#b2ffb2"
-      gp[["Face"]][["10"]]$fill <-  "#B2B2FF"
+      gp[["Face"]][["01"]]$fill <-  "#E69F00"
+      gp[["Face"]][["10"]]$fill <-  '#56B4E9'
+      gp[["Set"]][["Set1"]]$col <- 'black'
+      gp[["Set"]][["Set2"]]$col <- 'black'
+      gp[["Set"]][["Set1"]]$lwd <- 1.5
+      gp[["Set"]][["Set2"]]$lwd <- 1.5
       plot(w2(), gp = gp, show = list(SetLabels = FALSE))
     }
     else{
@@ -612,15 +594,15 @@ shinyServer(function(session, input, output) {
   
   #reset
   observeEvent(input$reset_buttonl3,{
-    updateSliderInput(session, "radiusl3",min=0,max=1.2,step = 0.005,value = 0.05)
+    updateSliderInput(session, "radiusl3",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel13",min=0,max=1,step=0.01,value=0.45)
     updateSliderInput(session, "move1l3",min=0,max=1,step=0.01,value=0.5)
     
-    updateSliderInput(session, "radius2l3",min=0,max=1.2,step = 0.005,value = 0.05)
+    updateSliderInput(session, "radius2l3",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel23",min=0,max=1,step=0.01,value=0.55)
     updateSliderInput(session, "move2l3",min=0,max=1,step=0.01,value=0.5)
     
-    updateSliderInput(session, "radius3l3",min=0,max=1.2,step = 0.005,value = 0.05)
+    updateSliderInput(session, "radius3l3",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel33",min=0,max=1,step=0.01,value=0.5)
     updateSliderInput(session, "move3l3",min=0,max=1,step=0.01,value=0.45)
   })
@@ -729,15 +711,15 @@ shinyServer(function(session, input, output) {
   #Generate next question
   observeEvent(input$next3,{
     numbersl3$quesanswerl3 <- sample(space3[-numbersl3$quesanswerl3],1)
-    updateSliderInput(session, "radiusl3",min=0,max=1.2,step = 0.005,value = 0.05)
+    updateSliderInput(session, "radiusl3",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel13",min=0,max=1,step=0.01,value=0.45)
     updateSliderInput(session, "move1l3",min=0,max=1,step=0.01,value=0.5)
     
-    updateSliderInput(session, "radius2l3",min=0,max=1.2,step = 0.005,value = 0.05)
+    updateSliderInput(session, "radius2l3",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel23",min=0,max=1,step=0.01,value=0.55)
     updateSliderInput(session, "move2l3",min=0,max=1,step=0.01,value=0.5)
     
-    updateSliderInput(session, "radius3l3",min=0,max=1.2,step = 0.005,value = 0.05)
+    updateSliderInput(session, "radius3l3",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel33",min=0,max=1,step=0.01,value=0.5)
     updateSliderInput(session, "move3l3",min=0,max=1,step=0.01,value=0.45)
    
@@ -785,6 +767,49 @@ shinyServer(function(session, input, output) {
                    }
                  })
                })
+  
+  observeEvent(input$feedback33, 
+               {
+                 toggle('feedback33_div')
+                 output$fdbc33 = renderPrint({
+                   
+                   if(any(bank[numbersl3$quesanswerl3,3]==c(11,12,13,14))){
+                     
+                     if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3,7])&(probabilityl3$intersectionc12l3 ==bank[numbersl3$quesanswerl3,8])&(probabilityl3$intersectionc23l3==bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3,10]))
+                     {cat("Great! You are right!")
+                       updateButton(session, "next3", disabled = F)
+                     }
+                     else if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3,7])&((probabilityl3$intersectionc12l3!=bank[numbersl3$quesanswerl3,8])|(probabilityl3$intersectionc23l3!=bank[numbersl3$quesanswerl3,9])|(probabilityl3$intersectionc13l3!=bank[numbersl3$quesanswerl3,10])))
+                     {cat("Probability is right, but the relationship is Wrong. Try again.")
+                       updateButton(session, "next3", disabled = F)}
+                     else if(((probabilityl3$probc1l3!=bank[numbersl3$quesanswerl3,5])|(probabilityl3$probc2l3!=bank[numbersl3$quesanswerl3,6])|(probabilityl3$probc3l3!=bank[numbersl3$quesanswerl3,7]))&(probabilityl3$intersectionc12l3==bank[numbersl3$quesanswerl3,8])&(probabilityl3$intersectionc23l3== bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3,10]))
+                     {cat("The relationship is right, but the probability is Wrong. Try again.")
+                       updateButton(session, "next3", disabled = F)}
+                     else{
+                       cat("Change the size and placement of your circles to match the probabilities desired.")
+                       updateButton(session, "next3", disabled = F)
+                     }
+                   }
+                   
+                   else if(any(bank[numbersl3$quesanswerl3,3]==c(15))){
+                     if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3,7])&(probabilityl3$intersectionc12l3 ==bank[numbersl3$quesanswerl3,8])&(probabilityl3$intersectionc23l3==bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3,10])&(probabilityl3$intersectionc123l3==bank[numbersl3$quesanswerl3,11]))
+                     {cat("Great! You are right!")
+                       updateButton(session, "next3", disabled = F)
+                     }
+                     else if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3,7])&((probabilityl3$intersectionc12l3!=bank[numbersl3$quesanswerl3,8])|(probabilityl3$intersectionc23l3!=bank[numbersl3$quesanswerl3,9])|(probabilityl3$intersectionc13l3!=bank[numbersl3$quesanswerl3,10])|(probabilityl3$intersectionc123l3!=bank[numbersl3$quesanswerl3,11])))
+                     {cat("Probability is right, but the relationship is Wrong. Try again.")
+                       updateButton(session, "next3", disabled = F)}
+                     else if(((probabilityl3$probc1l3!=bank[numbersl3$quesanswerl3,5])|(probabilityl3$probc2l3!=bank[numbersl3$quesanswerl3,6])|(probabilityl3$probc3l3!=bank[numbersl3$quesanswerl3,7]))&(probabilityl3$intersectionc12l3==bank[numbersl3$quesanswerl3,8])&(probabilityl3$intersectionc23l3== bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3,10])&(probabilityl3$intersectionc123l3==bank[numbersl3$quesanswerl3,11]))
+                     {cat("The relationship is right, but the probability is Wrong. Try again.")
+                       updateButton(session, "next3", disabled = F)}
+                     else{
+                       cat("Change the size and placement of your circles to match the probabilities desired.")
+                       updateButton(session, "next3", disabled = F)
+                     }
+                   }
+                 })
+               })
+  
   output$answerl3 <- renderPrint({
       
       if(any(bank[numbersl3$quesanswerl3,3]==c(11,12,13,14))){
@@ -816,7 +841,7 @@ shinyServer(function(session, input, output) {
     toggle('pic3_div')
     output$Feed33 <- renderUI({
       
-      img(src = bank[numbersl3$quesanswerl3,19], height = "40%", width = "40%")
+      img(src = bank[numbersl3$quesanswerl3,19], height = "70%", width = "70%")
       
     })
   })
@@ -828,7 +853,7 @@ shinyServer(function(session, input, output) {
     toggle('pic33_div')
     output$Feed3 <- renderUI({
       
-      img(src = bank[numbersl3$quesanswerl3,19], height = "40%", width = "40%")
+      img(src = bank[numbersl3$quesanswerl3,19], height = "70%", width = "70%")
       
     })
   })
@@ -858,12 +883,18 @@ shinyServer(function(session, input, output) {
              & (input$B3C <= min(input$P3B, input$P3C)) & (input$A3BC <= min(input$A3C, input$A3B, input$B3C)) ) {
       gp <- VennThemes(w3())
       gp[["Face"]][["101"]]$fill <-  "#7BC9B1"
-      gp[["Face"]][["001"]]$fill <-  "#b2ffb2"
-      gp[["Face"]][["100"]]$fill <-  "#B2B2FF"
-      gp[["Face"]][["010"]]$fill <-  "#ffb2b2"
+      gp[["Face"]][["001"]]$fill <-  "#E69F00"
+      gp[["Face"]][["100"]]$fill <-  '#56B4E9'
+      gp[["Face"]][["010"]]$fill <-  "#009E73"
       gp[["Face"]][["110"]]$fill <-  "#c97cb2"
       gp[["Face"]][["011"]]$fill <-  "#c9b37d"
       gp[["Face"]][["111"]]$fill <-  "#a48d7e"
+      gp[["Set"]][["Set1"]]$col <- 'black'
+      gp[["Set"]][["Set2"]]$col <- 'black'
+      gp[["Set"]][["Set1"]]$lwd <- 1.5
+      gp[["Set"]][["Set2"]]$lwd <- 1.5
+      gp[["Set"]][["Set3"]]$col <- 'black'
+      gp[["Set"]][["Set3"]]$lwd <- 1.5
       plot(w3(), gp = gp, show = list(SetLabels = FALSE))
     }
     else{
@@ -933,7 +964,7 @@ shinyServer(function(session, input, output) {
       numbersl1$quesanswerl1=sample(1:5,1)
       updateNumericInput(session, "PA", label = NULL, value = 0,
                          min = 0, max = 1, step = 0.01)
-      updateSliderInput(session, "radiusl1",min=0,max=1.2,step = 0.005,value = 0.05)
+      updateSliderInput(session, "radiusl1",min=0,max=1.2,step = 0.01,value = 0.05)
       updateSliderInput(session, "movel1",min=0,max=1,step=0.01,value=0.5)
       updateSliderInput(session, "move1l1",min=0,max=1,step=0.01,value=0.5)
       updateButton(session, "next11", disabled = F)
@@ -942,11 +973,11 @@ shinyServer(function(session, input, output) {
     else if(val==1){
       updateSelectInput(session, "modes", selected = "level2")
       numbersl2$quesanswerl2=sample(6:10,1)
-      updateSliderInput(session, "radiusl2",min=0,max=1.2,step = 0.005,value = 0.05)
+      updateSliderInput(session, "radiusl2",min=0,max=1.2,step = 0.01,value = 0.05)
       updateSliderInput(session, "movel12",min=0,max=1,step=0.01,value=0.45)
       updateSliderInput(session, "move1l2",min=0,max=1,step=0.01,value=0.5)
       
-      updateSliderInput(session, "radius2l2",min=0,max=1.2,step = 0.005,value = 0.05)
+      updateSliderInput(session, "radius2l2",min=0,max=1.2,step = 0.01,value = 0.05)
       updateSliderInput(session, "movel2",min=0,max=1,step=0.01,value=0.55)
       updateSliderInput(session, "move2l2",min=0,max=1,step=0.01,value=0.5)
       updateNumericInput(session, "P2A", label = NULL, value = 0,
@@ -961,15 +992,15 @@ shinyServer(function(session, input, output) {
     else if(val==2){
       updateSelectInput(session, "modes", selected = "level3")
       numbersl3$quesanswerl3=sample(11:15,1)
-      updateSliderInput(session, "radiusl3",min=0,max=1.2,step = 0.005,value = 0.05)
+      updateSliderInput(session, "radiusl3",min=0,max=1.2,step = 0.01,value = 0.05)
       updateSliderInput(session, "movel13",min=0,max=1,step=0.01,value=0.45)
       updateSliderInput(session, "move1l3",min=0,max=1,step=0.01,value=0.5)
       
-      updateSliderInput(session, "radius2l3",min=0,max=1.2,step = 0.005,value = 0.05)
+      updateSliderInput(session, "radius2l3",min=0,max=1.2,step = 0.01,value = 0.05)
       updateSliderInput(session, "movel23",min=0,max=1,step=0.01,value=0.55)
       updateSliderInput(session, "move2l3",min=0,max=1,step=0.01,value=0.5)
       
-      updateSliderInput(session, "radius3l3",min=0,max=1.2,step = 0.005,value = 0.05)
+      updateSliderInput(session, "radius3l3",min=0,max=1.2,step = 0.01,value = 0.05)
       updateSliderInput(session, "movel33",min=0,max=1,step=0.01,value=0.5)
       updateSliderInput(session, "move3l3",min=0,max=1,step=0.01,value=0.45)
       updateNumericInput(session, "P3A", label = NULL, value = 0,
