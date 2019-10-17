@@ -462,7 +462,7 @@ shinyUI(fluidPage(
                         ),
                         wellPanel(
                           h4(textOutput("answerl1"))
-                          , style = "width : 55%;background-color: #ffffff;"
+                          , style = "width : 50%;background-color: #ffffff;"
                         )
                         ,
                         br(),
@@ -475,7 +475,7 @@ shinyUI(fluidPage(
                         br(),br(),
                       
                         shinyjs::hidden(wellPanel(id = "panelS1",textOutput("fdbc1")
-                                                  , style = "width : 55%;background-color: #ffffff;"))
+                                                  , style = "width : 50%;background-color: #ffffff;"))
                        
                                ),
                       conditionalPanel(
@@ -488,7 +488,7 @@ shinyUI(fluidPage(
                         
                         wellPanel(
                           h4(textOutput("answerl11"))
-                          , style = "width : 55%;background-color: #ffffff;"
+                          , style = "width : 50%;background-color: #ffffff;"
                         )
                         ,
                         div(style="display: inline-block;vertical-align:top; width: 200px;", 
@@ -498,7 +498,7 @@ shinyUI(fluidPage(
                         br(),br(),
                         
                         shinyjs::hidden(wellPanel(id = "panelN1",textOutput("fdbc11")
-                                                  , style = "width : 55%; background-color: #ffffff;"))
+                                                  , style = "width : 50%; background-color: #ffffff;"))
                        #  div(style="display: inline-block;vertical-align:top; width: 200px;",
                        #      prettyCheckbox("pic1","Venn Diagram for Answer",value = F,status = "info",shape = "curve"))
                        # # htmlOutput("Feed11")
@@ -524,7 +524,7 @@ shinyUI(fluidPage(
                           )),
                         wellPanel(
                           h4(textOutput("answerl2"))
-                          , style = "width : 55%;background-color: #ffffff;"
+                          , style = "width : 50%;background-color: #ffffff;"
                         )
                         ,
                         br(),
@@ -539,7 +539,7 @@ shinyUI(fluidPage(
                         # hidden( div(id='submit_buttonl2_div', h4(textOutput("correctness2")))),
                         br(), br(),
                         shinyjs::hidden(wellPanel(id = "panelS2",textOutput("fdbc2")
-                                                  , style = "width : 55%;background-color: #ffffff;"))
+                                                  , style = "width : 50%;background-color: #ffffff;"))
                         
                       ) ,
                       conditionalPanel(
@@ -558,7 +558,7 @@ shinyUI(fluidPage(
                      
                         wellPanel(
                           h4(textOutput("answerl22"))
-                          , style = "width : 55%;background-color: #ffffff;"
+                          , style = "width : 50%;background-color: #ffffff;"
                         ),
                         useShinyjs(),
                         div(style="display: inline-block;vertical-align:top; width: 200px;", 
@@ -570,7 +570,7 @@ shinyUI(fluidPage(
                        # # htmlOutput("Feed22")
                        br(), br(),
                        shinyjs::hidden(wellPanel(id = "panelN2",textOutput("fdbc22")
-                                                 , style = "width : 55%;background-color: #ffffff;"))
+                                                 , style = "width : 50%;background-color: #ffffff;"))
                       )
                       ),
                     conditionalPanel(
@@ -592,7 +592,7 @@ shinyUI(fluidPage(
                         ),
                         wellPanel(
                           h4(textOutput("answerl3"))
-                          , style = "width : 55%;background-color: #ffffff;"
+                          , style = "width : 50%;background-color: #ffffff;"
                         )
                         ,
                         br(),
@@ -607,7 +607,7 @@ shinyUI(fluidPage(
                        # hidden( div(id='submit_buttonl3_div', h4(textOutput("correctness3")))),
                         br(),
                        shinyjs::hidden(wellPanel(id = "panelS3",textOutput("fdbc3")
-                                                 , style = "width : 55%;background-color: #ffffff;"))
+                                                 , style = "width : 50%;background-color: #ffffff;"))
                       ),
                       
                       conditionalPanel(
@@ -639,7 +639,7 @@ shinyUI(fluidPage(
                        # htmlOutput("Feed33")
                        br(),br(),
                        shinyjs::hidden(wellPanel(id = "panelN3",textOutput("fdbc33")
-                                                 , style = "width : 55%;background-color: #ffffff;"))
+                                                 , style = "width : 50%;background-color: #ffffff;"))
                       ),
                       tags$head(
                         

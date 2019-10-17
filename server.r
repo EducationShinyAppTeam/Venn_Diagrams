@@ -1,6 +1,6 @@
 library(shinydashboard)
 library(shiny)
-library(plotrix)
+#library(plotrix)
 library(shinyjs)
 library(shinyBS)
 library(shinyWidgets)
