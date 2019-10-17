@@ -55,7 +55,7 @@ shinyUI(fluidPage(
               h4(tags$li("If you want to get hints, please click 'Venn Diagram for Answer' button.")),
               div(style = "text-align: center",bsButton("go", "G O !", icon("bolt"))),br(),
               h3(tags$b("Acknowledgements:")),
-              h4("This app was developed and coded by Qichao Chen with input from Yuxin Zhang, Sitong Liu and Yingjie Wang. This app was modified by Yubaihe Zhou to improve formatting and allow the user to enter probabilities directly.")
+              h4("This app was developed and coded by Qichao Chen with input from Yuxin Zhang, Sitong Liu and Yingjie Wang. This app was modified by Yubaihe Zhou to improve formatting and allow the user to Numeric Input directly.")
               ),
       # Circle Game
       tabItem(tabName = "circle",
@@ -97,13 +97,13 @@ shinyUI(fluidPage(
                       br(),
                       #Radio Buttons
                       div(style="display: inline-block;vertical-align:top;",
-                          prettyRadioButtons("check1",label = NULL,choices = c("Enter probabilities" = "enter",
-                                                                         "Adjust circles" = "adjust"),
-                                       selected = "adjust", inline = F, width = NULL, status = "primary")
+                          prettyRadioButtons("check1",label = NULL,choices = c("Numeric Input" = "Numeric",
+                                                                         "Slider Input" = "Slider"),
+                                       selected = "Slider", inline = F, width = NULL, status = "primary")
                           ),
                       
                       conditionalPanel(
-                        condition = "input.check1 == 'enter'",
+                        condition = "input.check1 == 'Numeric'",
                         fluidRow(
                           column(4, uiOutput("labeldol1")),
                           column(6, offset= 0, uiOutput("PA11")),
@@ -114,7 +114,7 @@ shinyUI(fluidPage(
                       ),
                       
                       conditionalPanel(
-                        condition = "input.check1 == 'adjust'",
+                        condition = "input.check1 == 'Slider'",
                         fluidRow(
                         column(5, 
                                dropdownButton(
@@ -162,12 +162,12 @@ shinyUI(fluidPage(
                       br(),
                       #Radio Buttons
                       div(style="display: inline-block;vertical-align:top;",
-                          prettyRadioButtons("check2",label = NULL,choices = c("Enter probabilities" = "enter2",
-                                                                               "Adjust circles" = "adjust2"),
-                                             selected = "adjust2", inline = F, width = NULL, status = "primary")
+                          prettyRadioButtons("check2",label = NULL,choices = c("Numeric Input" = "Numeric2",
+                                                                               "Slider Input" = "Slider2"),
+                                             selected = "Slider2", inline = F, width = NULL, status = "primary")
                       ),
                       conditionalPanel(
-                        condition = "input.check2 == 'adjust2'",
+                        condition = "input.check2 == 'Slider2'",
                         #Blue Circle
                         fluidRow(
                           column(5, 
@@ -217,7 +217,7 @@ shinyUI(fluidPage(
                         )
                       ),
                       conditionalPanel(
-                        condition = "input.check2 == 'enter2'",
+                        condition = "input.check2 == 'Numeric2'",
                         #Blue
                         fluidRow(
                           column(4,uiOutput("labeldoBl2")),
@@ -291,12 +291,12 @@ shinyUI(fluidPage(
                       br(),
                       #Radio Buttons
                       div(style="display: inline-block;vertical-align:top;",
-                          prettyRadioButtons("check3",label = NULL,choices = c("Enter probabilities" = "enter3",
-                                                                               "Adjust circles" = "adjust3"),
-                                             selected = "adjust3", inline = F, width = NULL, status = "primary")
+                          prettyRadioButtons("check3",label = NULL,choices = c("Numeric Input" = "Numeric3",
+                                                                               "Slider Input" = "Slider3"),
+                                             selected = "Slider3", inline = F, width = NULL, status = "primary")
                       ),
                       conditionalPanel(
-                        condition = "input.check3 == 'adjust3'",
+                        condition = "input.check3 == 'Slider3'",
                         #Blue Circle
                         fluidRow(
                           column(5, 
@@ -389,7 +389,7 @@ shinyUI(fluidPage(
                         )
                       ),
                       conditionalPanel(
-                        condition = "input.check3 == 'enter3'",
+                        condition = "input.check3 == 'Numeric3'",
                         #Blue
                         fluidRow(
                           column(4,uiOutput("labeldoBl3")),
@@ -445,7 +445,7 @@ shinyUI(fluidPage(
                       h4(textOutput("questionl1")),
                       
                       conditionalPanel(
-                        condition = "input.check1 == 'adjust'",
+                        condition = "input.check1 == 'Slider'",
                         
                         br(),
                         flowLayout(
@@ -479,7 +479,7 @@ shinyUI(fluidPage(
                         
                       ),
                       conditionalPanel(
-                        condition = "input.check1 == 'enter'",
+                        condition = "input.check1 == 'Numeric'",
                         useShinyjs(),
                         verticalLayout(
                           div(style="display: inline-block; vertical-align: top; width: 200px" , 
@@ -501,7 +501,7 @@ shinyUI(fluidPage(
                       
                       h4(textOutput("questionl2")),
                       conditionalPanel(
-                        condition = "input.check2 == 'adjust2'",
+                        condition = "input.check2 == 'Slider2'",
                         br(),
                         flowLayout(
                           div(style="display: inline-block;vertical-align:top;", 
@@ -531,7 +531,7 @@ shinyUI(fluidPage(
                         hidden(div(id='feedback2_div', textOutput("fdbc2")))
                       ) ,
                       conditionalPanel(
-                        condition = "input.check2 == 'enter2'",
+                        condition = "input.check2 == 'Numeric2'",
                         flowLayout(
                           div(style="display: inline-block;vertical-align:top;", 
                               plotOutput("enterplot2")),
@@ -543,7 +543,7 @@ shinyUI(fluidPage(
                             hidden(div(id='pic22_div', htmlOutput("Feed2")))
                           )),
                         p("The generated plot does not reflect true scale", style = "color:grey; font-size: 16px;"),
-                        br(),
+                     
                         wellPanel(
                           h4(textOutput("answerl22"))
                           , style = "width : 70%;background-color: #ffffff;"
@@ -565,7 +565,7 @@ shinyUI(fluidPage(
                       
                       h3(textOutput("questionl3")),
                       conditionalPanel(
-                        condition = "input.check3 == 'adjust3'",
+                        condition = "input.check3 == 'Slider3'",
                         br(),
                         flowLayout(
                           div(style="display: inline-block;vertical-align:top;",
@@ -597,7 +597,7 @@ shinyUI(fluidPage(
                       ),
                       
                       conditionalPanel(
-                        condition = "input.check3 == 'enter3'",
+                        condition = "input.check3 == 'Numeric3'",
                         flowLayout(
                           div(style="display: inline-block;vertical-align:top;",
                               plotOutput("enterplot3")),
@@ -609,7 +609,7 @@ shinyUI(fluidPage(
                           )
                         ),
                         p("The generated plot does not reflect true scale", style = "color:grey; font-size: 16px;"),
-                        br(),
+                     
                         wellPanel(
                           h4(textOutput("answerl33"))
                           , style = "width : 70%;background-color: #ffffff;"

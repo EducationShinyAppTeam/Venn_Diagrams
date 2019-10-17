@@ -131,7 +131,7 @@ shinyServer(function(session, input, output) {
       updateButton(session, "next1", disabled = F)
     }
     else{
-      cat("Keep changing the size of your circle to match the probability desired until .")
+      cat("Keep changing the size of your circle to match the probability desired.")
       updateButton(session, "next1", disabled = F)
     }
   })
@@ -358,7 +358,7 @@ shinyServer(function(session, input, output) {
                      updateButton(session, "next2", disabled = F)
                    }
                    else{
-                     cat("Change the size and placement of your circles to match the probabilities desired.")
+                     cat("Keep changing the size and placement of your circles to match the probabilities desired.")
                      updateButton(session, "next2", disabled = F)
                    }
                  })
@@ -381,7 +381,7 @@ shinyServer(function(session, input, output) {
                      updateButton(session, "next2", disabled = F)
                    }
                    else{
-                     cat("Change the size and placement of your circles to match the probabilities desired.")
+                     cat("Keep changing the size and placement of your circles to match the probabilities desired.")
                      updateButton(session, "next2", disabled = F)
                    }
                  })
@@ -395,7 +395,7 @@ shinyServer(function(session, input, output) {
     }
     
     else{
-      cat("Change the size and placement of your circles to match the probabilities desired.")
+      cat("Keep changing the size and placement of your circles to match the probabilities desired.")
       updateButton(session, "next2", disabled = F)
     }
   })
@@ -451,9 +451,9 @@ shinyServer(function(session, input, output) {
     }
     else if ((input$P2A + input$P2B - input$A2B <=1) & (input$A2B <= min(input$P2A, input$P2B)) ) {
       gp <- VennThemes(w2())
-      gp[["Face"]][["11"]]$fill <-  "#7BC9B1"
-      gp[["Face"]][["01"]]$fill <-  "#E69F00"
-      gp[["Face"]][["10"]]$fill <-  '#56B4E9'
+      gp[["Face"]][["11"]]$fill <-  "#79CAB1" #original mitegreen
+      gp[["Face"]][["01"]]$fill <-  "#B6FEB5" #original green
+      gp[["Face"]][["10"]]$fill <-  '#B3B2FF' #original purple
       gp[["Set"]][["Set1"]]$col <- 'black'
       gp[["Set"]][["Set2"]]$col <- 'black'
       gp[["Set"]][["Set1"]]$lwd <- 1.5
@@ -744,7 +744,7 @@ shinyServer(function(session, input, output) {
                      {cat("The relationship is right, but the probability is Wrong. Try again.")
                        updateButton(session, "next3", disabled = F)}
                      else{
-                       cat("Change the size and placement of your circles to match the probabilities desired.")
+                       cat("Keep changing the size and placement of your circles to match the probabilities desired.")
                        updateButton(session, "next3", disabled = F)
                      }
                    }
@@ -761,7 +761,7 @@ shinyServer(function(session, input, output) {
                      {cat("The relationship is right, but the probability is Wrong. Try again.")
                        updateButton(session, "next3", disabled = F)}
                      else{
-                       cat("Change the size and placement of your circles to match the probabilities desired.")
+                       cat("Keep changing the size and placement of your circles to match the probabilities desired.")
                        updateButton(session, "next3", disabled = F)
                      }
                    }
@@ -786,7 +786,7 @@ shinyServer(function(session, input, output) {
                      {cat("The relationship is right, but the probability is Wrong. Try again.")
                        updateButton(session, "next3", disabled = F)}
                      else{
-                       cat("Change the size and placement of your circles to match the probabilities desired.")
+                       cat("Keep changing the size and placement of your circles to match the probabilities desired.")
                        updateButton(session, "next3", disabled = F)
                      }
                    }
@@ -803,7 +803,7 @@ shinyServer(function(session, input, output) {
                      {cat("The relationship is right, but the probability is Wrong. Try again.")
                        updateButton(session, "next3", disabled = F)}
                      else{
-                       cat("Change the size and placement of your circles to match the probabilities desired.")
+                       cat("Keep changing the size and placement of your circles to match the probabilities desired.")
                        updateButton(session, "next3", disabled = F)
                      }
                    }
@@ -820,7 +820,7 @@ shinyServer(function(session, input, output) {
           }
        
         else{
-          cat("Change the size and placement of your circles to match the probabilities desired.")
+          cat("Keep changing the size and placement of your circles to match the probabilities desired.")
           updateButton(session, "next3", disabled = F)
         }
       }
@@ -831,7 +831,7 @@ shinyServer(function(session, input, output) {
           updateButton(session, "next3", disabled = F)
           }
         else{
-          cat("Change the size and placement of your circles to match the probabilities desired.")
+          cat("Keep changing the size and placement of your circles to match the probabilities desired.")
           updateButton(session, "next3", disabled = F)
         }
       }
@@ -860,12 +860,12 @@ shinyServer(function(session, input, output) {
   
   w3 = reactive({
     compute.Venn(Venn(SetNames = c("1", "2", "3"), Weight = c(
-      `001` = input$P3B-input$A3B-input$B3C-input$A3BC, 
-      `010` = input$P3C-input$A3C-input$B3C-input$A3BC, 
-      `100` = input$P3A-input$A3B-input$A3C-input$A3BC,
-      `101` = input$A3B, 
-      `110` = input$A3C,
-      `011` = input$B3C,
+      `001` = input$P3B-input$A3B-input$B3C+input$A3BC, 
+      `010` = input$P3C-input$A3C-input$B3C+input$A3BC, 
+      `100` = input$P3A-input$A3B-input$A3C+input$A3BC,
+      `101` = input$A3B-input$A3BC, 
+      `110` = input$A3C-input$A3BC,
+      `011` = input$B3C-input$A3BC,
       `111` = input$A3BC )), type ="circles", doEuler=TRUE)
   })
   
@@ -878,17 +878,18 @@ shinyServer(function(session, input, output) {
       isolate({plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)})
       text(1,1,"Note that there are three events",cex = 1, col = "red")
     }
-    else if ((input$P3A + input$P3B + input$P3C - input$A3B - input$A3C - input$B3C + input$A3BC <=1)
-             & (input$A3B <= min(input$P3A, input$P3B)) & (input$A3C <= min(input$P3A, input$P3C)) 
-             & (input$B3C <= min(input$P3B, input$P3C)) & (input$A3BC <= min(input$A3C, input$A3B, input$B3C)) ) {
+    else if ((input$P3A + input$P3B + input$P3C - input$A3B - input$A3C - input$B3C  <= 1)#- input$A3BC
+             & (input$A3BC <= min(input$A3C, input$A3B, input$B3C)) & (input$A3B <= min(input$P3A, input$P3B)) 
+             & (input$A3C <= min(input$P3A, input$P3C))  & (input$B3C <= min(input$P3B, input$P3C)) 
+              ) { 
       gp <- VennThemes(w3())
-      gp[["Face"]][["101"]]$fill <-  "#7BC9B1"
-      gp[["Face"]][["001"]]$fill <-  "#E69F00"
-      gp[["Face"]][["100"]]$fill <-  '#56B4E9'
-      gp[["Face"]][["010"]]$fill <-  "#009E73"
-      gp[["Face"]][["110"]]$fill <-  "#c97cb2"
-      gp[["Face"]][["011"]]$fill <-  "#c9b37d"
-      gp[["Face"]][["111"]]$fill <-  "#a48d7e"
+      gp[["Face"]][["101"]]$fill <-  "#79CAB1" 
+      gp[["Face"]][["001"]]$fill <-  "#B6FEB5" #purple
+      gp[["Face"]][["100"]]$fill <-  '#B3B2FF' #green
+      gp[["Face"]][["010"]]$fill <-  "#FFB2B2" #pink
+      gp[["Face"]][["110"]]$fill <-  "#C77DB7"
+      gp[["Face"]][["011"]]$fill <-  "#C8AA77"
+      gp[["Face"]][["111"]]$fill <-  "#988770"
       gp[["Set"]][["Set1"]]$col <- 'black'
       gp[["Set"]][["Set2"]]$col <- 'black'
       gp[["Set"]][["Set1"]]$lwd <- 1.5
