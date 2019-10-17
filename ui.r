@@ -55,10 +55,9 @@ shinyUI(fluidPage(
               h4(tags$li("If you want to get hints, please click 'Venn Diagram for Answer' button.")),
               div(style = "text-align: center",bsButton("go", "G O !", icon("bolt"))),br(),
               h3(tags$b("Acknowledgements:")),
-              h4("This app was developed and coded by Qichao Chen with input from Yuxin Zhang, Sitong Liu and Yingjie Wang in 2017. 
-                 This app was modified by Yubaihe Zhou to improve formatting and allow the user to Numeric Input directly in 2018.
-                 This app wa further modified by Jingjun Wang who added another different Venn diagram in Numeic Input section and reformated the layout of the whole app in 2019.")
-              ),
+              h4("This app was developed and coded by Qichao Chen with input from Yuxin Zhang, Sitong Liu and Yingjie Wang in 2017."),
+              h4("This app was modified by Yubaihe Zhou to improve formatting and allow the user to Numeric Input directly in 2018."),
+              h4("This app was further modified by Jingjun Wang who added another different Venn diagram in Numeic Input section and reformated the layout of the whole app in 2019.")),
       # Circle Game
       tabItem(tabName = "circle",
               fluidPage(
@@ -481,15 +480,25 @@ shinyUI(fluidPage(
                                ),
                       conditionalPanel(
                         condition = "input.check1 == 'Numeric'",
-                        useShinyjs(),
                         verticalLayout(
+                         useShinyjs(),
                           div(style="display: inline-block; vertical-align: top; width: 200px" , 
                               actionButton("pic11", "Sample Answer", style="color: black; background-color: #fff; ")),
                           hidden(div(id='pic11_div', htmlOutput("Feed1")))),
                         
-                        h4(textOutput("answerl11")),
+                        wellPanel(
+                          h4(textOutput("answerl11"))
+                          , style = "width : 55%;background-color: #ffffff;"
+                        )
+                        ,
+                        div(style="display: inline-block;vertical-align:top; width: 200px;", 
+                            actionButton("feedback11", "Feedback", style="color: #fff; background-color: #337ab7")), 
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            actionButton("next11","Next Question"))
+                            actionButton("next11","Next Question")),
+                        br(),br(),
+                        
+                        shinyjs::hidden(wellPanel(id = "panelN1",textOutput("fdbc11")
+                                                  , style = "width : 55%; background-color: #ffffff;"))
                        #  div(style="display: inline-block;vertical-align:top; width: 200px;",
                        #      prettyCheckbox("pic1","Venn Diagram for Answer",value = F,status = "info",shape = "curve"))
                        # # htmlOutput("Feed11")

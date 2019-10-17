@@ -159,12 +159,29 @@ output$fdbc1 = renderText({
 observeEvent(input$feedback11, {
   toggle(id= "panelN1")
 }) 
-
+output$fdbc11 = renderText({
+  validate(
+    need(input$PA != "", "Please enter your probability")
+  )
+  if(probabilityl1$probc1l1 == bank[numbersl1$quesanswerl1, 5])
+  {
+    return("Great! You are right!")
+  }
+  else if (probabilityl1$probc1l1 > bank[numbersl1$quesanswerl1, 5])
+  {
+    return("You got it too large.")
+  }
+  else 
+  {
+    return("Maybe you should make it larger.")
+  }  
   
+})
+
   output$answerl11 <- renderPrint({
     
     validate(
-      need(input$PA != "", "")
+      need(input$PA != "", "Please enter your probability")
     )
       if(input$PA == bank[numbersl1$quesanswerl1,5]){
         cat("Great! You are right!")
@@ -186,7 +203,7 @@ observeEvent(input$feedback11, {
   observeEvent(input$pic11,{
     toggle('pic11_div')
     output$Feed1 <- renderUI({
-      img(src = bank[numbersl1$quesanswerl1, 19],  height = "70%",  width = "70%")
+      img(src = bank[numbersl1$quesanswerl1, 19],  height = "25%",  width = "25%")
     })
   })
   
@@ -438,9 +455,7 @@ output$fdbc22 = renderPrint({
       updateButton(session, "next22", disabled = F)
     }
   })
-  # w2 = reactive({
-  #   compute.Venn(Venn(SetNames = c("", ""), Weight = c(`01` = input$P2B-input$A2B, `11` = input$A2B, `10` = input$P2A-input$A2B)), type ="circles", doEuler=TRUE)
-  # })
+
   w2 = reactive({
     compute.Venn(Venn(SetNames = c("", ""), Weight = c(`01` = input$P2B-input$A2B, `11` = input$A2B, `10` = input$P2A-input$A2B)), type ="circles", doEuler=TRUE)
   })
