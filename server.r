@@ -34,9 +34,9 @@ shinyServer(function(session, input, output) {
     sendSweetAlert(
       session = session,
       title = "Instructions:",
-      text = "If you want to adjust the circles in the Venn Diagram:\n
+      text = "If you want to adjust the circles using slidrs in the Venn Diagram:\n
               1.Move or change the size of the circles using sliders (accessed by the button).\n
-      2. The 'Reset' button lets you try again, the 'Next' button provides a new question.\n
+      2. The 'Feedbck' button shows comments to your inputs with more details; the 'Next' button provides a new question.\n
       If you want to enter the probabilities directly:\n
       1. Enter your probability in the textbox.\n
       2. If you want to get hints, please click 'Venn Diagram for Answer' button.",
@@ -135,10 +135,11 @@ shinyServer(function(session, input, output) {
       updateButton(session, "next1", disabled = F)
     }
   })
-  observeEvent(input$feedback1, 
-               {
-                 toggle('feedback1_div')
-                 output$fdbc1 = renderText({
+observeEvent(input$feedback1, {
+    toggle(id= "panelS1")
+  })
+
+output$fdbc1 = renderText({
                    
                    if(probabilityl1$probc1l1 == bank[numbersl1$quesanswerl1, 5])
                    {
@@ -154,8 +155,10 @@ shinyServer(function(session, input, output) {
                    }  
                    
                  })
-               })
-  
+
+observeEvent(input$feedback11, {
+  toggle(id= "panelN1")
+}) 
 
   
   output$answerl11 <- renderPrint({
@@ -340,10 +343,11 @@ shinyServer(function(session, input, output) {
     updateSliderInput(session, "movel2",min=0,max=1,step=0.01,value=0.55)
     updateSliderInput(session, "move2l2",min=0,max=1,step=0.01,value=0.5)
   })
-  observeEvent(input$feedback2, 
-               {
-                 toggle('feedback2_div')
-                 output$fdbc2 = renderPrint({
+observeEvent(input$feedback2, {
+    toggle(id= "panelS2")
+  })
+
+output$fdbc2 = renderPrint({
                    
                    if((probabilityl2$probc1l2==bank[numbersl2$quesanswerl2,5])&(probabilityl2$probc2l2==bank[numbersl2$quesanswerl2,6])& (probabilityl2$probintersectionl2 == bank[numbersl2$quesanswerl2,8])) 
                    {cat("Great! You are right!")
@@ -362,16 +366,20 @@ shinyServer(function(session, input, output) {
                      updateButton(session, "next2", disabled = F)
                    }
                  })
-               })
-  observeEvent(input$feedback22, 
-               {
-                 toggle('feedback22_div')
-                 output$fdbc22 = renderPrint({
+observeEvent(input$feedback22, {
+  toggle(id= "panelN2")
+})
+
+output$fdbc22 = renderPrint({
+  validate(
+    need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "Please enter all your probabilities")
+  )
                    
                    if((probabilityl2$probc1l2==bank[numbersl2$quesanswerl2,5])&(probabilityl2$probc2l2==bank[numbersl2$quesanswerl2,6])& (probabilityl2$probintersectionl2 == bank[numbersl2$quesanswerl2,8])) 
                    {cat("Great! You are right!")
                      updateButton(session, "next2", disabled = F)
                    }
+                   
                    else if((probabilityl2$probc1l2==bank[numbersl2$quesanswerl2,5])&(probabilityl2$probc2l2==bank[numbersl2$quesanswerl2,6])&(probabilityl2$dl2 >= bank[numbersl2$quesanswerl2,8])) {
                      cat("Probability is right, but the relationship is Wrong. Try again.")
                      updateButton(session, "next2", disabled = F)
@@ -385,7 +393,7 @@ shinyServer(function(session, input, output) {
                      updateButton(session, "next2", disabled = F)
                    }
                  })
-               })
+
   
   output$answerl2 <- renderPrint({
     
@@ -724,12 +732,12 @@ shinyServer(function(session, input, output) {
     updateSliderInput(session, "move3l3",min=0,max=1,step=0.01,value=0.45)
    
   })
+observeEvent(input$feedback3, {
+    toggle(id= "panelS3")
+  })
   
-  
-  observeEvent(input$feedback3, 
-               {
-                 toggle('feedback3_div')
-                 output$fdbc3 = renderPrint({
+
+output$fdbc3 = renderPrint({
                    
                    if(any(bank[numbersl3$quesanswerl3,3]==c(11,12,13,14))){
                      
@@ -766,12 +774,15 @@ shinyServer(function(session, input, output) {
                      }
                    }
                  })
-               })
-  
-  observeEvent(input$feedback33, 
-               {
-                 toggle('feedback33_div')
-                 output$fdbc33 = renderPrint({
+                 
+  observeEvent(input$feedback33, {
+                   toggle(id= "panelN3")
+                 }) 
+
+output$fdbc33 = renderPrint({
+  validate(
+    need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "Please enter all your probabilities")
+  )
                    
                    if(any(bank[numbersl3$quesanswerl3,3]==c(11,12,13,14))){
                      
@@ -808,7 +819,6 @@ shinyServer(function(session, input, output) {
                      }
                    }
                  })
-               })
   
   output$answerl3 <- renderPrint({
       

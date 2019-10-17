@@ -55,7 +55,9 @@ shinyUI(fluidPage(
               h4(tags$li("If you want to get hints, please click 'Venn Diagram for Answer' button.")),
               div(style = "text-align: center",bsButton("go", "G O !", icon("bolt"))),br(),
               h3(tags$b("Acknowledgements:")),
-              h4("This app was developed and coded by Qichao Chen with input from Yuxin Zhang, Sitong Liu and Yingjie Wang. This app was modified by Yubaihe Zhou to improve formatting and allow the user to Numeric Input directly.")
+              h4("This app was developed and coded by Qichao Chen with input from Yuxin Zhang, Sitong Liu and Yingjie Wang in 2017. 
+                 This app was modified by Yubaihe Zhou to improve formatting and allow the user to Numeric Input directly in 2018.
+                 This app wa further modified by Jingjun Wang who added another different Venn diagram in Numeic Input section and reformated the layout of the whole app in 2019.")
               ),
       # Circle Game
       tabItem(tabName = "circle",
@@ -451,7 +453,7 @@ shinyUI(fluidPage(
                         flowLayout(
                           
                           div(style="display: inline-block;vertical-align:top;", 
-                              plotOutput("distPlotl1", width = "50%")),
+                              plotOutput("distPlotl1", width = "70%")),
                           useShinyjs(),
                           verticalLayout(
                             div(style="display: inline-block; vertical-align: top; width: 200px" , 
@@ -472,12 +474,11 @@ shinyUI(fluidPage(
                             actionButton("next1", "Next Question", style="color: #fff; background-color: #337ab7")),
                        
                         br(),br(),
-                        hidden(
-                          div(id='feedback1_div', textOutput("fdbc1"))
-                        )
-                        
-                        
-                      ),
+                      
+                        shinyjs::hidden(wellPanel(id = "panelS1",textOutput("fdbc1")
+                                                  , style = "width : 55%;background-color: #ffffff;"))
+                       
+                               ),
                       conditionalPanel(
                         condition = "input.check1 == 'Numeric'",
                         useShinyjs(),
@@ -505,7 +506,7 @@ shinyUI(fluidPage(
                         br(),
                         flowLayout(
                           div(style="display: inline-block;vertical-align:top;", 
-                              plotOutput("distPlotl2", width = "50%")),
+                              plotOutput("distPlotl2", width = "70%")),
                           useShinyjs(),
                           verticalLayout(
                             div(style="display: inline-block; vertical-align: top; width: 200px" ,
@@ -514,7 +515,7 @@ shinyUI(fluidPage(
                           )),
                         wellPanel(
                           h4(textOutput("answerl2"))
-                          , style = "width : 70%;background-color: #ffffff;"
+                          , style = "width : 55%;background-color: #ffffff;"
                         )
                         ,
                         br(),
@@ -528,7 +529,9 @@ shinyUI(fluidPage(
                         # br(),
                         # hidden( div(id='submit_buttonl2_div', h4(textOutput("correctness2")))),
                         br(), br(),
-                        hidden(div(id='feedback2_div', textOutput("fdbc2")))
+                        shinyjs::hidden(wellPanel(id = "panelS2",textOutput("fdbc2")
+                                                  , style = "width : 55%;background-color: #ffffff;"))
+                        
                       ) ,
                       conditionalPanel(
                         condition = "input.check2 == 'Numeric2'",
@@ -546,7 +549,7 @@ shinyUI(fluidPage(
                      
                         wellPanel(
                           h4(textOutput("answerl22"))
-                          , style = "width : 70%;background-color: #ffffff;"
+                          , style = "width : 55%;background-color: #ffffff;"
                         ),
                         useShinyjs(),
                         div(style="display: inline-block;vertical-align:top; width: 200px;", 
@@ -557,7 +560,8 @@ shinyUI(fluidPage(
                        #      prettyCheckbox("pic2","Venn Diagram for Answer",value = F,status = "info",shape = "curve"))
                        # # htmlOutput("Feed22")
                        br(), br(),
-                       hidden(div(id='feedback22_div', textOutput("fdbc22")))
+                       shinyjs::hidden(wellPanel(id = "panelN2",textOutput("fdbc22")
+                                                 , style = "width : 55%;background-color: #ffffff;"))
                       )
                       ),
                     conditionalPanel(
@@ -569,7 +573,7 @@ shinyUI(fluidPage(
                         br(),
                         flowLayout(
                           div(style="display: inline-block;vertical-align:top;",
-                              plotOutput("distPlotl3")),
+                              plotOutput("distPlotl3"), width = "70%"),
                           useShinyjs(),
                           verticalLayout(
                             div(style="display: inline-block; vertical-align: top; width: 200px" ,
@@ -579,7 +583,7 @@ shinyUI(fluidPage(
                         ),
                         wellPanel(
                           h4(textOutput("answerl3"))
-                          , style = "width : 70%;background-color: #ffffff;"
+                          , style = "width : 55%;background-color: #ffffff;"
                         )
                         ,
                         br(),
@@ -593,7 +597,8 @@ shinyUI(fluidPage(
                         br(),
                        # hidden( div(id='submit_buttonl3_div', h4(textOutput("correctness3")))),
                         br(),
-                        hidden(div(id='feedback3_div', textOutput("fdbc3")))
+                       shinyjs::hidden(wellPanel(id = "panelS3",textOutput("fdbc3")
+                                                 , style = "width : 55%;background-color: #ffffff;"))
                       ),
                       
                       conditionalPanel(
@@ -624,7 +629,8 @@ shinyUI(fluidPage(
                         #     actionButton("pic3","Venn Diagram for Answer",value = F,status = "info",shape = "curve"))
                        # htmlOutput("Feed33")
                        br(),br(),
-                       hidden(div(id='feedback33_div', textOutput("fdbc33")))
+                       shinyjs::hidden(wellPanel(id = "panelN3",textOutput("fdbc33")
+                                                 , style = "width : 55%;background-color: #ffffff;"))
                       ),
                       tags$head(
                         
