@@ -1,6 +1,6 @@
 library(shinydashboard)
 library(shiny)
-#library(plotrix)
+library(plotrix)
 library(shinyjs)
 library(shinyBS)
 library(shinyWidgets)
@@ -391,7 +391,7 @@ output$fdbc22 = renderPrint({
   validate(
     need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "Please enter all your probabilities")
   )
-                   
+
                    if((probabilityl2$probc1l2==bank[numbersl2$quesanswerl2,5])&(probabilityl2$probc2l2==bank[numbersl2$quesanswerl2,6])& (probabilityl2$probintersectionl2 == bank[numbersl2$quesanswerl2,8])) 
                    {cat("Great! You are right!")
                      updateButton(session, "next2", disabled = F)
