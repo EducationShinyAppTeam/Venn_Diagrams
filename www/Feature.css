@@ -15,7 +15,6 @@ aside.main-sidebar {
 background-color: black !important;
 }
 .main-header .logo {
-font-family: "Georgia", Times, "Times New Roman", serif;
 font-weight: bold;
 font-size: 15px;
 }*/
@@ -53,23 +52,21 @@ font-size: 15px;
     color: white;
 }
 .selectize-input { 
-  font-family: 'Palatino Linotype';
-  font-size: 20px; 
-  line-height: 20px;
+  
+  font-size: 18px; 
+  line-height: 18px;
 }
 .selectize-dropdown { 
-  font-family: 'Palatino Linotype';
-  font-size: 17px; 
-  line-height: 17px;
+  
+  font-size: 18px; 
+  line-height: 18px;
 }
 /*.shiny-text-output {
   color: black;
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 15px;
-  font-weight: bold;
+  font-size: 16px;
+ 
 }*/
 #challenge {
-  font-family: 'Palatino Linotype';
   font-weight: 500;
   /*line-height: 1.1;*/
   color: #337ab7;
@@ -77,7 +74,6 @@ font-size: 15px;
   font-size: 30px;
 }
 #instruction {
-  font-family: 'Palatino Linotype';
   font-weight: 500;
   /*line-height: 1.1;*/
   color: #337ab7;
@@ -86,7 +82,6 @@ font-size: 15px;
 }
 
 #inter2, #inter3 {
-  font-family: 'Palatino Linotype';
   font-weight: 500;
   /*line-height: 1.1;*/
   color: #000000;
@@ -95,51 +90,51 @@ font-size: 15px;
 }
 
 #questionl1, #questionl2, #questionl3 {
-  font-family: 'Palatino Linotype';
   font-weight: 500;
   /*line-height: 1.1;*/
   color: #000000;
   font-weight: bold;
-  font-size: 25px;
+  font-size: 30px;
 }
 #PA1, #PA11, #PA2, #PB2, #AB2, #PA3, #PB3, #PC3, #AB3, #AC3, #BC3, #ABC3,#PA22, #PB22, #AB22, #PA33, #PB33, #PC33, #AB33, #BC33, #AC33, #ABC33 {
-  font-family: 'Palatino Linotype';
+
   font-weight: 500;
   /*line-height: 1.1;*/
   color: #000000;
   font-weight: bold;
-  font-size: 17px;
+  font-size: 16px;
 }
 
 #PAl1, #PAl2, #PBl2, #ABl2, #PAl3, #PBl3, #PCl3, #ABl3, #ACl3, #BCl3, #ABCl3, #PA, #P2A, #P2B, #A2B, #P3A, #P3B, #P3C, #A3B, #A3C, #B3C, #A3BC {
-  font-family: 'Palatino Linotype';
+
   font-weight: 500;
   /*line-height: 1.1;*/
   color: #000000;
   font-weight: bold;
   font-size: 15px;
 }
-#answerl1, #answerl2, #answerl3,#answerl11, #answerl22, #answerl33 {
-  font-family: 'Palatino Linotype';
+#answerl1, #answerl2, #answerl3,#answerl11, #answerl22, #answerl33, #fdbc1, #fdbc2, #fdbc3, #fdbc22, #fdbc33 {
+
+  font-weight: 500;
+  /*line-height: 1.1;*/
+  color: #000000;
+  font-size: 20px;
+}
+#check1,#check2,#check3{
+
   font-weight: 500;
   /*line-height: 1.1;*/
   color: #000000;
   font-size: 18px;
 }
-#check1,#check2,#check3{
-  font-family: 'Palatino Linotype';
-  font-weight: 500;
-  /*line-height: 1.1;*/
-  color: #000000;
-  font-size: 15px;
-}
 .popover-title {
   color: #000000;
   background-color:#337ab7;
 }
-#reset_buttonl1, #reset_buttonl2, #reset_buttonl3,#next1, #next2, #next3, #next11, #next22, #next33,#random, #go {
-  font-family: 'Palatino Linotype';
+#feedback1, #feedback2, #feedback3, #next1, #next2, #next3, #next11, #next22, #next33,#random, #go {
+
   color: #FFFFFF; 
   background-color: #337ab7; 
   border-color: #2e6da4;
+  font-size: 15px;
 }

@@ -3,7 +3,7 @@ library(shiny)
 library(shinyjs)
 library(shinyBS)
 library(shinyWidgets)
-library(V8)
+library(Vennerable)
 
 #fresh the whole page
 jsResetCode <- "shinyjs.reset= function() {history.go(0)}"
@@ -12,13 +12,18 @@ jsResetCode <- "shinyjs.reset= function() {history.go(0)}"
 shinyUI(fluidPage(
   dashboardPage(
     skin = "blue",
-    dashboardHeader(title="Venn Diagrams"),
+    dashboardHeader(title="Venn Diagrams",
+                    titleWidth = 180,
+                    tags$li(class = "dropdown", tags$a(href='https://shinyapps.science.psu.edu/',icon("home"))),
+                    tags$li(class = "dropdown", actionLink("info",icon("info",class="myClass"))),
+                    tags$li(class = "dropdown", actionLink("hint",icon("question",class="myClass")))
+                    ),
     dashboardSidebar(
       sidebarMenu(
         id="tabs",
         menuItem("Overview", tabName = "about", icon = icon("dashboard")),
         menuItem("Venn Diagrams", tabName = "circle", icon = icon("cogs"))
-        #menuItem("Go back to homepage", tabName = "home", icon = icon("university"))
+        
       )
     ),
     dashboardBody(
@@ -50,8 +55,9 @@ shinyUI(fluidPage(
               h4(tags$li("If you want to get hints, please click 'Venn Diagram for Answer' button.")),
               div(style = "text-align: center",bsButton("go", "G O !", icon("bolt"))),br(),
               h3(tags$b("Acknowledgements:")),
-              h4("This app was developed and coded by Qichao Chen with input from Yuxin Zhang, Sitong Liu and Yingjie Wang. This app was modified by Yubaihe Zhou to improve formatting and allow the user to enter probabilities directly.")
-              ),
+              h4("This app was developed and coded by Qichao Chen with input from Yuxin Zhang, Sitong Liu and Yingjie Wang in 2017."),
+              h4("This app was modified by Yubaihe Zhou to improve formatting and allow the user to Numeric Input directly in 2018."),
+              h4("This app was further modified by Jingjun Wang who added another different Venn diagram in Numeic Input section and reformated the layout of the whole app in 2019.")),
       # Circle Game
       tabItem(tabName = "circle",
               fluidPage(
@@ -79,37 +85,37 @@ shinyUI(fluidPage(
                     conditionalPanel(
                       # level 1
                       condition="input.modes=='level1'",
-                      div(style="display: inline-block;vertical-align:top;",
-                          tags$a(href='https://shinyapps.science.psu.edu/',tags$img(src='homebut.PNG', width = 19))
-                      ),
-                      div(style="display: inline-block;vertical-align:top;",
-                          circleButton("info1",icon = icon("info"), status = "myClass",size = "xs")
-                      ),
-                      div(style="display: inline-block;vertical-align:top;",
-                          circleButton("hint1",icon = icon("question"), status = "myClass", size = "xs")
-                      ),
+                      # div(style="display: inline-block;vertical-align:top;",
+                      #     tags$a(href='https://shinyapps.science.psu.edu/',tags$img(src='homebut.PNG', width = 19))
+                      # ),
+                      # div(style="display: inline-block;vertical-align:top;",
+                      #     circleButton("info1",icon = icon("info"), status = "myClass",size = "xs")
+                      # ),
+                      # div(style="display: inline-block;vertical-align:top;",
+                      #     circleButton("hint1",icon = icon("question"), status = "myClass", size = "xs")
+                      # ),
                       
                       br(),
                       #Radio Buttons
                       div(style="display: inline-block;vertical-align:top;",
-                          prettyRadioButtons("check1",label = NULL,choices = c("Enter probabilities" = "enter",
-                                                                         "Adjust circles" = "adjust"),
-                                       selected = "adjust", inline = F, width = NULL, status = "primary")
+                          prettyRadioButtons("check1",label = NULL,choices = c("Numeric Input" = "Numeric",
+                                                                         "Slider Input" = "Slider"),
+                                       selected = "Slider", inline = F, width = NULL, status = "primary")
                           ),
                       
                       conditionalPanel(
-                        condition = "input.check1 == 'enter'",
+                        condition = "input.check1 == 'Numeric'",
                         fluidRow(
                           column(4, uiOutput("labeldol1")),
                           column(6, offset= 0, uiOutput("PA11")),
-                          column(6, numericInput("PA",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 )),
-                          column(12, verbatimTextOutput("Feed1"))
+                          column(6, numericInput("PA",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
+                          #column(12, verbatimTextOutput("Feed1"))
                           )
                         
                       ),
                       
                       conditionalPanel(
-                        condition = "input.check1 == 'adjust'",
+                        condition = "input.check1 == 'Slider'",
                         fluidRow(
                         column(5, 
                                dropdownButton(
@@ -145,24 +151,24 @@ shinyUI(fluidPage(
                         ),
                     conditionalPanel(
                       condition = "input.modes == 'level2'",
-                      div(style="display: inline-block;vertical-align:top;",
-                          tags$a(href='https://shinyapps.science.psu.edu/',tags$img(src='homebut.PNG', width = 19))
-                      ),
-                      div(style="display: inline-block;vertical-align:top;",
-                          circleButton("info2",icon = icon("info"), status = "myClass",size = "xs")
-                      ),
-                      div(style="display: inline-block;vertical-align:top;",
-                          circleButton("hint2",icon = icon("question"), status = "myClass", size = "xs")
-                      ),
+                      # div(style="display: inline-block;vertical-align:top;",
+                      #     tags$a(href='https://shinyapps.science.psu.edu/',tags$img(src='homebut.PNG', width = 19))
+                      # ),
+                      # div(style="display: inline-block;vertical-align:top;",
+                      #     circleButton("info2",icon = icon("info"), status = "myClass",size = "xs")
+                      # ),
+                      # div(style="display: inline-block;vertical-align:top;",
+                      #     circleButton("hint2",icon = icon("question"), status = "myClass", size = "xs")
+                      # ),
                       br(),
                       #Radio Buttons
                       div(style="display: inline-block;vertical-align:top;",
-                          prettyRadioButtons("check2",label = NULL,choices = c("Enter probabilities" = "enter2",
-                                                                               "Adjust circles" = "adjust2"),
-                                             selected = "adjust2", inline = F, width = NULL, status = "primary")
+                          prettyRadioButtons("check2",label = NULL,choices = c("Numeric Input" = "Numeric2",
+                                                                               "Slider Input" = "Slider2"),
+                                             selected = "Slider2", inline = F, width = NULL, status = "primary")
                       ),
                       conditionalPanel(
-                        condition = "input.check2 == 'adjust2'",
+                        condition = "input.check2 == 'Slider2'",
                         #Blue Circle
                         fluidRow(
                           column(5, 
@@ -212,24 +218,24 @@ shinyUI(fluidPage(
                         )
                       ),
                       conditionalPanel(
-                        condition = "input.check2 == 'enter2'",
+                        condition = "input.check2 == 'Numeric2'",
                         #Blue
                         fluidRow(
                           column(4,uiOutput("labeldoBl2")),
                           column(6, offset= 0, uiOutput("PA22")),
-                          column(6, numericInput("P2A",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
+                          column(6, numericInput("P2A",label = NULL, value=NULL, min = 0.01, max = 1, step = 0.01 ))
                           ),
                         #Green
                         fluidRow(
                           column(4,uiOutput("labeldoGl2")),
                           column(6, offset= 0, uiOutput("PB22")),
-                          column(6, numericInput("P2B",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
+                          column(6, numericInput("P2B",label = NULL, value=NULL, min = 0.01, max = 1, step = 0.01 ))
                           ),
                         #Intersection
                         fluidRow(
                           column(4,uiOutput("labeldoBGl22")),
                           column(6, offset= 0, uiOutput("AB22")),
-                          column(6, numericInput("A2B",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
+                          column(6, numericInput("A2B",label = NULL, value=NULL, min = 0.01, max = 1, step = 0.01 ))
                           )
                       ),
                       tags$head(
@@ -274,24 +280,24 @@ shinyUI(fluidPage(
                       ),
                     conditionalPanel(
                       condition = "input.modes == 'level3'",
-                      div(style="display: inline-block;vertical-align:top;",
-                          tags$a(href='https://shinyapps.science.psu.edu/',tags$img(src='homebut.PNG', width = 19))
-                      ),
-                      div(style="display: inline-block;vertical-align:top;",
-                          circleButton("info3",icon = icon("info"), status = "myClass",size = "xs")
-                      ),
-                      div(style="display: inline-block;vertical-align:top;",
-                          circleButton("hint3",icon = icon("question"), status = "myClass", size = "xs")
-                      ),
+                      # div(style="display: inline-block;vertical-align:top;",
+                      #     tags$a(href='https://shinyapps.science.psu.edu/',tags$img(src='homebut.PNG', width = 19))
+                      # ),
+                      # div(style="display: inline-block;vertical-align:top;",
+                      #     circleButton("info3",icon = icon("info"), status = "myClass",size = "xs")
+                      # ),
+                      # div(style="display: inline-block;vertical-align:top;",
+                      #     circleButton("hint3",icon = icon("question"), status = "myClass", size = "xs")
+                      # ),
                       br(),
                       #Radio Buttons
                       div(style="display: inline-block;vertical-align:top;",
-                          prettyRadioButtons("check3",label = NULL,choices = c("Enter probabilities" = "enter3",
-                                                                               "Adjust circles" = "adjust3"),
-                                             selected = "adjust3", inline = F, width = NULL, status = "primary")
+                          prettyRadioButtons("check3",label = NULL,choices = c("Numeric Input" = "Numeric3",
+                                                                               "Slider Input" = "Slider3"),
+                                             selected = "Slider3", inline = F, width = NULL, status = "primary")
                       ),
                       conditionalPanel(
-                        condition = "input.check3 == 'adjust3'",
+                        condition = "input.check3 == 'Slider3'",
                         #Blue Circle
                         fluidRow(
                           column(5, 
@@ -384,7 +390,7 @@ shinyUI(fluidPage(
                         )
                       ),
                       conditionalPanel(
-                        condition = "input.check3 == 'enter3'",
+                        condition = "input.check3 == 'Numeric3'",
                         #Blue
                         fluidRow(
                           column(4,uiOutput("labeldoBl3")),
@@ -433,36 +439,69 @@ shinyUI(fluidPage(
                     ),
                   mainPanel(
                     fluidRow(column(1,textOutput("challenge"))),
-                    br(),
+                
                     fluidRow(column(11,textOutput("instruction"))),
                     conditionalPanel(
                       condition ="input.modes == 'level1'", 
                       h4(textOutput("questionl1")),
                       
                       conditionalPanel(
-                        condition = "input.check1 == 'adjust'",
-                        h4(textOutput("answerl1")),
+                        condition = "input.check1 == 'Slider'",
                         
-                        div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            actionButton("reset_buttonl1","Reset")),
-                        div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            actionButton("next1","Next Question")),
-                        
-                        # fluidRow(
-                        #   column(1,plotOutput("distPlotl1"))
-                        #   )
                         br(),
-                        div(style="display: inline-block;vertical-align:top; width: 400px;",
-                            plotOutput("distPlotl1"))
+                        flowLayout(
+                          
+                          div(style="display: inline-block;vertical-align:top;", 
+                              plotOutput("distPlotl1", width = "70%")),
+                          useShinyjs(),
+                          verticalLayout(
+                            div(style="display: inline-block; vertical-align: top; width: 200px" , 
+                                actionButton("pic1", "Sample Answer", style="color: black; background-color: #fff; ")),
+                            hidden(div(id='pic1_div', htmlOutput("Feed11"))))
+                          
                         ),
+                        wellPanel(
+                          h4(textOutput("answerl1"))
+                          , style = "width : 50%;background-color: #ffffff;"
+                        )
+                        ,
+                        br(),
+                        useShinyjs(),
+                        div(style="display: inline-block;vertical-align:top; width: 200px;", 
+                            actionButton("feedback1", "Feedback", style="color: #fff; background-color: #337ab7")), 
+                        div(style="display: inline-block;vertical-align:top; width: 200px;",
+                            actionButton("next1", "Next Question", style="color: #fff; background-color: #337ab7")),
+                       
+                        br(),br(),
+                      
+                        shinyjs::hidden(wellPanel(id = "panelS1",textOutput("fdbc1")
+                                                  , style = "width : 50%;background-color: #ffffff;"))
+                       
+                               ),
                       conditionalPanel(
-                        condition = "input.check1 == 'enter'",
-                        h4(textOutput("answerl11")),
+                        condition = "input.check1 == 'Numeric'",
+                        verticalLayout(
+                         useShinyjs(),
+                          div(style="display: inline-block; vertical-align: top; width: 200px" , 
+                              actionButton("pic11", "Sample Answer", style="color: black; background-color: #fff; ")),
+                          hidden(div(id='pic11_div', htmlOutput("Feed1")))),
+                        
+                        wellPanel(
+                          h4(textOutput("answerl11"))
+                          , style = "width : 50%;background-color: #ffffff;"
+                        )
+                        ,
+                        div(style="display: inline-block;vertical-align:top; width: 200px;", 
+                            actionButton("feedback11", "Feedback", style="color: #fff; background-color: #337ab7")), 
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
                             actionButton("next11","Next Question")),
-                        div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            prettyCheckbox("pic1","Venn Diagram for Answer",value = F,status = "info",shape = "curve")),
-                        htmlOutput("Feed11")
+                        br(),br(),
+                        
+                        shinyjs::hidden(wellPanel(id = "panelN1",textOutput("fdbc11")
+                                                  , style = "width : 50%; background-color: #ffffff;"))
+                       #  div(style="display: inline-block;vertical-align:top; width: 200px;",
+                       #      prettyCheckbox("pic1","Venn Diagram for Answer",value = F,status = "info",shape = "curve"))
+                       # # htmlOutput("Feed11")
 
                       )
                       
@@ -472,25 +511,66 @@ shinyUI(fluidPage(
                       
                       h4(textOutput("questionl2")),
                       conditionalPanel(
-                        condition = "input.check2 == 'adjust2'",
-                        h4(textOutput("answerl2")),
-                        
-                        div(style="display: inline-block;vertical-align:top; width: 150px;",
-                            actionButton("reset_buttonl2","Reset")),
-                        div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            actionButton("next2","Next")),
+                        condition = "input.check2 == 'Slider2'",
                         br(),
-                        div(style="display: inline-block;vertical-align:top; width: 400px;",
-                            plotOutput("distPlotl2"))
-                      ),
+                        flowLayout(
+                          div(style="display: inline-block;vertical-align:top;", 
+                              plotOutput("distPlotl2", width = "70%")),
+                          useShinyjs(),
+                          verticalLayout(
+                            div(style="display: inline-block; vertical-align: top; width: 200px" ,
+                                actionButton("pic2", "Sample Answer", style="color: black; background-color: #fff; ")),
+                            hidden(div(id='pic2_div', htmlOutput("Feed22")))
+                          )),
+                        wellPanel(
+                          h4(textOutput("answerl2"))
+                          , style = "width : 50%;background-color: #ffffff;"
+                        )
+                        ,
+                        br(),
+                        useShinyjs(),
+                        # div(style="display: inline-block;vertical-align:top; width: 200px;",
+                        #     actionButton("submit_buttonl2","Submit", style="color: #fff; background-color: #337ab7")),
+                        div(style="display: inline-block;vertical-align:top; width: 200px;", 
+                            actionButton("feedback2", "Feedback", style="color: #fff; background-color: #337ab7")), 
+                        div(style="display: inline-block;vertical-align:top; width: 200px;",
+                            actionButton("next2","Next Question", style="color: #fff; background-color: #337ab7")),
+                        # br(),
+                        # hidden( div(id='submit_buttonl2_div', h4(textOutput("correctness2")))),
+                        br(), br(),
+                        shinyjs::hidden(wellPanel(id = "panelS2",textOutput("fdbc2")
+                                                  , style = "width : 50%;background-color: #ffffff;"))
+                        
+                      ) ,
                       conditionalPanel(
-                        condition = "input.check2 == 'enter2'",
-                        h4(textOutput("answerl22")),
+                        condition = "input.check2 == 'Numeric2'",
+                        flowLayout(
+                          div(style="display: inline-block;vertical-align:top;", 
+                              plotOutput("enterplot2")),
+                          
+                          useShinyjs(),
+                          verticalLayout(
+                            div(style="display: inline-block; vertical-align: top; width: 200px" ,
+                                actionButton("pic22", "Sample Answer", style="color: black; background-color: #fff; ")),
+                            hidden(div(id='pic22_div', htmlOutput("Feed2")))
+                          )),
+                        p("The generated plot does not reflect true scale", style = "color:grey; font-size: 16px;"),
+                     
+                        wellPanel(
+                          h4(textOutput("answerl22"))
+                          , style = "width : 50%;background-color: #ffffff;"
+                        ),
+                        useShinyjs(),
+                        div(style="display: inline-block;vertical-align:top; width: 200px;", 
+                            actionButton("feedback22", "Feedback", style="color: #fff; background-color: #337ab7")),
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
                             actionButton("next22","Next Question")),
-                        div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            prettyCheckbox("pic2","Venn Diagram for Answer",value = F,status = "info",shape = "curve")),
-                        htmlOutput("Feed22")
+                       #  div(style="display: inline-block;vertical-align:top; width: 200px;",
+                       #      prettyCheckbox("pic2","Venn Diagram for Answer",value = F,status = "info",shape = "curve"))
+                       # # htmlOutput("Feed22")
+                       br(), br(),
+                       shinyjs::hidden(wellPanel(id = "panelN2",textOutput("fdbc22")
+                                                 , style = "width : 50%;background-color: #ffffff;"))
                       )
                       ),
                     conditionalPanel(
@@ -498,25 +578,68 @@ shinyUI(fluidPage(
                       
                       h3(textOutput("questionl3")),
                       conditionalPanel(
-                        condition = "input.check3 == 'adjust3'",
-                        h4(textOutput("answerl3")),
-                        
-                        div(style="display: inline-block;vertical-align:top; width: 150px;",
-                            actionButton("reset_buttonl3","Reset")),
-                        div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            actionButton("next3","Next")),
+                        condition = "input.check3 == 'Slider3'",
                         br(),
-                        div(style="display: inline-block;vertical-align:top; width: 400px;",
-                            plotOutput("distPlotl3"))
+                        flowLayout(
+                          div(style="display: inline-block;vertical-align:top;",
+                              plotOutput("distPlotl3"), width = "70%"),
+                          useShinyjs(),
+                          verticalLayout(
+                            div(style="display: inline-block; vertical-align: top; width: 200px" ,
+                                actionButton("pic3", "Sample Answer", style="color: black; background-color: #fff; ")),
+                            hidden(div(id='pic3_div', htmlOutput("Feed33")))
+                          )
+                        ),
+                        wellPanel(
+                          h4(textOutput("answerl3"))
+                          , style = "width : 50%;background-color: #ffffff;"
+                        )
+                        ,
+                        br(),
+                        useShinyjs(),
+                        # div(style="display: inline-block;vertical-align:top; width: 200px;",
+                        #     actionButton("submit_buttonl3","Submit", style="color: #fff; background-color: #337ab7")),
+                        div(style="display: inline-block;vertical-align:top; width: 200px;",
+                            actionButton("feedback3", "Feedback", style="color: #fff; background-color: #337ab7")),
+                        div(style="display: inline-block;vertical-align:top; width: 200px;",
+                            actionButton("next3","Next Question", style="color: #fff; background-color: #337ab7")),
+                        br(),
+                       # hidden( div(id='submit_buttonl3_div', h4(textOutput("correctness3")))),
+                        br(),
+                       shinyjs::hidden(wellPanel(id = "panelS3",textOutput("fdbc3")
+                                                 , style = "width : 50%;background-color: #ffffff;"))
                       ),
+                      
                       conditionalPanel(
-                        condition = "input.check3 == 'enter3'",
-                        h4(textOutput("answerl33")),
+                        condition = "input.check3 == 'Numeric3'",
+                        flowLayout(
+                          div(style="display: inline-block;vertical-align:top;",
+                              plotOutput("enterplot3")),
+                          useShinyjs(),
+                          verticalLayout(
+                            div(style="display: inline-block; vertical-align: top; width: 200px" ,
+                                actionButton("pic33", "Sample Answer", style="color: black; background-color: #fff; ")),
+                            hidden(div(id='pic33_div', htmlOutput("Feed3")))
+                          )
+                        ),
+                        p("The generated plot does not reflect true scale", style = "color:grey; font-size: 16px;"),
+                     
+                        wellPanel(
+                          h4(textOutput("answerl33"))
+                          , style = "width : 70%;background-color: #ffffff;"
+                        ),
+                        br(),
+                        useShinyjs(),
+                        div(style="display: inline-block;vertical-align:top; width: 200px;", 
+                            actionButton("feedback33", "Feedback", style="color: #fff; background-color: #337ab7")),
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
                             actionButton("next33","Next Question")),
-                        div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            prettyCheckbox("pic3","Venn Diagram for Answer",value = F,status = "info",shape = "curve")),
-                        htmlOutput("Feed33")
+                        # div(style="display: inline-block;vertical-align:top; width: 200px;",
+                        #     actionButton("pic3","Venn Diagram for Answer",value = F,status = "info",shape = "curve"))
+                       # htmlOutput("Feed33")
+                       br(),br(),
+                       shinyjs::hidden(wellPanel(id = "panelN3",textOutput("fdbc33")
+                                                 , style = "width : 50%;background-color: #ffffff;"))
                       ),
                       tags$head(
                         
