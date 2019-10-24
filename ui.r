@@ -3,6 +3,7 @@ library(shiny)
 library(shinyjs)
 library(shinyBS)
 library(shinyWidgets)
+library(V8)
 library(Vennerable)
 
 #fresh the whole page
