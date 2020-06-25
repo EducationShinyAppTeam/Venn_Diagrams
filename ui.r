@@ -4,7 +4,7 @@ library(shinyjs)
 library(shinyBS)
 library(shinyWidgets)
 library(V8)
-#library(Vennerable)
+library(Vennerable)
 
 #fresh the whole page
 jsResetCode <- "shinyjs.reset= function() {history.go(0)}"
@@ -23,8 +23,7 @@ shinyUI(fluidPage(
       sidebarMenu(
         id="tabs",
         menuItem("Overview", tabName = "about", icon = icon("dashboard")),
-        menuItem("Venn Diagrams", tabName = "circle", icon = icon("cogs")),
-        menuItem("References", tabName = "references", icon = icon("leanpub"))
+        menuItem("Venn Diagrams", tabName = "circle", icon = icon("cogs"))
         
       )
     ),
@@ -39,7 +38,7 @@ shinyUI(fluidPage(
       # tabItem(tabName = "home",
       #         tags$a(href='http://stat.psu.edu/')
       #         ),
-      # About Tab
+      # About
       tabItem(tabName = "about",
               
               tags$a(href='http://stat.psu.edu/',tags$img(src='PS-HOR-RGB-2C.png', align = "left", width = 180)),
@@ -59,14 +58,8 @@ shinyUI(fluidPage(
               h3(tags$b("Acknowledgements:")),
               h4("This app was developed and coded by Qichao Chen with input from Yuxin Zhang, Sitong Liu and Yingjie Wang in 2017."),
               h4("This app was modified by Yubaihe Zhou to improve formatting and allow the user to Numeric Input directly in 2018."),
-              h4("This app was further modified by Jingjun Wang who added another different Venn diagram in Numeic Input section and reformated the layout of the whole app in 2019."),
-              h4("This app was again modified by Ethan Wright who fixed many bugs such as rounding errors and preventing negatives in the Venn Diagram.")),
-       # Circle Game Tab
-      tabItem(tabName = "references",   
-              withMathJax(),
-              h2("References"),
-
-              ),
+              h4("This app was further modified by Jingjun Wang who added another different Venn diagram in Numeic Input section and reformated the layout of the whole app in 2019.")),
+      # Circle Game
       tabItem(tabName = "circle",
               fluidPage(
                 # fresh the whole page
@@ -75,12 +68,12 @@ shinyUI(fluidPage(
                 # tags$head(
                 #   tags$style(".shiny-notification {position:fixed;bottom:50px;left:25%;width:50%;} ")),
                 sidebarLayout(
-                  sidebarPanel( #SIDEBAR PANEL OF THE 
+                  sidebarPanel(
                     #hide value of silder bar
                     tags$head(tags$style(HTML('.irs-from, .irs-to, .irs-min, .irs-max, .irs-single {
                                               visibility: hidden !important;
                                               }'))),
-                    selectInput("modes", "Modes",   #CREATES 3 INPUTS FOR LIST, each creates one of the 3 outputs
+                    selectInput("modes", "Modes",
                                 list( 
                                       "One Event" = "level1",
                                       "Two Events" = "level2",
@@ -115,10 +108,10 @@ shinyUI(fluidPage(
                         condition = "input.check1 == 'Numeric'",
                         fluidRow(
                           column(4, uiOutput("labeldol1")),
-                          column(6, offset= 0, uiOutput("PA11")), 
-                          column(6, numericInput("PA",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 )))
-                          
-                      
+                          column(6, offset= 0, uiOutput("PA11")),
+                          column(6, numericInput("PA",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
+                          #column(12, verbatimTextOutput("Feed1"))
+                          )
                         
                       ),
                       
@@ -126,7 +119,7 @@ shinyUI(fluidPage(
                         condition = "input.check1 == 'Slider'",
                         fluidRow(
                         column(5, 
-                               dropdownButton( #The 3 pop up sliders
+                               dropdownButton(
                                  tags$h3("Blue Circle"),
                                  div(style = "position: absolute; left: 0.5em; top: 4em", h5("Small")),
                                  div(style = "position: absolute; right: 0.5em; top: 4em", h5("Large")),
@@ -155,12 +148,8 @@ shinyUI(fluidPage(
                                         border: 1px solid #B2B2FF;
                                         color:#000000;
                                         }
-                                        "))
-                        )
-                        
-                        
-                      ),
-                    
+                                        ")))
+                        ),
                     conditionalPanel(
                       condition = "input.modes == 'level2'",
                       # div(style="display: inline-block;vertical-align:top;",
@@ -448,7 +437,7 @@ shinyUI(fluidPage(
                           )
                       )
                       )
-                    ), #MAIN PANEL OF THE VENN DIAGRAM
+                    ),
                   mainPanel(
                     fluidRow(column(1,textOutput("challenge"))),
                 
@@ -462,15 +451,13 @@ shinyUI(fluidPage(
                         
                         br(),
                         flowLayout(
-                                      
+                          
                           div(style="display: inline-block;vertical-align:top;", 
-                              plotOutput("distPlotl1", width = "70%"),p("Probability of the intersection of the complements = ")),
-                          #h4(uiOutput('sliderOutsideDiagram2')),
+                              plotOutput("distPlotl1", width = "70%")),
                           useShinyjs(),
                           verticalLayout(
                             div(style="display: inline-block; vertical-align: top; width: 200px" , 
-                              actionButton("pic1", "Sample Answer", style="color: black; background-color: #fff; ")),
-                                
+                                actionButton("pic1", "Sample Answer", style="color: black; background-color: #fff; ")),
                             hidden(div(id='pic1_div', htmlOutput("Feed11"))))
                           
                         ),
@@ -492,37 +479,25 @@ shinyUI(fluidPage(
                                                   , style = "width : 50%;background-color: #ffffff;"))
                        
                                ),
-
-                      
-                      
-                      #Will not output graph
                       conditionalPanel(
                         condition = "input.check1 == 'Numeric'",
-                        flowLayout(
-                          div(style ="display: inline-block;vertical-align:top;",
-                              plotOutput("enterplot1"),p("Probability of the intersection of the complements = ", textOutput("outsideNumericDiagram1", inline = TRUE))),
-
-                        useShinyjs(),
-
                         verticalLayout(
-                          div(style="display: inline-block; vertical-align: top; width: 200px" ,
+                         useShinyjs(),
+                          div(style="display: inline-block; vertical-align: top; width: 200px" , 
                               actionButton("pic11", "Sample Answer", style="color: black; background-color: #fff; ")),
-                          hidden(div(id='pic11_div', htmlOutput("Feed1"))))),
-                        p("The generated plot does not reflect true scale", style = "color:grey; font-size: 16px;"),
-
-
-
+                          hidden(div(id='pic11_div', htmlOutput("Feed1")))),
+                        
                         wellPanel(
                           h4(textOutput("answerl11"))
                           , style = "width : 50%;background-color: #ffffff;"
                         )
                         ,
-                        div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            actionButton("feedback11", "Feedback", style="color: #fff; background-color: #337ab7")),
+                        div(style="display: inline-block;vertical-align:top; width: 200px;", 
+                            actionButton("feedback11", "Feedback", style="color: #fff; background-color: #337ab7")), 
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
                             actionButton("next11","Next Question")),
                         br(),br(),
-
+                        
                         shinyjs::hidden(wellPanel(id = "panelN1",textOutput("fdbc11")
                                                   , style = "width : 50%; background-color: #ffffff;"))
                        #  div(style="display: inline-block;vertical-align:top; width: 200px;",
@@ -571,10 +546,8 @@ shinyUI(fluidPage(
                       conditionalPanel(
                         condition = "input.check2 == 'Numeric2'",
                         flowLayout(
-                          div(style="display: inline-block;vertical-align:top;length: 20px", 
-                              plotOutput("enterplot2"),p("Probability of the intersection of the complements = ", textOutput("outsideNumericDiagram2", inline = TRUE))),
-                          
-                          
+                          div(style="display: inline-block;vertical-align:top;", 
+                              plotOutput("enterplot2")),
                           
                           useShinyjs(),
                           verticalLayout(
@@ -641,8 +614,8 @@ shinyUI(fluidPage(
                       conditionalPanel(
                         condition = "input.check3 == 'Numeric3'",
                         flowLayout(
-                          div(style ="display: inline-block;vertical-align:top;",
-                              plotOutput("enterplot3"),p("Probability of the intersection of the complements = ", textOutput("outsideNumericDiagram3", inline = TRUE))),
+                          div(style="display: inline-block;vertical-align:top;",
+                              plotOutput("enterplot3")),
                           useShinyjs(),
                           verticalLayout(
                             div(style="display: inline-block; vertical-align: top; width: 200px" ,
