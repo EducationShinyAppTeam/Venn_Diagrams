@@ -6,6 +6,19 @@ library(shinyBS)
 library(shinyWidgets)
 library(Vennerable)
 
+
+#This may be helpful for downloading Vennerable 
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#  install.packages("BiocManager")
+#if (!requireNamespace("devtools", quietly = TRUE))
+#  install.packages("devtools")
+#BiocManager::install(c("RBGL","graph"))
+#devtools::install_github("js229/Vennerable")
+
+#Error in line 219 prevents 1 Event numeric input
+
+
+
 bank<- read.csv("questionbank.csv")
 bank= data.frame(lapply(bank,as.character),stringsAsFactors = FALSE)
 jsResetCode <- "shinyjs.reset= function() {history.go(0)}"
@@ -18,7 +31,7 @@ shinyServer(function(session, input, output) {
     updateTabItems(session, "tabs", "circle")
   })
   
-  
+  #Programs the ? (help) button on the top right of header
   observeEvent(input$hint,{
     sendSweetAlert(
       session = session,
@@ -29,7 +42,7 @@ shinyServer(function(session, input, output) {
       type = "info"
     )
   })
-
+  #Programs the i (information) button on the top right of header
   observeEvent(input$info,{
     sendSweetAlert(
       session = session,
@@ -43,6 +56,7 @@ shinyServer(function(session, input, output) {
       type = "info"
     )
   })
+  #Appears to simply output challenge when called
   output$challenge <- renderText({paste("Challenge")})
   #output$instruction <- renderText({paste("Please adjust circle(s) to create a diagram that fits the following situation:")})
   
@@ -55,7 +69,7 @@ shinyServer(function(session, input, output) {
     
     col1l1 <- rgb(red = .0, green = 0, blue = 1, alpha = 0.3)
     draw.circle(input$movel1,input$move1l1,input$radiusl1,col=col1l1)
-  }, width = 350, height = 350)  
+  }, width = 350, height = 350) 
   
   # using points simulating prob
   probabilityl1 <- reactiveValues(
@@ -75,9 +89,9 @@ shinyServer(function(session, input, output) {
     }
     
     samplespacel1 <-data.frame(xcoordl1,ycoordl1)
-    
+    #These use values of the 3 slidebars in slider input
     samplespacel1$radiusl1 <- input$radiusl1
-    samplespacel1$xcenterl1 <- input$movel1
+    samplespacel1$xcenterl1 <- input$movel1 
     samplespacel1$ycenterl1 <- input$move1l1
     
     samplespacel1$diffl1 <- sqrt((samplespacel1$xcenterl1-samplespacel1$xcoordl1)^2
@@ -114,7 +128,7 @@ shinyServer(function(session, input, output) {
     cat(probabilityl1$probc1l1)
   })
   space <- c(1:5)
-  #Next question
+  #Reset the sliders when the next question comes up
   observeEvent(input$next1, {
     numbersl1$quesanswerl1 <- sample(space[-numbersl1$quesanswerl1],1)
     updateSliderInput(session, "radiusl1",min=0,max=1.2,step = 0.01,value = 0.05)
@@ -193,13 +207,58 @@ output$fdbc11 = renderText({
       }
   })
   
+  
+  
+  output$outsideNumericDiagram1 = reactive({
+    1 - input$PA
+  })
+  
+  
+  #Graph for One Event input number
+  w1 = reactive({
+    compute.Venn(Venn(SetNames = c("",""), Weight = c('1' = input$PA,'0' = 0)), #ERROR IS COMING FROM HERE
+      type = "circles", doEuler = TRUE)
+  })
+  #Next try
+   # w1 = reactive({
+   #   compute.Venn(Venn(SetNames = c("",""), Weight = c('1' = input$PA, '0' = input$PA)),
+   #     type = "circles", doEuler = TRUE, doWeights = TRUE)
+   # })
+
+
+  output$enterplot1 = renderPlot({
+    #Confirm input used
+    validate(
+      need((input$PA != ""), "Please input the numbers")
+    )
+
+    if((input$PA <=1))
+    {
+      gp <- VennThemes(w1())
+      gp[["Face"]][["1"]]$fill <-"#79CAB1"
+      #gp[["Set"]][["Set1"]]$col <- 'black'
+      #gp[["Set"]][["Set1"]]$lwd <- 1.5
+
+      plot(w1(),gp=gp, show = list(SetLabels = FALSE)) #Calls plot function
+    }
+    else{
+      plot(1,1,col = "white", type = "n", xaxt = "n", yaxt = 'n', ann = FALSE)
+      text(1,1,"Error: impossible to exist", cex = 1, col = "red")
+    }
+
+  }, width = 300, height = 280)
+  
+  
+  
+  
+  #pic1
   observeEvent(input$pic1,{
     toggle('pic1_div')
     output$Feed11 <- renderUI({
       img(src = bank[numbersl1$quesanswerl1, 19],  height = "70%",  width = "70%")
     })
   })
-  
+  #observation 
   observeEvent(input$pic11,{
     toggle('pic11_div')
     output$Feed1 <- renderUI({
@@ -239,6 +298,7 @@ output$fdbc11 = renderText({
   }, width = 350, height = 350)
   
   
+  
   probabilityl2 <- reactiveValues(
     
     probc1l2= NULL,
@@ -263,7 +323,7 @@ output$fdbc11 = renderText({
     }
     
     samplespacel2 <-data.frame(xcoordl2,ycoordl2)
-    
+    #Slider values
     samplespacel2$radiusc1l2 <- input$radiusl2
     samplespacel2$radiusc2l2 <- input$radius2l2
     samplespacel2$xcenterc1l2<- input$movel12
@@ -349,7 +409,7 @@ output$fdbc11 = renderText({
   })
   output$questionl2<-renderText(bank[numbersl2$quesanswerl2,4])
   space2 <- c(6:10)
-  #Generate next question
+  #Generate next question, reset the sliders
   observeEvent(input$next2,{
     numbersl2$quesanswerl2 <- sample(space2[-numbersl2$quesanswerl2],1)
     updateSliderInput(session, "radiusl2",min=0,max=1.2,step = 0.01,value = 0.05)
@@ -433,15 +493,15 @@ output$fdbc22 = renderPrint({
       
     })
   })
-## level2 enter
+  
+## level2 enterPlot section
   observeEvent(input$pic22,{
     toggle('pic22_div')
     output$Feed2 <- renderUI({
-      
       img(src = bank[numbersl2$quesanswerl2,19], height = "70%", width = "70%")
-      
     })
   })
+  
   output$answerl22 <- renderPrint({
     validate(
       need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "Please enter all your probabilities")
@@ -455,23 +515,33 @@ output$fdbc22 = renderPrint({
       updateButton(session, "next22", disabled = F)
     }
   })
-
+  
+  
+  
+  #Stuff not in the first yet
   w2 = reactive({
     compute.Venn(Venn(SetNames = c("", ""), Weight = c(`01` = input$P2B-input$A2B, `11` = input$A2B, `10` = input$P2A-input$A2B)), type ="circles", doEuler=TRUE)
   })
   
+  output$outsideNumericDiagram2 = reactive({
+    1 - (input$P2B-input$A2B) - input$A2B - (input$P2A-input$A2B)
+  })
   output$enterplot2 = renderPlot({
+    #Confirms that all 3 inputs are used. 
     validate(
       need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "Please input the numbers")
     )
+    #If 0 for combination and at least one 0 in a category output remind need more than 1 event
     if ((min(input$P2A, input$P2B) == 0 ) & (input$A2B == 0) ) {
       isolate({plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)})
       text(1,1,"Note that there are two events",cex = 1, col = "red")
     }
+    #If all of the values are equal
     else if ((input$P2A == input$P2B ) & (input$P2A == input$A2B) & (input$P2B == input$A2B)) {
       isolate({plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)})
       draw.circle(1,1,.1,col="#7cc9b2")
     }
+    #If all the inputs are met
     else if ((input$P2A + input$P2B - input$A2B <=1) & (input$A2B <= min(input$P2A, input$P2B)) ) {
       gp <- VennThemes(w2())
       gp[["Face"]][["11"]]$fill <-  "#79CAB1" #original mitegreen
@@ -481,9 +551,9 @@ output$fdbc22 = renderPrint({
       gp[["Set"]][["Set2"]]$col <- 'black'
       gp[["Set"]][["Set1"]]$lwd <- 1.5
       gp[["Set"]][["Set2"]]$lwd <- 1.5
-      plot(w2(), gp = gp, show = list(SetLabels = FALSE))
+      plot(w2(), gp = gp, show = list(SetLabels = FALSE)) #calls the plot function
     }
-    else{
+    else{ #If both of these results invalid
       plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)
       text(1,1,"Error: impossible to exist",cex = 1, col = "red")
     }
@@ -522,6 +592,7 @@ output$fdbc22 = renderPrint({
     col1l3 <- rgb(red = .0, green = 0, blue = 1, alpha = 0.3)
     col2l3 <- rgb(red = 0, green = 1, blue = 0, alpha = 0.3)
     col3l3 <- rgb(red = 1, green = 0, blue = 0, alpha = 0.3)
+    #Creates the 3 circles for the plot
     draw.circle(input$movel13,input$move1l3,input$radiusl3,col=col1l3)
     draw.circle(input$movel23,input$move2l3,input$radius2l3,col=col2l3)
     draw.circle(input$movel33,input$move3l3,input$radius3l3,col=col3l3)
@@ -630,38 +701,38 @@ output$fdbc22 = renderPrint({
     updateSliderInput(session, "move3l3",min=0,max=1,step=0.01,value=0.45)
   })
   observe({
-    output$labeldoBl3 <- renderUI({
-      actionButton("dol3","", class = "btn-group")
+    output$labeldoBl3 <- renderUI({ #Output means  
+      actionButton("dol3","", class = "btn-group") #blue circle action button
     })
     output$labeldoGl3 <- renderUI({
-      actionButton("do2l3"," ", class = "btn-group")
+      actionButton("do2l3"," ", class = "btn-group") #green circle action button
     })
     output$labeldoRl3 <- renderUI({
-      actionButton("do3l3"," ", class = "btn-group")
+      actionButton("do3l3"," ", class = "btn-group")#red circle action button
     })
     output$labeldoBGl3 <- renderUI({
-      actionButton("do4l3","", class = "btn-group")
+      actionButton("do4l3","", class = "btn-group") #cyan circle action button
     })
     output$labeldoBRl3 <- renderUI({
-      actionButton("do5l3","", class = "btn-group")
+      actionButton("do5l3","", class = "btn-group") #purple circle action button
     })
     output$labeldoGRl3 <- renderUI({
-      actionButton("do6l3","", class = "btn-group")
+      actionButton("do6l3","", class = "btn-group") #darkolivegreen circle action button
     })
     output$labeldoBGRl3 <- renderUI({
-      actionButton("do7l3","", class = "btn-group")
+      actionButton("do7l3","", class = "btn-group") #brown circle action button
     })
-    output$labeldoBGl33 <- renderUI({
-      actionButton("do4l3","", class = "btn-group")
+    output$labeldoBGl33 <- renderUI({ #Blue Green
+      actionButton("do4l3","", class = "btn-group") #
     })
-    output$labeldoBRl33 <- renderUI({
-      actionButton("do5l3","", class = "btn-group")
+    output$labeldoBRl33 <- renderUI({ #Blue Red
+      actionButton("do5l3","", class = "btn-group") #
     })
-    output$labeldoGRl33 <- renderUI({
-      actionButton("do6l3","", class = "btn-group")
+    output$labeldoGRl33 <- renderUI({ #Green Red
+      actionButton("do6l3","", class = "btn-group") #
     })
-    output$labeldoBGRl33 <- renderUI({
-      actionButton("do7l3","", class = "btn-group")
+    output$labeldoBGRl33 <- renderUI({ #Blue Green Red 
+      actionButton("do7l3","", class = "btn-group") #
     })
   })
   
@@ -883,16 +954,23 @@ output$fdbc33 = renderPrint({
     })
   })
   
+  #Calculate all numbers inside of the Venn Diagram
   w3 = reactive({
     compute.Venn(Venn(SetNames = c("1", "2", "3"), Weight = c(
-      `001` = input$P3B-input$A3B-input$B3C+input$A3BC, 
-      `010` = input$P3C-input$A3C-input$B3C+input$A3BC, 
-      `100` = input$P3A-input$A3B-input$A3C+input$A3BC,
-      `101` = input$A3B-input$A3BC, 
-      `110` = input$A3C-input$A3BC,
-      `011` = input$B3C-input$A3BC,
-      `111` = input$A3BC )), type ="circles", doEuler=TRUE)
+      `001` = round(input$P3B-input$A3B-input$B3C+input$A3BC,4), 
+      `010` = round(input$P3C-input$A3C-input$B3C+input$A3BC,4), 
+      `100` = round(input$P3A-input$A3B-input$A3C+input$A3BC,4),
+      `101` = round(input$A3B-input$A3BC,4), 
+      `110` = round(input$A3C-input$A3BC,4),
+      `011` = round(input$B3C-input$A3BC,4),
+      `111` = round(input$A3BC,4))), type ="circles", doEuler=TRUE)
   })
+  
+  output$outsideNumericDiagram3 = reactive({
+    1 - round(input$P3B-input$A3B-input$B3C+input$A3BC,4) - round(input$P3C-input$A3C-input$B3C+input$A3BC,4) - round(input$P3A-input$A3B-input$A3C+input$A3BC,4) - round(input$A3B-input$A3BC,4) - round(input$A3C-input$A3BC,4) - round(input$B3C-input$A3BC,4) - round(input$A3BC,4)
+  })
+
+  
   
   output$enterplot3 = renderPlot({
     validate(
@@ -903,11 +981,18 @@ output$fdbc33 = renderPrint({
       isolate({plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)})
       text(1,1,"Note that there are three events",cex = 1, col = "red")
     }
-    else if ((input$P3A + input$P3B + input$P3C - input$A3B - input$A3C - input$B3C  <= 1)#- input$A3BC
-             & (input$A3BC <= min(input$A3C, input$A3B, input$B3C)) & (input$A3B <= min(input$P3A, input$P3B)) 
-             & (input$A3C <= min(input$P3A, input$P3C))  & (input$B3C <= min(input$P3B, input$P3C)) 
-              ) { 
+    # else if ((input$P3A + input$P3B + input$P3C - input$A3B - input$A3C - input$B3C  <= 1)#- input$A3BC
+    #          & (input$A3BC <= min(input$A3C, input$A3B, input$B3C)) & (input$A3B <= min(input$P3A, input$P3B)) 
+    #          & (input$A3C <= min(input$P3A, input$P3C))  & (input$B3C <= min(input$P3B, input$P3C)) 
+    #           ) { 
+    #Rewritten version
+    else if ((input$P3A + input$P3B + input$P3C - input$A3B - input$A3C - input$B3C  <= 1) #If all of the values combined are less than 1
+                      & (0 <= min(input$P3B-input$A3B-input$B3C+input$A3BC,input$P3C-input$A3C-input$B3C+input$A3BC,input$P3A-input$A3B-input$A3C+input$A3BC,
+                                  input$A3B-input$A3BC,input$A3C-input$A3BC,input$B3C-input$A3BC,input$A3BC))
+             ) { 
       gp <- VennThemes(w3())
+      
+      #Fills the Venn Diagram with color values
       gp[["Face"]][["101"]]$fill <-  "#79CAB1" 
       gp[["Face"]][["001"]]$fill <-  "#B6FEB5" #purple
       gp[["Face"]][["100"]]$fill <-  '#B3B2FF' #green
@@ -921,13 +1006,17 @@ output$fdbc33 = renderPrint({
       gp[["Set"]][["Set2"]]$lwd <- 1.5
       gp[["Set"]][["Set3"]]$col <- 'black'
       gp[["Set"]][["Set3"]]$lwd <- 1.5
-      plot(w3(), gp = gp, show = list(SetLabels = FALSE))
+      
+      #plot(w3(), gp = gp, show = list(SetLabels = FALSE)) 
+      #Vennerable::
+      plot(w3(), gp = gp, show = list(SetLabels = FALSE))     
     }
     else{
-      plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE)
+      plot(1,1,col="white", type = 'n',xaxt='n', yaxt='n',ann=FALSE, )
+      #Error catching section
       text(1,1,"Error: impossible to exist",cex = 1, col = "red")
     }
-  },width = 300, height = 280)
+  },width = 300, height = 350)
 
   
 
@@ -1047,5 +1136,9 @@ output$fdbc33 = renderPrint({
       updateButton(session, "next3", disabled = F)
     }
   })
+  
+
+  
+  
 })
 
