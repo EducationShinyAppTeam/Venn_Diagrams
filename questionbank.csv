@@ -3,7 +3,7 @@ level 1,,1,The chance that a randomly selected household owns a Cat is 30%.,0.3,
 ,,2,The chance that a randomly selected household owns a Dog is 40%.,0.4,,,,,,,P(Dog) = ,,,,,,,2.PNG
 ,,3,The chance that a randomly selected household does not own a Cat is 70%.,0.3,,,,,,,P(Cat) = ,,,,,,,3.PNG
 ,,4,The chance that a randomly selected household does not own a Dog is 60%.,0.4,,,,,,,P(Dog) = ,,,,,,,4.PNG
-,,5,The chance that a random card is a 'Heart'.,0.25,,,,,,,P('Heart') = ,,,,,,,5.PNG
+,,5,The chance that a random playing card in a deck is a heart,0.25,,,,,,,P('Heart') = ,,,,,,,5.PNG
 level 2,,6,15% of students at a college are Freshmen and 20% are Seniors.,0.15,0.2,,0,,,,P(Freshmen) = ,P(Seniors) = ,,P(Freshmen and Seniors) = ,,,,6.PNG
 ,,7,Two things (A and B) each have a probability of 20% and they are mutually exclusive.,0.2,0.2,,0,,,,P(A) = ,P(B) = ,,P(A and B) = ,,,,7.PNG
 ,,8,Two things (A and B) each have a probability of 40% and they are independent.,0.4,0.4,,0.16,,,,P(A) = ,P(B) = ,,P(A and B) =,,,,8.PNG

@@ -5,6 +5,7 @@ library(shinyjs)
 library(shinyBS)
 library(shinyWidgets)
 library(Vennerable)
+library(boastUtils)
 
 
 #This may be helpful for downloading Vennerable 
@@ -93,10 +94,10 @@ shinyServer(function(session, input, output) {
     samplespacel1$radiusl1 <- input$radiusl1
     samplespacel1$xcenterl1 <- input$movel1 
     samplespacel1$ycenterl1 <- input$move1l1
-    
+    #Here they seem to calculate the radius again
     samplespacel1$diffl1 <- sqrt((samplespacel1$xcenterl1-samplespacel1$xcoordl1)^2
                                  +(samplespacel1$ycenterl1-samplespacel1$ycoordl1)^2)
-    samplespacel1$inc1l1<- samplespacel1$diffl1 <= samplespacel1$radiusl1
+    samplespacel1$inc1l1 <- samplespacel1$diffl1 <= samplespacel1$radiusl1 
     
     probl1 <- mean(samplespacel1$inc1l1)
     probabilityl1$probc1l1<-signif(probl1,2)
@@ -139,7 +140,6 @@ shinyServer(function(session, input, output) {
   output$questionl1<-renderText(bank[numbersl1$quesanswerl1,4])
 
   output$answerl1 <- renderPrint({
-
     if(probabilityl1$probc1l1==bank[numbersl1$quesanswerl1,5]){
       cat("Great! You are right!")
       updateButton(session, "next1", disabled = F)
@@ -209,44 +209,32 @@ output$fdbc11 = renderText({
   
   
   
-  output$outsideNumericDiagram1 = reactive({
+  output$outsideNumericDiagram1 <- reactive({
     1 - input$PA
   })
   
   
   #Graph for One Event input number
+
+  
   w1 = reactive({
-    compute.Venn(Venn(SetNames = c("",""), Weight = c('1' = input$PA,'0' = 0)), #ERROR IS COMING FROM HERE
-      type = "circles", doEuler = TRUE)
+    print('where is this')
+    compute.Venn(Venn(SetNames = c("1","2"), Weight = c(`01` = input$PA,`11` = .05, `10` = .01)), type = "circles", doEuler = TRUE) #ERROR IS COMING FROM HERE
   })
-  #Next try
-   # w1 = reactive({
-   #   compute.Venn(Venn(SetNames = c("",""), Weight = c('1' = input$PA, '0' = input$PA)),
-   #     type = "circles", doEuler = TRUE, doWeights = TRUE)
-   # })
 
 
-  output$enterplot1 = renderPlot({
-    #Confirm input used
-    validate(
-      need((input$PA != ""), "Please input the numbers")
-    )
 
-    if((input$PA <=1))
-    {
-      gp <- VennThemes(w1())
-      gp[["Face"]][["1"]]$fill <-"#79CAB1"
-      #gp[["Set"]][["Set1"]]$col <- 'black'
-      #gp[["Set"]][["Set1"]]$lwd <- 1.5
-
-      plot(w1(),gp=gp, show = list(SetLabels = FALSE)) #Calls plot function
-    }
-    else{
-      plot(1,1,col = "white", type = "n", xaxt = "n", yaxt = 'n', ann = FALSE)
-      text(1,1,"Error: impossible to exist", cex = 1, col = "red")
-    }
-
-  }, width = 300, height = 280)
+  
+  output$enterplot1 <- renderPlot({
+    
+    isolate({
+      plot(c(0,1),c(0,1), type = 'n',xaxt='n', yaxt='n',ann=FALSE)
+    })
+    
+    col1l1 <- rgb(red = .0, green = 0, blue = 1, alpha = 0.3)
+    #draw.circle(input$movel1,input$move1l1,input$radiusl1,col=col1l1)
+    draw.circle(.5,.5,input$PA/1.77,col=col1l1)
+  }, width = 350, height = 350) 
   
   
   
