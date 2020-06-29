@@ -480,20 +480,17 @@ ui <- list(
                                    useShinyjs(),
                                    
                                    verticalLayout(
-                                     div(actionButton("pic11", "Sample Answer", style="color: black; background-color: #fff; ")),
+                                     div(actionButton("pic11", "Sample Answer")),
                                      hidden(div(id='pic11_div', htmlOutput("Feed1"))))),
                         p("The generated plot does not reflect true scale"),
                         
                         
                         p(textOutput("answerl11")),
+                        htmlOutput("answerl11Picture"),
                         #div(actionButton("feedback11", "Feedback")),
                         div(actionButton("next11","Next Question")),
                         br(),br(),
-                        
-                        #shinyjs::hidden(wellPanel(id = "panelN1",textOutput("fdbc11")))
-                        #  div(style="display: inline-block;vertical-align:top; width: 200px;",
-                        #      prettyCheckbox("pic1","Venn Diagram for Answer",value = F,status = "info",shape = "curve"))
-                        # # htmlOutput("Feed11")
+
                         
                       ),
                       
@@ -510,15 +507,15 @@ ui <- list(
                           
                           useShinyjs(),
                           verticalLayout(
-                            div(actionButton("pic1", "Sample Answer", style="color: black; background-color: #fff; ")),
+                            div(actionButton("pic1", "Sample Answer")),
                                 
                             hidden(div(id='pic1_div', htmlOutput("Feed11"))))
                           
-                        ),  
+                        ),
                         #wellPanel(
                         #p(textOutput('PA')),
                         p(textOutput("answerl1")), #style = "width : 50%;background-color: #ffffff;",
-                        
+                        htmlOutput("answerl1Picture"),
                         #),
                         br(),
                         useShinyjs(),
@@ -528,8 +525,6 @@ ui <- list(
                         br(),br(),
                         )
 
-                      
-                      
                       
                       
                     ),
@@ -549,22 +544,18 @@ ui <- list(
                           useShinyjs(),
                           verticalLayout(
                             div(style="display: inline-block; vertical-align: top; width: 200px" ,
-                                actionButton("pic22", "Sample Answer", style="color: black; background-color: #fff; ")),
+                                actionButton("pic22", "Sample Answer")),
                             hidden(div(id='pic22_div', htmlOutput("Feed2")))
                           )),
                         p("The generated plot does not reflect true scale"),
                         
                         p(textOutput("answerl22")),
+                        htmlOutput("answerl22Picture"),
                         
                         useShinyjs(),
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
                             actionButton("next22","Next Question")),
-                        #  div(style="display: inline-block;vertical-align:top; width: 200px;",
-                        #      prettyCheckbox("pic2","Venn Diagram for Answer",value = F,status = "info",shape = "curve"))
-                        # # htmlOutput("Feed22")
-                        # br(), br(), 
-                        # shinyjs::hidden(wellPanel(id = "panelN2",textOutput("fdbc22")
-                        #                           , style = "width : 50%;background-color: #ffffff;"))
+                        
                       ),
                   ########Slider level 2#################
                       conditionalPanel(
@@ -578,7 +569,9 @@ ui <- list(
                             hidden(div(id='pic2_div', htmlOutput("Feed22")))
                           )),
                         
-                          p(textOutput("answerl2"))
+                          p(textOutput("answerl2")),
+                          
+                          htmlOutput("answerl2Picture")
                         
                         ,
                         br(),
@@ -608,13 +601,14 @@ ui <- list(
                           useShinyjs(),
                           verticalLayout(
                             div(style="display: inline-block; vertical-align: top; width: 200px" ,
-                                actionButton("pic33", "Sample Answer", style="color: black; background-color: #fff; ")),
+                                actionButton("pic33", "Sample Answer")),
                             hidden(div(id='pic33_div', htmlOutput("Feed3")))
                           )
                         ),
                         p("The generated plot does not reflect true scale"),
                      
                         p(textOutput("answerl33")),
+                        htmlOutput("answerl33Picture"),
                         
                         br(),
                         useShinyjs(),
@@ -634,12 +628,13 @@ ui <- list(
                           useShinyjs(),
                           verticalLayout(
                             div(style="display: inline-block; vertical-align: top; width: 200px" ,
-                                actionButton("pic3", "Sample Answer", style="color: black; background-color: #fff; ")),
+                                actionButton("pic3", "Sample Answer")),
                             hidden(div(id='pic3_div', htmlOutput("Feed33")))
                           )
                         ),
                        
                         p(textOutput("answerl3")),
+                        htmlOutput("answerl3Picture"),
                         
                         
                         br(),
