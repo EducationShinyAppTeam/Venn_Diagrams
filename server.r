@@ -6,6 +6,11 @@ library(shinyBS)
 library(shinyWidgets)
 library(Vennerable)
 library(boastUtils)
+#Added these 3 thinking it may fix the error in publishing. 
+#Has not worked yet
+library(BiocGenerics)
+library(BiocManager)
+library(BiocVersion)
 
 
 #This may be helpful for downloading Vennerable 
@@ -17,6 +22,7 @@ library(boastUtils)
 #devtools::install_github("js229/Vennerable")
 
 #Error in line 219 prevents 1 Event numeric input
+
 
 
 
