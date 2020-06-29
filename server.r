@@ -1082,7 +1082,6 @@ observeEvent(input$feedback22, {
       
       if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3,7])&(probabilityl3$intersectionc12l3 ==bank[numbersl3$quesanswerl3,8])&(probabilityl3$intersectionc23l3==bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3,10]))
       {
-        #Ethan
         img(src = "correct.png", width = 30)
       }
       
