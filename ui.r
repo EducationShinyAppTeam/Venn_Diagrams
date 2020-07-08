@@ -3,7 +3,7 @@ library(shiny)
 library(shinyjs)
 library(shinyBS)
 library(shinyWidgets)
-#library(V8)
+library(V8)
 #library(Vennerable)
 
 #fresh the whole page
@@ -31,7 +31,7 @@ ui <- list(
       width = 250,
       sidebarMenu(
         id="tabs",
-        menuItem("Overview", tabName = "about", icon = icon("dashboard")),
+        menuItem("Overview", tabName = "Overview", icon = icon("dashboard")),
         menuItem("Venn Diagrams", tabName = "circle", icon = icon("cogs")),
         menuItem("References", tabName = "references", icon = icon("leanpub"))
         
@@ -46,33 +46,46 @@ ui <- list(
       ),
       tabItems(
       #Homepage
-      # tabItem(tabName = "home",
-      #         tags$a(href='http://stat.psu.edu/')
-      #         ),
-      # About Tab
-      tabItem(tabName = "about",
+
+      tabItem(tabName = "Overview",
+                  
               h1("Venn Diagrams"),
               p("The goals of this game are to introduce probability, to help you think about the relationships 
-                   between events, and how to learn to model real problems using Venn diagrams."),
+               between events, and how to learn to model real problems using Venn diagrams."),
               br(),
-              h3("Instructions"),
-              p((strong("If you want to adjust the circles in the Venn Diagram:"))),
-              p(tags$li("Move or change the size of the circles using sliders (accessed by the button).")),
-              p(tags$li("The 'Reset' button lets you try again, the 'Next' button provides a new question.")),
-              p((strong("If you want to enter the probabilities directly:"))),
-              p(tags$li("Enter your probability in the textbox.")),
-              p(tags$li("If you want to get hints, please click 'Venn Diagram for Answer' button.")),
-              div(style = "text-align: center",bsButton("go", "G O !", icon("bolt"))),br(),
-              h3("Acknowledgements"),
-              p("This app was developed and coded by Qichao Chen with input from Yuxin Zhang, Sitong Liu and Yingjie Wang in 2017."),
-              p("This app was modified by Yubaihe Zhou to improve formatting and allow the user to Numeric Input directly in 2018."),
-              p("This app was further modified by Jingjun Wang who added another different Venn diagram in Numeic Input section and reformated the layout of the whole app in 2019."),
-              p("This app was again modified by Ethan Wright who fixed several diagram issues, added a diagram and updating its formatting to the style guide in 2020."),
-              div(class = "updated", "Last Update: 06/23/2020 by EJW.")),
+              h2("Instructions"),
+              
+
+              
+              tags$ul(
+                tags$li("If you want to adjust the circles in the Venn Diagram:"),
+                tags$ol(
+                  tags$li("Move or change the size of the circles using sliders (accessed by the button)."),
+                  tags$li("Press the 'Submit' button to see if your answer is correct")
+                ),
+                tags$li("If you want to enter the probabilities directly:"),
+                tags$ol(
+                  tags$li("Enter your probability in the textbox."),
+                  tags$li("Press the 'Submit' button to see if your answer is correct")
+                ), 
+                tags$li("The 'Reset' button lets you try again, the 'Next' button provides a new question."),
+                tags$li("If you want to get hints, please click 'Sample Answer' button.")
+                ),
+              
+              
+              div(style = "text-align: center",bsButton("go", "GO!", icon("bolt"))),br(),
+              h2("Acknowledgements"),
+              p("This app was developed and coded by Qichao Chen with input from Yuxin Zhang, 
+                Sitong Liu and Yingjie Wang in 2017.It was then modified by Yubaihe Zhou to 
+                allow direct numeric input  in 2018 and further modified by Jingjun Wang in 2019 
+                and by Ethan Wright to improve the visual presentation, feedback, and formatting in 2020."),
+              
+              div(class = "updated", "Last Update: 07/05/2020 by EJW."    
+                  )),
 
   ################Main Venn Diagram Tab #########################################
       tabItem(tabName = "circle",
-              fluidPage(
+              
                 # fresh the whole page
                 useShinyjs(),
                 extendShinyjs(text = jsResetCode),
@@ -101,15 +114,6 @@ ui <- list(
                       # level 1
             
                       condition="input.modes=='level1'",
-                      # div(style="display: inline-block;vertical-align:top;",
-                      #     tags$a(href='https://shinyapps.science.psu.edu/',tags$img(src='homebut.PNG', width = 19))
-                      # ),
-                      # div(style="display: inline-block;vertical-align:top;",
-                      #     circleButton("info1",icon = icon("info"), status = "myClass",size = "xs")
-                      # ),
-                      # div(style="display: inline-block;vertical-align:top;",
-                      #     circleButton("hint1",icon = icon("question"), status = "myClass", size = "xs")
-                      # ),
                       
                       br(),
                       #Radio Buttons
@@ -124,10 +128,11 @@ ui <- list(
                         fluidRow(
                           column(4, uiOutput("labeldol1")),
                           column(6, offset= 0, uiOutput("PA11")), 
-                          column(6, numericInput("PA",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 )))
-                          
+                          column(6, numericInput("PA",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))),
+                        actionButton("SubmitNumeric1","Check Answer")
+                        
                       ),
-            #######Slider Slidebar Level 1 #################
+            ####### Slider Sidebar Level 1 #################
                       conditionalPanel(
                         condition = "input.check1 == 'Slider'",
                         fluidRow(
@@ -147,8 +152,10 @@ ui <- list(
                                  tooltip = tooltipOptions(title = "Click to adjust blue circle !"))
                               ),
                         column(6, offset= 0, uiOutput("PA1")),
-                        column(4, offset= 0, style='padding:0px;',verbatimTextOutput("PAl1")) 
-                      )),
+                        column(4, offset= 0, style='padding:0px;',verbatimTextOutput("PAl1"))
+                      ),
+                      actionButton("SubmitSlider1","Check Answer")
+                      ),
                       tags$head(
                         #Probability of blue circle
                         tags$style(HTML("
@@ -162,29 +169,24 @@ ui <- list(
                                         color:#000000;
                                         }
                                         "))
-                        )
-                        
-                        
+                        ),
+            
+                      
+            
                       ),
-                    
+            ############# 2 Events Sidebar ####################################
                     conditionalPanel(
                       condition = "input.modes == 'level2'",
-                      # div(style="display: inline-block;vertical-align:top;",
-                      #     tags$a(href='https://shinyapps.science.psu.edu/',tags$img(src='homebut.PNG', width = 19))
-                      # ),
-                      # div(style="display: inline-block;vertical-align:top;",
-                      #     circleButton("info2",icon = icon("info"), status = "myClass",size = "xs")
-                      # ),
-                      # div(style="display: inline-block;vertical-align:top;",
-                      #     circleButton("hint2",icon = icon("question"), status = "myClass", size = "xs")
-                      # ),
+            
                       br(),
                       #Radio Buttons
                       div(style="display: inline-block;vertical-align:top;",
                           radioButtons("check2",label = NULL,choices = c("Numeric Input" = "Numeric2",
                                                                                "Slider Input" = "Slider2"),
-                                             selected = "Numeric2", inline = F, width = NULL)
+                                             selected = "Numeric2", inline = F, width = NULL),
+                          
                       ),
+                ################ 2 Events Slider ####################
                       conditionalPanel(
                         condition = "input.check2 == 'Slider2'",
                         #Blue Circle
@@ -233,8 +235,11 @@ ui <- list(
                           column(5,uiOutput("labeldoBGl2")),
                           column(6, offset = 0, uiOutput("AB2")),
                           column(4, offset = 0, style='padding:0px;',verbatimTextOutput("ABl2"))
-                        )
+                        ),
+                        actionButton("SubmitSlider2","Check Answer")
                       ),
+                      
+        ################## 2 Event Numeric ###########################
                       conditionalPanel(
                         condition = "input.check2 == 'Numeric2'",
                         #Blue
@@ -254,8 +259,11 @@ ui <- list(
                           column(4,uiOutput("labeldoBGl22")),
                           column(6, offset= 0, uiOutput("AB22")),
                           column(6, numericInput("A2B",label = NULL, value=NULL, min = 0.01, max = 1, step = 0.01 ))
-                          )
+                          ),
+                        actionButton("SubmitSlider2","Check Answer")
                       ),
+        
+        ############# Probability of circles ###############
                       tags$head(
                         #Probability of blue circle
                         tags$style(HTML("
@@ -293,20 +301,15 @@ ui <- list(
                                         border: 1px solid #7CC9B2;
                                         color:#000000;
                                         }
-                                        "))
-                        )
+                                        ")),
+                        
+                        ),
+                      
                       ),
+  ######################## 3 Events ###################################################
                     conditionalPanel(
                       condition = "input.modes == 'level3'",
-                      # div(style="display: inline-block;vertical-align:top;",
-                      #     tags$a(href='https://shinyapps.science.psu.edu/',tags$img(src='homebut.PNG', width = 19))
-                      # ),
-                      # div(style="display: inline-block;vertical-align:top;",
-                      #     circleButton("info3",icon = icon("info"), status = "myClass",size = "xs")
-                      # ),
-                      # div(style="display: inline-block;vertical-align:top;",
-                      #     circleButton("hint3",icon = icon("question"), status = "myClass", size = "xs")
-                      # ),
+                      
                       br(),
                       #Radio Buttons
                       div(style="display: inline-block;vertical-align:top;",
@@ -314,6 +317,7 @@ ui <- list(
                                                                                "Slider Input" = "Slider3"),
                                              selected = "Numeric3", inline = F, width = NULL)
                       ),
+            ########## 3 Events Slider Input
                       conditionalPanel(
                         condition = "input.check3 == 'Slider3'",
                         #Blue Circle
@@ -371,7 +375,7 @@ ui <- list(
                                    div(style = "position: absolute; right: 0.5em; top: 11em", p("Up")),
                                    sliderInput("move3l3",label = NULL,min=0,max=1,step=0.01,ticks = FALSE,value=0.45),
                                    circle = T, status = "danger", icon = icon("sliders"), width = "300px", up = T, #status = MyClass3 
-                                   tooltip = tooltipOptions(title = "Click to adjust green circle !"))
+                                   tooltip = tooltipOptions(title = "Click to adjust red circle !"))
                           ),
                           column(6, offset = 0, uiOutput("PC3")),
                           column(4, offset = 0, style='padding:0px;',verbatimTextOutput("PCl3"))
@@ -405,8 +409,11 @@ ui <- list(
                           column(5,uiOutput("labeldoBGRl3")),
                           column(6, offset = 0, uiOutput("ABC3")),
                           column(4, offset = 0, style='padding:0px;',verbatimTextOutput("ABCl3"))
-                        )
+                        ),
+                        actionButton("SubmitSlider3","Check Answer")
+                        
                       ),
+            ############## 3 Event Numerics ###########################
                       conditionalPanel(
                         condition = "input.check3 == 'Numeric3'",
                         #Blue
@@ -451,8 +458,11 @@ ui <- list(
                           column(4,uiOutput("labeldoBGRl33")),
                           column(6, offset= 0, uiOutput("ABC33")),
                           column(6, numericInput("A3BC",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
-                          )
+                          ),
+                        
+                        actionButton("SubmitNumeric3","Check Answer")
                       )
+                      
                       )
                     ), 
                   
@@ -475,7 +485,7 @@ ui <- list(
         ################Numeric Plot Level 1 ###########################
                       conditionalPanel(
                         condition = "input.check1 == 'Numeric'",
-                        flowLayout(div(plotOutput("enterplot1"),p("Probability of the intersection of the complements = ", textOutput("outsideNumericDiagram1", inline = TRUE))),
+                        flowLayout(div(plotOutput("enterplot1"),p("Probability of the complements = ", textOutput("outsideNumericDiagram1", inline = TRUE))),
                                    
                                    useShinyjs(),
                                    
@@ -758,34 +768,34 @@ ui <- list(
                         )
                   
                         )
-                        )
+                        
                       ),
   
   tabItem(tabName = "references",
           withMathJax(),
           h2("References"),
           p(class = "hangingindent",
-            "Winston Chang and Barbara Borges Ribeiro (2018). shinydashboard: Create Dashboards with 'Shiny'. R package version 0.7.1.
+            "Winston Chang and Barbara Borges Ribeiro (2018), \"shinydashboard: Create Dashboards with 'Shiny'\". R package version 0.7.1.
   https://CRAN.R-project.org/package=shinydashboard"),
           p(class = "hangingindent",
-            "Winston Chang, Joe Cheng, JJ Allaire, Yihui Xie and Jonathan McPherson (2020). shiny: Web Application Framework for R. R package
+            "Winston Chang, Joe Cheng, JJ Allaire, Yihui Xie and Jonathan McPherson (2020), \"shiny: Web Application Framework for R.\" R package
   version 1.5.0. https://CRAN.R-project.org/package=shiny"),
           p(class = "hangingindent",
-            "Dean Attali (2020). shinyjs: Easily Improve the User Experience of Your Shiny Apps in Seconds. R package version 1.1.
+            "Dean Attali (2020), shinyjs: Easily Improve the User Experience of Your Shiny Apps in Seconds. R package version 1.1.
   https://CRAN.R-project.org/package=shinyjs"),
           p(class = "hangingindent",
-            "Eric Bailey (2015). shinyBS: Twitter Bootstrap Components for Shiny. R package version 0.61.
+            "Eric Bailey (2015), shinyBS: Twitter Bootstrap Components for Shiny. R package version 0.61.
   https://CRAN.R-project.org/package=shinyBS"),
           p(class = "hangingindent",
-            "Victor Perrier, Fanny Meyer and David Granjon (2020). shinyWidgets: Custom Inputs Widgets for Shiny. R package version 0.5.3.
+            "Victor Perrier, Fanny Meyer and David Granjon (2020), shinyWidgets: Custom Inputs Widgets for Shiny. R package version 0.5.3.
   https://CRAN.R-project.org/package=shinyWidgets"),
           p(class = "hangingindent",
-            "Jonathan Swinton (2020). Vennerable: Venn and Euler area-proportional diagrams. R package version 3.1.0.9000.
+            "Jonathan Swinton (2020), Vennerable: Venn and Euler area-proportional diagrams. R package version 3.1.0.9000.
   https://github.com/js229/Vennerable"),
           p(class = "hangingindent",
-            "Lemon, J. (2006) Plotrix: a package in the red light district of R. R-News, 6(4): 8-12."),
+            "Lemon, J. (2006), Plotrix: a package in the red light district of R. R-News, 6(4): 8-12."),
           p(class = "hangingindent",
-            "Robert Carey and Neil Hatfield (2020). boastUtils: BOAST Utilities. R package version 0.1.4.
+            "Robert Carey and Neil Hatfield (2020), boastUtils: BOAST Utilities. R package version 0.1.4.
   https://github.com/EducationShinyAppTeam/boastUtils")
           
           
