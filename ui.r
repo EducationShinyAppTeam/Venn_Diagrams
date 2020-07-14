@@ -490,7 +490,7 @@ ui <- list(
         
         conditionalPanel(
                         condition = "input.check1 == 'Numeric'",
-                        flowLayout(div(plotOutput("enterplot1"),p("Probability of the complements = ", textOutput("outsideNumericDiagram1", inline = TRUE))),
+                        flowLayout(div(plotOutput("enterplot1"),p("Probability of the complement = ", textOutput("outsideNumericDiagram1", inline = TRUE))),
                                    
                                    useShinyjs(),
                                    

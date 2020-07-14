@@ -376,7 +376,7 @@ shinyServer(function(session, input, output) {
       img(src = "correct.png", alt = "Correct", width = 30)
     }
     else{
-      img(src = "incorrect.png", alt = "Correct", width = 30)
+      img(src = "incorrect.png", alt = "Incorrect", width = 30)
     }
   })
   
@@ -623,10 +623,10 @@ observeEvent(input$feedback22, {
   
   output$answerl2Picture <- renderUI({
     if((probabilityl2$probc1l2==bank[numbersl2$quesanswerl2,5])&(probabilityl2$probc2l2==bank[numbersl2$quesanswerl2,6])& (probabilityl2$probintersectionl2 == bank[numbersl2$quesanswerl2,8])){
-      img(src = "correct.png", "Correct", width = 30)
+      img(src = "correct.png", alt = "Correct", width = 30)
     }
     else{
-      img(src = "incorrect.png", "Incorrect", width = 30)
+      img(src = "incorrect.png", alt = "Incorrect", width = 30)
     }
   })
   
