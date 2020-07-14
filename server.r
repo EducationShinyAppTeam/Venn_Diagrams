@@ -49,7 +49,7 @@ shinyServer(function(session, input, output) {
               tags$br(),
               "1. Move or change the size of the circles using sliders (accessed by the button).",
               tags$br(),
-              "2. Press the 'Submit' button to see if your answer is correct",
+              "2. Once the correct image appears move on to the next question",
               
               tags$br(),
               tags$br(),
@@ -57,7 +57,7 @@ shinyServer(function(session, input, output) {
               tags$br(),
               "1. Enter your probability in the textbox.",
               tags$br(),
-              "2. Press the 'Submit' button to see if your answer is correct",
+              "2. Once the correct image appears move on to the next question",
               tags$br(),
               
               "If you want to get hints, please click 'Sample Answer' button.",
@@ -94,135 +94,123 @@ shinyServer(function(session, input, output) {
   
 ######### Input Values 1 Event ##########
 
-
+  
   # observeEvent(input$feedback1, {
   #   toggle(id= "panelS1")
   # })
-  # 
-  # 
-  # #output saying if answer is correct or not
-  # output$answerl11 <- renderPrint({
-  #   
-  #   validate(
-  #     need(input$PA != "", "Please enter your probability")
-  #   )
-  #   
-  #   if(input$PA == bank[numbersl1$quesanswerl1,5]){
-  #     cat("Great! You are right!")
-  #     updateButton(session, "next11", disabled = F)
-  #   
-  #   }
-  #   else{
-  #     updateButton(session, "next11", disabled = F)
-  #     cat("Please adjust your answer")
-  #     
-  #   }
-  #   
-  # })
   
-  observeEvent(input$feedback1, {
-    toggle(id= "panelS1")
-  })
+  #input$PA <- isolate(input$PA)
+
+    #output saying if answer is correct or not
+    output$answerl11 <- renderPrint({
   
-  probability1 <- isolate(input$PA)
-  #output saying if answer is correct or not
-  output$answerl11 <- eventReactive(input$SubmitNumeric1,
-  {
-    renderPrint({
-      
-        # validate(
-        #   need(input$PA != "", "Please enter your probability")
-        # )
-        
-        if(input$PA == bank[numbersl1$quesanswerl1,5]){
-          cat("Great! You are right!")
-          updateButton(session, "next11", disabled = F)
-        }
-        else{
-          updateButton(session, "next11", disabled = F)
-          cat("Please adjust your answer")
-        }
-      })
-  })
-  
-  output$outsideNumericDiagram1 <- eventReactive(
-    input$SubmitNumeric1, {
-    
       validate(
         need(input$PA != "", "Please enter your probability")
       )
-      if(1 - input$PA <= 1 && 1 - input$PA >= 0)
-        1-input$PA
+  
+      if(input$PA == bank[numbersl1$quesanswerl1,5]){
+        cat("Great! You are right!")
+        updateButton(session, "next11", disabled = F)
+      }
+      
+      else{
+        updateButton(session, "next11", disabled = F)
+        cat("Please adjust your answer")
+      }
+  
+    })
+    
+    output$outsideNumericDiagram1 <- reactive({
+      {
+        validate(
+          need(input$PA != "", "Please enter your probability")
+        )
+        if(1 - input$PA <= 1 && 1 - input$PA >= 0)
+          1-input$PA
+        else
+          "Impossible to exist"
+      }
+    })
+  
+    
+    #Output the check or the X
+    output$answerl11Picture <- 
+      renderUI({
+        #input$SubmitNumeric1
+        validate(
+          need(input$PA != "", "")
+        )
+        if(input$PA == bank[numbersl1$quesanswerl1,5]){
+          img(src = "correct.png", alt = "Correct", width = 30)
+        }
+        else{
+          img(src = "incorrect.png", alt = "Incorrect", width = 30)
+        }
+      })
+    
+    
+    #Graph for One Event input number
+    
+    
+    w1 = reactive({
+      #input$SubmitNumeric1
+      print('where is this')
+      compute.Venn(Venn(SetNames = c("1","2"), Weight = c(`01` = input$PA,`11` = .05, `10` = .01)), type = "circles", doEuler = TRUE) #ERROR IS COMING FROM HERE
+    })
+    output$enterplot1 <- renderPlot({
+      #input$SubmitNumeric1
+      validate(
+        need(input$PA != "", "Please enter your probability")
+      )
+      isolate({
+        plot(c(0,1),c(0,1), type = 'n',xaxt='n', yaxt='n',ann=FALSE)
+      })
+      
+      col1l1 <- rgb(red = .0, green = 0, blue = 1, alpha = 0.3)
+      #draw.circle(input$movel1,input$move1l1,input$radiusl1,col=col1l1)
+      if(input$PA >= 0 && input$PA <= 1)
+        draw.circle(.5,.5,input$PA/1.77,col=col1l1)
       else
         "Impossible to exist"
-    }
-  )
-  
-  #Output the check or the X
-  output$answerl11Picture <- renderUI({
-    input$SubmitNumeric1
-    validate(
-      need(probability1 != "", "")
-    )
-    if(probability1 == bank[numbersl1$quesanswerl1,5]){
-      img(src = "correct.png", alt = "Correct", width = 30)
-    }
-    else{
-      img(src = "incorrect.png", alt = "Incorrect", width = 30)
-    }
-  })
-  
-  #Graph for One Event input number
-  
-  
-  w1 = reactive({
-    input$SubmitNumeric1
-    print('where is this')
-    compute.Venn(Venn(SetNames = c("1","2"), Weight = c(`01` = probability1,`11` = .05, `10` = .01)), type = "circles", doEuler = TRUE) #ERROR IS COMING FROM HERE
-  })
-  output$enterplot1 <- renderPlot({
-    input$SubmitNumeric1
-    validate(
-      need(probability1 != "", "Please enter your probability")
-    )
-    isolate({
-      plot(c(0,1),c(0,1), type = 'n',xaxt='n', yaxt='n',ann=FALSE)
+    }, width = 350, height = 350)
+    
+    
+    #pic1
+    observeEvent(input$pic1,{
+      toggle('pic1_div')
+      output$Feed11 <- renderUI({
+        img(src = bank[numbersl1$quesanswerl1, 19], alt = bank[numbersl1$quesanswerl1, 20],  height = "70%",  width = "70%")
+      })
+    })
+    #observation 
+    observeEvent(input$pic11,{
+      print("does detect pic11")
+      toggle('pic11_div')
+      output$Feed1 <- renderUI({
+        img(src = bank[numbersl1$quesanswerl1, 19], alt = bank[numbersl1$quesanswerl1, 20], height = "70%",  width = "70%")
+      })
     })
     
-    col1l1 <- rgb(red = .0, green = 0, blue = 1, alpha = 0.3)
-    #draw.circle(input$movel1,input$move1l1,input$radiusl1,col=col1l1)
-    if(probability1 >= 0 && probability1 <= 1)
-      draw.circle(.5,.5,probability1/1.77,col=col1l1)
-    else
-      "Impossible to exist"
-  }, width = 350, height = 350)
-  
-  
-  #pic1
-  observeEvent(input$pic1,{
-    toggle('pic1_div')
-    output$Feed11 <- renderUI({
-      img(src = bank[numbersl1$quesanswerl1, 19], alt = bank[numbersl1$quesanswerl1, 20],  height = "70%",  width = "70%")
-    })
-  })
-  #observation 
-  observeEvent(input$pic11,{
-    toggle('pic11_div')
-    output$Feed1 <- renderUI({
-      img(src = bank[numbersl1$quesanswerl1, 19], alt = bank[numbersl1$quesanswerl1, 20], height = "25%",  width = "25%")
-    })
-  })
-  
-  observeEvent(input$next11,{
-    numbersl1$quesanswerl1 <- sample(space[-numbersl1$quesanswerl1],1)
-    updateNumericInput(session, "PA", label = NULL, value = NA,
-                       min = 0, max = 1, step = 0.01)
-    updateButton(session, "next11", disabled = F)
-    updateCheckboxInput(session, "pic1", value = F)
-  })
+    # #observation 
+    # observeEvent(input$pic11,{
+    #   toggle('pic11_div')
+    #   output$Feed1 <- renderUI({
+    #     img(src = bank[numbersl1$quesanswerl1, 19], alt = bank[numbersl1$quesanswerl1, 20], height = "25%",  width = "25%")
+    #   })
+    # })
     
+    observeEvent(input$next11,{
+      hide('pic11_div')
+      numbersl1$quesanswerl1 <- sample(space[-numbersl1$quesanswerl1],1)
+      updateNumericInput(session, "PA", label = NULL, value = NA,
+                         min = 0, max = 1, step = 0.01)
+      updateButton(session, "next11", disabled = F)
+      updateCheckboxInput(session, "pic1", value = F)
+    })
+    print("Right above")
+    #print(input$SubmitNumeric1)
+    print("Right after")
 
-  
 
   
   
@@ -307,6 +295,7 @@ shinyServer(function(session, input, output) {
   space <- c(1:5)
   #Reset the sliders when the next question comes up
   observeEvent(input$next1, {
+    hide('pic1_div')
     numbersl1$quesanswerl1 <- sample(space[-numbersl1$quesanswerl1],1)
     updateSliderInput(session, "radiusl1",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel1",min=0,max=1,step=0.01,value=0.49)
@@ -348,6 +337,14 @@ shinyServer(function(session, input, output) {
 ################# level 2 #################################
   
   ####### 2 Events enterPlot section ##################
+  # observeEvent(input$pic11,{
+  #   toggle('pic11_div')
+  #   output$Feed1 <- renderUI({
+  #     img(src = bank[numbersl1$quesanswerl1, 19], alt = bank[numbersl1$quesanswerl1, 20], height = "70%",  width = "25%")
+  #   })
+  # })
+  
+  
   observeEvent(input$pic22,{
     toggle('pic22_div')
     output$Feed2 <- renderUI({
@@ -446,6 +443,7 @@ shinyServer(function(session, input, output) {
                        min = 0, max = 1, step = 0.01)
     updateButton(session, "next22", disabled = F)
     updateCheckboxInput(session, "pic2", value = F)
+    hide('pic22_div')
   })
   
 
@@ -597,6 +595,7 @@ shinyServer(function(session, input, output) {
     updateSliderInput(session, "radius2l2",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel2",min=0,max=1,step=0.01,value=0.55)
     updateSliderInput(session, "move2l2",min=0,max=1,step=0.01,value=0.5)
+    hide('pic2_div')
   })
 observeEvent(input$feedback2, {
     toggle(id= "panelS2")
@@ -796,14 +795,7 @@ observeEvent(input$feedback22, {
   })
   
   
-  
-  # observeEvent(input$next11,{
-  #   numbersl1$quesanswerl1 <- sample(space[-numbersl1$quesanswerl1],1)
-  #   updateNumericInput(session, "PA", label = NULL, value = NA,
-  #                      min = 0, max = 1, step = 0.01)
-  #   updateButton(session, "next11", disabled = F)
-  #   updateCheckboxInput(session, "pic1", value = F)
-  # })
+
 
   observeEvent(input$next33,{
     numbersl3$quesanswerl3 <- sample(space3[-numbersl3$quesanswerl3],1)
@@ -823,6 +815,7 @@ observeEvent(input$feedback22, {
                        min = 0, max = 1, step = 0.01)
     updateButton(session, "next33", disabled = F)
     updateCheckboxInput(session, "pic3", value = F)
+    hide('pic33_div')
   })
   
   #Random Question
@@ -1133,7 +1126,7 @@ observeEvent(input$feedback22, {
     updateSliderInput(session, "radius3l3",min=0,max=1.2,step = 0.01,value = 0.05)
     updateSliderInput(session, "movel33",min=0,max=1,step=0.01,value=0.5)
     updateSliderInput(session, "move3l3",min=0,max=1,step=0.01,value=0.45)
-    
+    hide('pic3_div')
   })
   observeEvent(input$feedback3, {
     toggle(id= "panelS3")

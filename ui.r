@@ -128,8 +128,7 @@ ui <- list(
                         fluidRow(
                           column(4, uiOutput("labeldol1")),
                           column(6, offset= 0, uiOutput("PA11")), 
-                          column(6, numericInput("PA",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))),
-                        actionButton("SubmitNumeric1","Check Answer")
+                          column(6, numericInput("PA",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 )))
                         
                       ),
             ####### Slider Sidebar Level 1 #################
@@ -153,8 +152,7 @@ ui <- list(
                               ),
                         column(6, offset= 0, uiOutput("PA1")),
                         column(4, offset= 0, style='padding:0px;',verbatimTextOutput("PAl1"))
-                      ),
-                      actionButton("SubmitSlider1","Check Answer")
+                      )
                       ),
                       tags$head(
                         #Probability of blue circle
@@ -235,8 +233,7 @@ ui <- list(
                           column(5,uiOutput("labeldoBGl2")),
                           column(6, offset = 0, uiOutput("AB2")),
                           column(4, offset = 0, style='padding:0px;',verbatimTextOutput("ABl2"))
-                        ),
-                        actionButton("SubmitSlider2","Check Answer")
+                        )
                       ),
                       
         ################## 2 Event Numeric ###########################
@@ -260,7 +257,6 @@ ui <- list(
                           column(6, offset= 0, uiOutput("AB22")),
                           column(6, numericInput("A2B",label = NULL, value=NULL, min = 0.01, max = 1, step = 0.01 ))
                           ),
-                        actionButton("SubmitSlider2","Check Answer")
                       ),
         
         ############# Probability of circles ###############
@@ -409,8 +405,7 @@ ui <- list(
                           column(5,uiOutput("labeldoBGRl3")),
                           column(6, offset = 0, uiOutput("ABC3")),
                           column(4, offset = 0, style='padding:0px;',verbatimTextOutput("ABCl3"))
-                        ),
-                        actionButton("SubmitSlider3","Check Answer")
+                        )
                         
                       ),
             ############## 3 Event Numerics ###########################
@@ -458,9 +453,7 @@ ui <- list(
                           column(4,uiOutput("labeldoBGRl33")),
                           column(6, offset= 0, uiOutput("ABC33")),
                           column(6, numericInput("A3BC",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
-                          ),
-                        
-                        actionButton("SubmitNumeric3","Check Answer")
+                          )
                       )
                       
                       )
@@ -483,29 +476,42 @@ ui <- list(
                       
                       #Will not output graph
         ################Numeric Plot Level 1 ###########################
-                      conditionalPanel(
+        #     div(style="display: inline-block; vertical-align: top; width: 200px" ,
+        #         actionButton("pic11", "Sample Answer")),
+        #     hidden(div(id='pic11_div', htmlOutput("Feed1"))))),
+        # p("The generated plot does not reflect true scale"),
+        # 
+        # p(textOutput("answerl11")),
+        # htmlOutput("answerl11Picture"),
+        #
+        # useShinyjs()
+        # div(style="display: inline-block;vertical-align:top; width: 200px;",
+        #     actionButton("next11","Next Question")),              
+        
+        conditionalPanel(
                         condition = "input.check1 == 'Numeric'",
                         flowLayout(div(plotOutput("enterplot1"),p("Probability of the complements = ", textOutput("outsideNumericDiagram1", inline = TRUE))),
                                    
                                    useShinyjs(),
                                    
                                    verticalLayout(
-                                     div(actionButton("pic11", "Sample Answer")),
-                                     hidden(div(id='pic11_div', htmlOutput("Feed1"))))),
-                        p("The generated plot does not reflect true scale"),
-                        
-                        
-                        p(textOutput("answerl11")),
-                        htmlOutput("answerl11Picture"),
-                        #div(actionButton("feedback11", "Feedback")),
-                        div(actionButton("next11","Next Question")),
-                        br(),br(),
+                                         div(style="display: inline-block; vertical-align: top; width: 200px" ,
+                                             actionButton("pic11", "Sample Answer")),
+                                         hidden(div(id='pic11_div', htmlOutput("Feed1"))))),
+                                     p("The generated plot does not reflect true scale"),
 
+                                     p(textOutput("answerl11")),
+                                     htmlOutput("answerl11Picture"),
+
+                                     useShinyjs(),
+                                     div(style="display: inline-block;vertical-align:top; width: 200px;",
+                                         actionButton("next11","Next Question")),
                         
-                      ),
+                        ),
                       
                       
               ######Slider Level 1 #################
+        
                       #Slider Plot Level 1
                       conditionalPanel(
                         condition = "input.check1 == 'Slider'",
@@ -553,10 +559,24 @@ ui <- list(
                           
                           useShinyjs(),
                           verticalLayout(
+                            
+                          
+                          #     div(style="display: inline-block; vertical-align: top; width: 200px" ,
+                          #         actionButton("pic11", "Sample Answer")),
+                          #     hidden(div(id='pic11_div', htmlOutput("Feed1"))))),
+                          # p("The generated plot does not reflect true scale"),
+                          # 
+                          # p(textOutput("answerl11")),
+                          # htmlOutput("answerl11Picture"),
+                          #
+                          # useShinyjs()
+                          # div(style="display: inline-block;vertical-align:top; width: 200px;",
+                          #     actionButton("next11","Next Question")),
+                          
+                            
                             div(style="display: inline-block; vertical-align: top; width: 200px" ,
                                 actionButton("pic22", "Sample Answer")),
-                            hidden(div(id='pic22_div', htmlOutput("Feed2")))
-                          )),
+                            hidden(div(id='pic22_div', htmlOutput("Feed2"))))),
                         p("The generated plot does not reflect true scale"),
                         
                         p(textOutput("answerl22")),
@@ -600,12 +620,19 @@ ui <- list(
                     conditionalPanel(
                       condition = "input.modes =='level3'",
             ##########Input 3 ####################
+            
+            
+            
+            
+                    
                       p(textOutput("questionl3")), #should be with p() but that does not output correctly
                       
                       
                       conditionalPanel(
                         condition = "input.check3 == 'Numeric3'",
                         flowLayout(
+                          
+                          
                           div(style ="display: inline-block;vertical-align:top;",
                               plotOutput("enterplot3"),p("Probability of the intersection of the complements = ", textOutput("outsideNumericDiagram3", inline = TRUE))),
                           useShinyjs(),
@@ -775,46 +802,33 @@ ui <- list(
           withMathJax(),
           h2("References"),
           p(class = "hangingindent",
-            "Winston Chang and Barbara Borges Ribeiro (2018), \"shinydashboard: Create Dashboards with 'Shiny'\". R package version 0.7.1.
+            "Chang, W. and Borges Ribeiro, B. (2018), shinydashboard: Create Dashboards with 'Shiny', R package. Available from
   https://CRAN.R-project.org/package=shinydashboard"),
           p(class = "hangingindent",
-            "Winston Chang, Joe Cheng, JJ Allaire, Yihui Xie and Jonathan McPherson (2020), \"shiny: Web Application Framework for R.\" R package
-  version 1.5.0. https://CRAN.R-project.org/package=shiny"),
+            "Chang, W., Cheng, J., Allaire, J., Xie, Y., and McPherson J. (2020), shiny: Web application framework for R, R package. Available from 
+  https://CRAN.R-project.org/package=shiny"),
           p(class = "hangingindent",
-            "Dean Attali (2020), shinyjs: Easily Improve the User Experience of Your Shiny Apps in Seconds. R package version 1.1.
+            "Attali, D. (2020), shinyjs: Easily Improve the User Experience of Your Shiny Apps in Seconds, R package. Available from
   https://CRAN.R-project.org/package=shinyjs"),
-          p(class = "hangingindent",
-            "Eric Bailey (2015), shinyBS: Twitter Bootstrap Components for Shiny. R package version 0.61.
+          p(class = "hangingindent", "Bailey, E. (2015), shinyBS: Twitter Bootstrap Components for Shiny, R package. Available from
   https://CRAN.R-project.org/package=shinyBS"),
           p(class = "hangingindent",
-            "Victor Perrier, Fanny Meyer and David Granjon (2020), shinyWidgets: Custom Inputs Widgets for Shiny. R package version 0.5.3.
+            "Perrier, V., Meyer F., and Granjon D. (2020), shinyWidgets: Custom Inputs Widgets for Shiny, R package. Available from
   https://CRAN.R-project.org/package=shinyWidgets"),
           p(class = "hangingindent",
-            "Jonathan Swinton (2020), Vennerable: Venn and Euler area-proportional diagrams. R package version 3.1.0.9000.
+            "Swinton, J. (2020), Vennerable: Venn and Euler area-proportional diagrams, R package. Available from
   https://github.com/js229/Vennerable"),
           p(class = "hangingindent",
-            "Lemon, J. (2006), Plotrix: a package in the red light district of R. R-News, 6(4): 8-12."),
+            "Lemon, J. (2006), Plotrix: a package in the red light district of R, R package. Available from
+  https://CRAN.R-project.org/package=plotrix"),
           p(class = "hangingindent",
-            "Robert Carey and Neil Hatfield (2020), boastUtils: BOAST Utilities. R package version 0.1.4.
+            "Carey, R. and Hatfield, N. (2020), boastUtils: BOAST Utilities, R package. Available from
   https://github.com/EducationShinyAppTeam/boastUtils")
           
-          
-          
-          
-          
-          # Repeat as needed
-          
-          #citation(package = "shinyjs")
-          # p(citation("shinydashboard")),
-          # p(citation("shiny")),
-          # p(citation("shinyjs")),
-          # p(citation("shinyBS")),
-          # p(citation("shinyWidgets"),
-          # p(citation("V8"))
+
   )
   
   
     )
                     ))
 )
-#funchir::stale_package_check("ui")
