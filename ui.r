@@ -4,10 +4,13 @@ library(shinyjs)
 library(shinyBS)
 library(shinyWidgets)
 library(V8)
-#library(Vennerable)
+library(boastUtils)
 
-#fresh the whole page
-jsResetCode <- "shinyjs.reset= function() {history.go(0)}"
+#Note: variables ending in 1 are for the slider diagram with 1 event
+#         Varialbes ending in 11 are for the input diagram with 1 event
+#         variables ending in 2 are for the slider diagram with 2 events
+#         Varialbes ending in 22 are for the input diagram with 2 event
+#               and so on with 3 eve
 
 ## App Meta Data----------------------------------------------------------------
 APP_TITLE  <<- "Venn Diagram App"
@@ -17,15 +20,18 @@ APP_DESCP  <<- paste(
 )
 ## End App Meta Data------------------------------------------------------------
 
+#fresh the whole page
+jsResetCode <- "shinyjs.reset= function() {history.go(0)}"
+
 # Define UI for application that draws a histogram
 ui <- list(
   dashboardPage(
     skin = "blue",
     dashboardHeader(title="Venn Diagrams",
                     titleWidth = 250,
-                    tags$li(class = "dropdown", actionLink("info",icon("info",class="myClass"))),
-                    tags$li(class = "dropdown", actionLink("hint",icon("question",class="myClass"))),
-                    tags$li(class = "dropdown", tags$a(href='https://shinyapps.science.psu.edu/',icon("home")))
+                    tags$li(class = "dropdown", actionLink("info", icon("info", class="myClass"))),
+                    
+                    tags$li(class = "dropdown", tags$a(href='https://shinyapps.science.psu.edu/', icon("home")))
                     ),
     dashboardSidebar(
       width = 250,
@@ -46,7 +52,7 @@ ui <- list(
       ),
       tabItems(
       #Homepage
-
+############# The Overview Tab ################### 
       tabItem(tabName = "Overview",
                   
               h1("Venn Diagrams"),
@@ -69,11 +75,11 @@ ui <- list(
                   tags$li("Press the 'Submit' button to see if your answer is correct")
                 ), 
                 tags$li("The 'Reset' button lets you try again, the 'Next' button provides a new question."),
-                tags$li("If you want to get hints, please click 'Sample Answer' button.")
+                tags$li("After attempting the problem, you can check the basic relationship of the events using the 'Sample Answer' button.")
                 ),
               
               
-              div(style = "text-align: center",bsButton("go", "GO!", icon("bolt"))),br(),
+              div(style = "text-align: center", bsButton("go", "GO!", icon("bolt"))), br(),
               h2("Acknowledgements"),
               p("This app was developed and coded by Qichao Chen with input from Yuxin Zhang, 
                 Sitong Liu and Yingjie Wang in 2017.It was then modified by Yubaihe Zhou to 
@@ -83,17 +89,15 @@ ui <- list(
               div(class = "updated", "Last Update: 07/05/2020 by EJW."    
                   )),
 
-  ################Main Venn Diagram Tab #########################################
+  ################ Main Venn Diagram Tab #########################################
       tabItem(tabName = "circle",
               
                 # fresh the whole page
                 useShinyjs(),
                 extendShinyjs(text = jsResetCode),
-                # tags$head(
-                #   tags$style(".shiny-notification {position:fixed;bottom:50px;left:25%;width:50%;} ")),
                 sidebarLayout(
                   sidebarPanel( #SIDEBAR PANEL OF THE 
-                    #hide value of silder bar
+                    #hides value of slider bar
                     tags$head(tags$style(HTML('.irs-from, .irs-to, .irs-min, .irs-max, .irs-single {
                                               visibility: hidden !important;
                                               }'))),
@@ -118,7 +122,7 @@ ui <- list(
                       br(),
                       #Radio Buttons
                       div(style="display: inline-block;vertical-align:top;",
-                          radioButtons("check1",label = NULL,choices = c("Numeric Input" = "Numeric",
+                          radioButtons("check1", label = NULL, choices = c("Numeric Input" = "Numeric",
                                                                          "Slider Input" = "Slider"),
                                        selected = "Numeric", inline = F, width = NULL)
                           ),
@@ -128,7 +132,7 @@ ui <- list(
                         fluidRow(
                           column(4, uiOutput("labeldol1")),
                           column(6, offset= 0, uiOutput("PA11")), 
-                          column(6, numericInput("PA",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 )))
+                          column(6, numericInput("PA", label = NULL, value=NULL, min = 0, max = 1, step = 0.01 )))
                         
                       ),
             ####### Slider Sidebar Level 1 #################
@@ -140,18 +144,18 @@ ui <- list(
                                  tags$h3("Blue Circle"),
                                  div(style = "position: absolute; left: 0.5em; top: 3em", p("Small")),
                                  div(style = "position: absolute; right: 0.5em; top: 3em", p("Large")),
-                                 sliderInput("radiusl1",label = NULL,min = 0,max = 1.2,step = 0.005,value = 0.05,ticks = F),
+                                 sliderInput("radiusl1", label = NULL, min = 0, max = 1.2, step = 0.005, value = 0.05, ticks = F),
                                  div(style = "position: absolute; left: 0.5em; top: 7em", p("Left")),
                                  div(style = "position: absolute; right: 0.5em; top: 7em", p("Right")),
-                                 sliderInput("movel1",label = NULL,min=0,max=1,step=0.01,ticks = FALSE,value=0.49),
+                                 sliderInput("movel1", label = NULL, min=0, max=1, step=0.01, ticks = FALSE, value=0.49),
                                  div(style = "position: absolute; left: 0.5em; top: 11em", p("Down")),
                                  div(style = "position: absolute; right: 0.5em; top: 11em", p("Up")),
-                                 sliderInput("move1l1",label = NULL,min=0,max=1,step=0.01,ticks = FALSE,value=0.5),
-                                 circle = T, status = "info", icon = icon("sliders"), width = "300px",up = T,
+                                 sliderInput("move1l1", label = NULL, min=0, max=1, step=0.01, ticks = FALSE, value=0.5),
+                                 circle = T, status = "info", icon = icon("sliders"), width = "300px", up = T,
                                  tooltip = tooltipOptions(title = "Click to adjust blue circle !"))
                               ),
                         column(6, offset= 0, uiOutput("PA1")),
-                        column(4, offset= 0, style='padding:0px;',verbatimTextOutput("PAl1"))
+                        column(4, offset= 0, style='padding:0px;', verbatimTextOutput("PAl1"))
                       )
                       ),
                       tags$head(
@@ -168,18 +172,14 @@ ui <- list(
                                         }
                                         "))
                         ),
-            
-                      
-            
                       ),
             ############# 2 Events Sidebar ####################################
                     conditionalPanel(
                       condition = "input.modes == 'level2'",
-            
                       br(),
                       #Radio Buttons
                       div(style="display: inline-block;vertical-align:top;",
-                          radioButtons("check2",label = NULL,choices = c("Numeric Input" = "Numeric2",
+                          radioButtons("check2", label = NULL, choices = c("Numeric Input" = "Numeric2",
                                                                                "Slider Input" = "Slider2"),
                                              selected = "Numeric2", inline = F, width = NULL),
                           
@@ -194,13 +194,13 @@ ui <- list(
                                    tags$h3("Blue Circle"),
                                    div(style = "position: absolute; left: 0.5em; top: 3em", p("Small")),
                                    div(style = "position: absolute; right: 0.5em; top: 3em", p("Large")),
-                                   sliderInput("radiusl2",label = NULL,min = 0,max = 1.2,step = 0.005,value = 0.05,ticks = F),
+                                   sliderInput("radiusl2", label = NULL, min = 0, max = 1.2, step = 0.005, value = 0.05, ticks = F),
                                    div(style = "position: absolute; left: 0.5em; top: 7em", p("Left")),
                                    div(style = "position: absolute; right: 0.5em; top: 7em", p("Right")),
-                                   sliderInput("movel12",label = NULL,min=0,max=1,step=0.01,ticks = FALSE,value=0.45),
+                                   sliderInput("movel12", label = NULL, min=0, max=1, step=0.01, ticks = FALSE, value=0.45),
                                    div(style = "position: absolute; left: 0.5em; top: 11em", p("Down")),
                                    div(style = "position: absolute; right: 0.5em; top: 11em", p("Up")),
-                                   sliderInput("move1l2",label = NULL,min=0,max=1,step=0.01,ticks = FALSE,value=0.5),
+                                   sliderInput("move1l2", label = NULL, min=0, max=1, step=0.01, ticks = FALSE, value=0.5),
                                    circle = T, status = "info", icon = icon("sliders"), width = "300px", up = T,
                                    tooltip = tooltipOptions(title = "Click to adjust blue circle !"))
                           ),
@@ -214,25 +214,25 @@ ui <- list(
                                    tags$h3("Green Circle"),
                                    div(style = "position: absolute; left: 0.5em; top: 3em", p("Small")),
                                    div(style = "position: absolute; right: 0.5em; top: 3em", p("Large")),
-                                   sliderInput("radius2l2",label = NULL,min = 0,max = 1.2,step = 0.005,value = 0.05,ticks = F),
+                                   sliderInput("radius2l2", label = NULL, min = 0, max = 1.2, step = 0.005, value = 0.05, ticks = F),
                                    div(style = "position: absolute; left: 0.5em; top: 7em", p("Left")),
                                    div(style = "position: absolute; right: 0.5em; top: 7em", p("Right")),
-                                   sliderInput("movel2",label = NULL,min=0,max=1,step=0.01,ticks = FALSE,value=0.55),
+                                   sliderInput("movel2", label = NULL, min=0, max=1, step=0.01, ticks = FALSE, value=0.55),
                                    div(style = "position: absolute; left: 0.5em; top: 11em", p("Down")),
                                    div(style = "position: absolute; right: 0.5em; top: 11em", p("Up")),
-                                   sliderInput("move2l2",label = NULL,min=0,max=1,step=0.01,ticks = FALSE,value=0.5),
+                                   sliderInput("move2l2", label = NULL, min=0, max=1, step=0.01, ticks = FALSE, value=0.5),
                                    circle = T, status = "success", icon = icon("sliders"), width = "300px", up = T,
                                    tooltip = tooltipOptions(title = "Click to adjust green circle !"))
                           ),
                           column(6, offset = 0, uiOutput("PB2")),
-                          column(4, offset = 0, style='padding:0px;',verbatimTextOutput("PBl2"))
+                          column(4, offset = 0, style='padding:0px;', verbatimTextOutput("PBl2"))
                         ),
-                        fluidRow(column(6, offset = 0,uiOutput("inter2"))),
+                        fluidRow(column(6, offset = 0, uiOutput("inter2"))),
                         br(),
                         fluidRow(
-                          column(5,uiOutput("labeldoBGl2")),
+                          column(5, uiOutput("labeldoBGl2")),
                           column(6, offset = 0, uiOutput("AB2")),
-                          column(4, offset = 0, style='padding:0px;',verbatimTextOutput("ABl2"))
+                          column(4, offset = 0, style='padding:0px;', verbatimTextOutput("ABl2"))
                         )
                       ),
                       
@@ -241,21 +241,21 @@ ui <- list(
                         condition = "input.check2 == 'Numeric2'",
                         #Blue
                         fluidRow(
-                          column(4,uiOutput("labeldoBl2")),
+                          column(4, uiOutput("labeldoBl2")),
                           column(6, offset= 0, uiOutput("PA22")),
-                          column(6, numericInput("P2A",label = NULL, value=NULL, min = 0.01, max = 1, step = 0.01 ))
+                          column(6, numericInput("P2A", label = NULL, value=NULL, min = 0.01, max = 1, step = 0.01 ))
                           ),
                         #Green
                         fluidRow(
-                          column(4,uiOutput("labeldoGl2")),
+                          column(4, uiOutput("labeldoGl2")),
                           column(6, offset= 0, uiOutput("PB22")),
-                          column(6, numericInput("P2B",label = NULL, value=NULL, min = 0.01, max = 1, step = 0.01 ))
+                          column(6, numericInput("P2B", label = NULL, value=NULL, min = 0.01, max = 1, step = 0.01 ))
                           ),
                         #Intersection
                         fluidRow(
-                          column(4,uiOutput("labeldoBGl22")),
+                          column(4, uiOutput("labeldoBGl22")),
                           column(6, offset= 0, uiOutput("AB22")),
-                          column(6, numericInput("A2B",label = NULL, value=NULL, min = 0.01, max = 1, step = 0.01 ))
+                          column(6, numericInput("A2B", label = NULL, value=NULL, min = 0.01, max = 1, step = 0.01 ))
                           ),
                       ),
         
@@ -309,7 +309,7 @@ ui <- list(
                       br(),
                       #Radio Buttons
                       div(style="display: inline-block;vertical-align:top;",
-                          radioButtons("check3",label = NULL,choices = c("Numeric Input" = "Numeric3",
+                          radioButtons("check3", label = NULL, choices = c("Numeric Input" = "Numeric3",
                                                                                "Slider Input" = "Slider3"),
                                              selected = "Numeric3", inline = F, width = NULL)
                       ),
@@ -323,13 +323,13 @@ ui <- list(
                                    tags$h3("Blue Circle"),
                                    div(style = "position: absolute; left: 0.5em; top: 3em", p("Small")),
                                    div(style = "position: absolute; right: 0.5em; top: 3em", p("Large")),
-                                   sliderInput("radiusl3",label = NULL,min = 0,max = 1.2,step = 0.005,value = 0.05,ticks = F),
+                                   sliderInput("radiusl3", label = NULL, min = 0, max = 1.2, step = 0.005, value = 0.05, ticks = F),
                                    div(style = "position: absolute; left: 0.5em; top: 7em", p("Left")),
                                    div(style = "position: absolute; right: 0.5em; top: 7em", p("Right")),
-                                   sliderInput("movel13",label = NULL,min=0,max=1,step=0.01,ticks = FALSE,value=0.45),
+                                   sliderInput("movel13", label = NULL, min=0, max=1, step=0.01, ticks = FALSE, value=0.45),
                                    div(style = "position: absolute; left: 0.5em; top: 11em", p("Down")),
                                    div(style = "position: absolute; right: 0.5em; top: 11em", p("Up")),
-                                   sliderInput("move1l3",label = NULL,min=0,max=1,step=0.01,ticks = FALSE,value=0.5),
+                                   sliderInput("move1l3", label = NULL, min=0, max=1, step=0.01, ticks = FALSE, value=0.5),
                                    circle = T, status = "info", icon = icon("sliders"), width = "300px", up = T, #status = myClass1
                                    tooltip = tooltipOptions(title = "Click to adjust blue circle !"))
                           ),
@@ -343,18 +343,18 @@ ui <- list(
                                    tags$h3("Green Circle"),
                                    div(style = "position: absolute; left: 0.5em; top: 3em", p("Small")),
                                    div(style = "position: absolute; right: 0.5em; top: 3em", p("Large")),
-                                   sliderInput("radius2l3",label = NULL,min = 0,max = 1.2,step = 0.005,value = 0.05,ticks = F),
+                                   sliderInput("radius2l3", label = NULL, min = 0, max = 1.2, step = 0.005, value = 0.05, ticks = F),
                                    div(style = "position: absolute; left: 0.5em; top: 7em", p("Left")),
                                    div(style = "position: absolute; right: 0.5em; top: 7em", p("Right")),
-                                   sliderInput("movel23",label = NULL,min=0,max=1,step=0.01,ticks = FALSE,value=0.55),
+                                   sliderInput("movel23", label = NULL, min=0, max=1, step=0.01, ticks = FALSE, value=0.55),
                                    div(style = "position: absolute; left: 0.5em; top: 11em", p("Down")),
                                    div(style = "position: absolute; right: 0.5em; top: 11em", p("Up")),
-                                   sliderInput("move2l3",label = NULL,min=0,max=1,step=0.01,ticks = FALSE,value=0.5),
+                                   sliderInput("move2l3", label = NULL, min=0, max=1, step=0.01, ticks = FALSE, value=0.5),
                                    circle = T, status = "success", icon = icon("sliders"), width = "300px", up = T, #used to have status = "MyClass2", other status = "MyClass1"
                                    tooltip = tooltipOptions(title = "Click to adjust green circle !"))
                           ),
                           column(6, offset = 0, uiOutput("PB3")),
-                          column(4, offset = 0, style='padding:0px;',verbatimTextOutput("PBl3"))
+                          column(4, offset = 0, style='padding:0px;', verbatimTextOutput("PBl3"))
                         ),
                         #Red Circle
                         fluidRow(
@@ -363,48 +363,48 @@ ui <- list(
                                    tags$h3("Red Circle"),
                                    div(style = "position: absolute; left: 0.5em; top: 3em", p("Small")),
                                    div(style = "position: absolute; right: 0.5em; top: 3em", p("Large")),
-                                   sliderInput("radius3l3",label = NULL,min = 0,max = 1.2,step = 0.005,value = 0.05,ticks = F),
+                                   sliderInput("radius3l3", label = NULL, min = 0, max = 1.2, step = 0.005, value = 0.05, ticks = F),
                                    div(style = "position: absolute; left: 0.5em; top: 7em", p("Left")),
                                    div(style = "position: absolute; right: 0.5em; top: 7em", p("Right")),
-                                   sliderInput("movel33",label = NULL,min=0,max=1,step=0.01,ticks = FALSE,value=0.5),
+                                   sliderInput("movel33", label = NULL, min=0, max=1, step=0.01, ticks = FALSE, value=0.5),
                                    div(style = "position: absolute; left: 0.5em; top: 11em", p("Down")),
                                    div(style = "position: absolute; right: 0.5em; top: 11em", p("Up")),
-                                   sliderInput("move3l3",label = NULL,min=0,max=1,step=0.01,ticks = FALSE,value=0.45),
+                                   sliderInput("move3l3", label = NULL, min=0, max=1, step=0.01, ticks = FALSE, value=0.45),
                                    circle = T, status = "danger", icon = icon("sliders"), width = "300px", up = T, #status = MyClass3 
                                    tooltip = tooltipOptions(title = "Click to adjust red circle !"))
                           ),
                           column(6, offset = 0, uiOutput("PC3")),
-                          column(4, offset = 0, style='padding:0px;',verbatimTextOutput("PCl3"))
+                          column(4, offset = 0, style='padding:0px;', verbatimTextOutput("PCl3"))
                         ),
                         
-                        fluidRow(column(6, offset = 0,uiOutput("inter3"))),
+                        fluidRow(column(6, offset = 0, uiOutput("inter3"))),
                         br(),
                         #Cyan
                         fluidRow(
-                          column(5,uiOutput("labeldoBGl3")),
+                          column(5, uiOutput("labeldoBGl3")),
                           column(6, offset = 0, uiOutput("AB3")),
-                          column(4, offset = 0, style='padding:0px;',verbatimTextOutput("ABl3"))
+                          column(4, offset = 0, style='padding:0px;', verbatimTextOutput("ABl3"))
                         ),
                         
                         # Purple
                         fluidRow(
-                          column(5,uiOutput("labeldoBRl3")),
+                          column(5, uiOutput("labeldoBRl3")),
                           column(6, offset = 0, uiOutput("AC3")),
-                          column(4, offset = 0, style='padding:0px;',verbatimTextOutput("ACl3"))
+                          column(4, offset = 0, style='padding:0px;', verbatimTextOutput("ACl3"))
                         ),
                         
                         #darkolivegreen
                         fluidRow(
-                          column(5,uiOutput("labeldoGRl3")),
+                          column(5, uiOutput("labeldoGRl3")),
                           column(6, offset = 0, uiOutput("BC3")),
-                          column(4, offset = 0, style='padding:0px;',verbatimTextOutput("BCl3"))
+                          column(4, offset = 0, style='padding:0px;', verbatimTextOutput("BCl3"))
                         ),
                         
                         #central part
                         fluidRow(
-                          column(5,uiOutput("labeldoBGRl3")),
+                          column(5, uiOutput("labeldoBGRl3")),
                           column(6, offset = 0, uiOutput("ABC3")),
-                          column(4, offset = 0, style='padding:0px;',verbatimTextOutput("ABCl3"))
+                          column(4, offset = 0, style='padding:0px;', verbatimTextOutput("ABCl3"))
                         )
                         
                       ),
@@ -413,46 +413,46 @@ ui <- list(
                         condition = "input.check3 == 'Numeric3'",
                         #Blue
                         fluidRow(
-                          column(4,uiOutput("labeldoBl3")),
+                          column(4, uiOutput("labeldoBl3")),
                           column(6, offset= 0, uiOutput("PA33")),
-                          column(6, numericInput("P3A",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
+                          column(6, numericInput("P3A", label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
                           ),
                         #Green
                         fluidRow(
-                          column(4,uiOutput("labeldoGl3")),
+                          column(4, uiOutput("labeldoGl3")),
                           column(6, offset= 0, uiOutput("PB33")),
-                          column(6, numericInput("P3B",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
+                          column(6, numericInput("P3B", label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
                           ),
                         #Red
                         fluidRow(
-                          column(4,uiOutput("labeldoRl3")),
+                          column(4, uiOutput("labeldoRl3")),
                           column(6, offset= 0, uiOutput("PC33")),
-                          column(6, numericInput("P3C",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
+                          column(6, numericInput("P3C", label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
                           ),
                         #Intersection
                         #Cyan
                         fluidRow(
-                          column(4,uiOutput("labeldoBGl33")),
+                          column(4, uiOutput("labeldoBGl33")),
                           column(6, offset= 0, uiOutput("AB33")),
-                          column(6, numericInput("A3B",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
+                          column(6, numericInput("A3B", label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
                           ),
                         #Purple
                         fluidRow(
-                          column(4,uiOutput("labeldoBRl33")),
+                          column(4, uiOutput("labeldoBRl33")),
                           column(6, offset= 0, uiOutput("AC33")),
-                          column(6, numericInput("A3C",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
+                          column(6, numericInput("A3C", label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
                           ),
                         #darkolivegreen
                         fluidRow(
-                          column(4,uiOutput("labeldoGRl33")),
+                          column(4, uiOutput("labeldoGRl33")),
                           column(6, offset= 0, uiOutput("BC33")),
-                          column(6, numericInput("B3C",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
+                          column(6, numericInput("B3C", label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
                           ),
                         #Central part
                         fluidRow(
-                          column(4,uiOutput("labeldoBGRl33")),
+                          column(4, uiOutput("labeldoBGRl33")),
                           column(6, offset= 0, uiOutput("ABC33")),
-                          column(6, numericInput("A3BC",label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
+                          column(6, numericInput("A3BC", label = NULL, value=NULL, min = 0, max = 1, step = 0.01 ))
                           )
                       )
                       
@@ -464,81 +464,74 @@ ui <- list(
                   
                   #MAIN PANEL OF THE VENN DIAGRAM
                   mainPanel(
-                    #fluidRow(column(1,textOutput("challenge"))),
+                    #fluidRow(column(1, textOutput("challenge"))),
                     fluidRow(column(1, h2('Challenge'))),
                 
-                    fluidRow(column(11,textOutput("instruction"))),
+                    fluidRow(column(11, textOutput("instruction"))),
           ############## 1 Element Probabilities #################################################
                     conditionalPanel(
                       condition ="input.modes == 'level1'", 
                       p(textOutput("questionl1")),#should be with p() but that does not output correctly
                       
                       
-                      #Will not output graph
-        ################Numeric Plot Level 1 ###########################
-        #     div(style="display: inline-block; vertical-align: top; width: 200px" ,
-        #         actionButton("pic11", "Sample Answer")),
-        #     hidden(div(id='pic11_div', htmlOutput("Feed1"))))),
-        # p("The generated plot does not reflect true scale"),
-        # 
-        # p(textOutput("answerl11")),
-        # htmlOutput("answerl11Picture"),
-        #
-        # useShinyjs()
-        # div(style="display: inline-block;vertical-align:top; width: 200px;",
-        #     actionButton("next11","Next Question")),              
         
         conditionalPanel(
                         condition = "input.check1 == 'Numeric'",
-                        flowLayout(div(plotOutput("enterplot1"),p("Probability of the complement = ", textOutput("outsideNumericDiagram1", inline = TRUE))),
-                                   
+                        actionButton("hintSingle1",icon("question", class="myClass")),
+                     
+                        flowLayout(
+                          div(plotOutput("enterplot1"),
+                              ),
                                    useShinyjs(),
                                    
                                    verticalLayout(
-                                         div(style="display: inline-block; vertical-align: top; width: 200px" ,
+                                     
+                                         div(style="display: inline-block; vertical-align: top; width: 200px",
                                              actionButton("pic11", "Sample Answer")),
                                          hidden(div(id='pic11_div', htmlOutput("Feed1"))))),
-                                     p("The generated plot does not reflect true scale"),
-
-                                     p(textOutput("answerl11")),
+                                    
+                                     p("Probability of the complement = ", textOutput("outsideNumericDiagram1", inline = TRUE)),
+                                     p(uiOutput("answerl11")),
                                      htmlOutput("answerl11Picture"),
+                                     
 
                                      useShinyjs(),
                                      div(style="display: inline-block;vertical-align:top; width: 200px;",
-                                         actionButton("next11","Next Question")),
+                                         actionButton("next11", "Next Question")),
                         
                         ),
                       
                       
               ######Slider Level 1 #################
         
+        
                       #Slider Plot Level 1
                       conditionalPanel(
                         condition = "input.check1 == 'Slider'",
-                        
+                        actionButton("hintSingle11",icon("question", class="myClass")),
                         br(),
                         flowLayout(
                                       
                           div(plotOutput("distPlotl1", width = "70%")),
                           
                           useShinyjs(),
+                          
                           verticalLayout(
                             div(actionButton("pic1", "Sample Answer")),
                                 
                             hidden(div(id='pic1_div', htmlOutput("Feed11"))))
                           
                         ),
-                        #wellPanel(
-                        #p(textOutput('PA')),
-                        p(textOutput("answerl1")), #style = "width : 50%;background-color: #ffffff;",
+                        
+                        p(uiOutput("answerl1")), #style = "width : 50%;background-color: #ffffff;",
                         htmlOutput("answerl1Picture"),
-                        #),
+                        
                         br(),
                         useShinyjs(),
                         #div(actionButton("feedback1", "Feedback")),
                         div(actionButton("next1", "Next Question")),
                         
-                        br(),br(),
+                        br(), br(),
                         )
 
                       
@@ -548,48 +541,40 @@ ui <- list(
                     conditionalPanel(
                       condition = "input.modes == 'level2'",
               ##########Input Level 2 ###################
+                      
                       p(textOutput("questionl2")),#should be with p() but that does not output correctly
                       conditionalPanel(
+                        actionButton("hintMultiple22",icon("question", class="myClass")),
                         condition = "input.check2 == 'Numeric2'",
                         flowLayout(
                           div(style="display: inline-block;vertical-align:top;length: 20px", 
-                              plotOutput("enterplot2"),p("Probability of the intersection of the complements = ", textOutput("outsideNumericDiagram2", inline = TRUE))),
-                          
+                              plotOutput("enterplot2"),
+                              ),
                           
                           
                           useShinyjs(),
                           verticalLayout(
                             
-                          
-                          #     div(style="display: inline-block; vertical-align: top; width: 200px" ,
-                          #         actionButton("pic11", "Sample Answer")),
-                          #     hidden(div(id='pic11_div', htmlOutput("Feed1"))))),
-                          # p("The generated plot does not reflect true scale"),
-                          # 
-                          # p(textOutput("answerl11")),
-                          # htmlOutput("answerl11Picture"),
-                          #
-                          # useShinyjs()
-                          # div(style="display: inline-block;vertical-align:top; width: 200px;",
-                          #     actionButton("next11","Next Question")),
-                          
-                            
+
                             div(style="display: inline-block; vertical-align: top; width: 200px" ,
                                 actionButton("pic22", "Sample Answer")),
                             hidden(div(id='pic22_div', htmlOutput("Feed2"))))),
-                        p("The generated plot does not reflect true scale"),
                         
-                        p(textOutput("answerl22")),
+                        p("Probability of the intersection of the complements = ", textOutput("outsideNumericDiagram2", inline = TRUE)),
+
+                        
+                        p(uiOutput("answerl22")),
                         htmlOutput("answerl22Picture"),
                         
                         useShinyjs(),
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            actionButton("next22","Next Question")),
+                            actionButton("next22", "Next Question")),
                         
                       ),
                   ########Slider level 2#################
                       conditionalPanel(
                         condition = "input.check2 == 'Slider2'",
+                        actionButton("hintMultiple2",icon("question", class="myClass")),
                         br(),
                         flowLayout(
                           div(plotOutput("distPlotl2", width = "70%")),
@@ -599,65 +584,59 @@ ui <- list(
                             hidden(div(id='pic2_div', htmlOutput("Feed22")))
                           )),
                         
-                          p(textOutput("answerl2")),
+                          p(uiOutput("answerl2")),
                           
                           htmlOutput("answerl2Picture")
                         
                         ,
                         br(),
                         useShinyjs(),
-                        # div(style="display: inline-block;vertical-align:top; width: 200px;",
-                        #     actionButton("submit_buttonl2","Submit", style="color: #fff; background-color: #337ab7")),
-                        
+                 
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            actionButton("next2","Next Question"))
-                        # br(),
-                        # hidden( div(id='submit_buttonl2_div', h4(textOutput("correctness2")))),
-                      )
+                            actionButton("next2", "Next Question"))
+                        )
                       
                       ),
        ##############3 Probabilities ###########################################
                     conditionalPanel(
                       condition = "input.modes =='level3'",
             ##########Input 3 ####################
-            
-            
-            
-            
-                    
                       p(textOutput("questionl3")), #should be with p() but that does not output correctly
                       
                       
                       conditionalPanel(
                         condition = "input.check3 == 'Numeric3'",
+                        actionButton("hintMultiple33",icon("question", class="myClass")),
                         flowLayout(
-                          
-                          
                           div(style ="display: inline-block;vertical-align:top;",
-                              plotOutput("enterplot3"),p("Probability of the intersection of the complements = ", textOutput("outsideNumericDiagram3", inline = TRUE))),
+                              plotOutput("enterplot3")
+                              ),
+                          
                           useShinyjs(),
                           verticalLayout(
                             div(style="display: inline-block; vertical-align: top; width: 200px" ,
                                 actionButton("pic33", "Sample Answer")),
                             hidden(div(id='pic33_div', htmlOutput("Feed3")))
-                          )
-                        ),
-                        p("The generated plot does not reflect true scale"),
-                     
-                        p(textOutput("answerl33")),
+                          )),
+                        
+                        
+                        p("Probability of the intersection of the complements = ", textOutput("outsideNumericDiagram3", inline = TRUE)),
+                  
+                        p(uiOutput("answerl33")),
                         htmlOutput("answerl33Picture"),
                         
                         br(),
                         useShinyjs(),
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            actionButton("next33","Next Question")),
+                            actionButton("next33", "Next Question"))),
                        
-                      ),
+                      
             
             
-            #######Slider Level 3#######################
+            ####### Slider Level 3 #######################
                       conditionalPanel(
                         condition = "input.check3 == 'Slider3'",
+                        actionButton("hintMultiple3",icon("question", class="myClass")),
                         br(),
                         flowLayout(
                           div(style="display: inline-block;vertical-align:top;",
@@ -670,20 +649,19 @@ ui <- list(
                           )
                         ),
                        
-                        p(textOutput("answerl3")),
+                        p(uiOutput("answerl3")),
                         htmlOutput("answerl3Picture"),
                         
                         
                         br(),
                         useShinyjs(),
-                        # div(style="display: inline-block;vertical-align:top; width: 200px;",
-                        #     actionButton("submit_buttonl3","Submit", style="color: #fff; background-color: #337ab7")),
+
                         
                         div(style="display: inline-block;vertical-align:top; width: 200px;",
-                            actionButton("next3","Next Question")),
+                            actionButton("next3", "Next Question")),
                        
                       ),
-            
+                    ),
             
             
             ################### HTML Circle computations #################################
@@ -790,17 +768,26 @@ ui <- list(
                                         
                                         "))
                         
-                        ))
+                        )
                     
                         )
                   
                         )
                         
                       ),
-  
+################ References Tab ############################################
   tabItem(tabName = "references",
           withMathJax(),
           h2("References"),
+          p(class = "hangingindent",
+            "Attali, D. (2020), shinyjs: Easily Improve the User Experience of Your Shiny Apps in Seconds, R package. Available from
+  https://CRAN.R-project.org/package=shinyjs"),
+          p(class = "hangingindent", 
+            "Bailey, E. (2015), shinyBS: Twitter Bootstrap Components for Shiny, R package. Available from
+  https://CRAN.R-project.org/package=shinyBS"),
+          p(class = "hangingindent",
+            "Carey, R. and Hatfield, N. (2020), boastUtils: BOAST Utilities, R package. Available from
+  https://github.com/EducationShinyAppTeam/boastUtils"),
           p(class = "hangingindent",
             "Chang, W. and Borges Ribeiro, B. (2018), shinydashboard: Create Dashboards with 'Shiny', R package. Available from
   https://CRAN.R-project.org/package=shinydashboard"),
@@ -808,24 +795,14 @@ ui <- list(
             "Chang, W., Cheng, J., Allaire, J., Xie, Y., and McPherson J. (2020), shiny: Web application framework for R, R package. Available from 
   https://CRAN.R-project.org/package=shiny"),
           p(class = "hangingindent",
-            "Attali, D. (2020), shinyjs: Easily Improve the User Experience of Your Shiny Apps in Seconds, R package. Available from
-  https://CRAN.R-project.org/package=shinyjs"),
-          p(class = "hangingindent", "Bailey, E. (2015), shinyBS: Twitter Bootstrap Components for Shiny, R package. Available from
-  https://CRAN.R-project.org/package=shinyBS"),
+            "Lemon, J. (2006), Plotrix: a package in the red light district of R, R package. Available from
+  https://CRAN.R-project.org/package=plotrix"),
           p(class = "hangingindent",
             "Perrier, V., Meyer F., and Granjon D. (2020), shinyWidgets: Custom Inputs Widgets for Shiny, R package. Available from
   https://CRAN.R-project.org/package=shinyWidgets"),
           p(class = "hangingindent",
             "Swinton, J. (2020), Vennerable: Venn and Euler area-proportional diagrams, R package. Available from
-  https://github.com/js229/Vennerable"),
-          p(class = "hangingindent",
-            "Lemon, J. (2006), Plotrix: a package in the red light district of R, R package. Available from
-  https://CRAN.R-project.org/package=plotrix"),
-          p(class = "hangingindent",
-            "Carey, R. and Hatfield, N. (2020), boastUtils: BOAST Utilities, R package. Available from
-  https://github.com/EducationShinyAppTeam/boastUtils")
-          
-
+  https://github.com/js229/Vennerable")
   )
   
   
