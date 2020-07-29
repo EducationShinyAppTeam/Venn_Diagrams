@@ -7,7 +7,7 @@ library(V8)
 library(boastUtils)
 
 #Note: variables ending in 1 are for the slider diagram with 1 event
-#         Varialbes ending in 11 are for the input diagram with 1 event
+#         Variables ending in 11 are for the input diagram with 1 event
 #         variables ending in 2 are for the slider diagram with 2 events
 #         Varialbes ending in 22 are for the input diagram with 2 event
 #               and so on with 3 eve
@@ -82,9 +82,9 @@ ui <- list(
               div(style = "text-align: center", bsButton("go", "GO!", icon("bolt"))), br(),
               h2("Acknowledgements"),
               p("This app was developed and coded by Qichao Chen with input from Yuxin Zhang, 
-                Sitong Liu and Yingjie Wang in 2017.It was then modified by Yubaihe Zhou to 
-                allow direct numeric input  in 2018 and further modified by Jingjun Wang in 2019 
-                and by Ethan Wright to improve the visual presentation, feedback, and formatting in 2020."),
+                Sitong Liu and Yingjie Wang in 2017. It was then modified by Yubaihe Zhou to 
+                allow direct numeric input in 2018. This was further modified by Jingjun Wang in 2019. 
+                It was then modified by Ethan Wright to improve the visual presentation, feedback, and formatting in 2020."),
               
               div(class = "updated", "Last Update: 07/05/2020 by EJW."    
                   )),
