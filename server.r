@@ -34,38 +34,43 @@ shinyServer(function(session, input, output) {
       session = session,
       title = "Instructions:",
       text = tags$span(
-              "If you want to adjust the circles using sliders in the Venn Diagram:",
-              tags$br(),
-              "1. Move or change the size of the circles using sliders (accessed by the button).",
-              tags$br(),
-              "2. Once the correct image appears move on to the next question",
-              
-              tags$br(),
-              tags$br(),
-              "If you want to enter the probabilities directly:",
-              tags$br(),
-              "1. Enter your probability in the textbox.",
-              tags$br(),
-              "2. Once the correct image appears move on to the next question",
-              tags$br(),
-              
-              "After attempting the problem, you can check the basic relationship of the events using the 'Sample Answer' button.",
-              tags$br(),
-              "The 'Sample Answer' button shows a basic idea of what a correct diagram will look like; the 'Next' button provides a new question." 
-              ),                                                              
+        "If you want to adjust the circles using sliders in the Venn Diagram:",
+        tags$br(),
+        "1. Move or change the size of the circles 
+        using sliders (accessed by the button).",
+        tags$br(),
+        "2. Once the correct image appears move on to the next question",
+        
+        tags$br(),
+        tags$br(),
+        "If you want to enter the probabilities directly:",
+        tags$br(),
+        "1. Enter your probability in the textbox.",
+        tags$br(),
+        "2. Once the correct image appears move on to the next question",
+        tags$br(),
+        
+        "After attempting the problem, you can check the basic relationship of
+        the events using the 'Sample Answer' button.",
+        tags$br(),
+        "The 'Sample Answer' button shows a basic idea of what a correct
+        diagram will look like; the 'Next' button provides a new question." 
+      ),                                                              
       
       type = "info",
       html = TRUE
     )
   })
   
-  #The following is related to the ? mark buttons that appear in the body of the tabs. that give out large pop up alerts
+  #The following is related to the ? mark buttons that appear in the body of
+  #the tabs. that give out large pop up alerts
   observeEvent(input$hintSingle1,{
     sendSweetAlert(
       session = session,
       title = "Strategy:",
       text = tags$span(
-        "Understand if you are dealing with the event or the compliment of the event",
+        "Understand if you are dealing with the event or the compliment of
+        the event",
       )
     )
   })
@@ -75,10 +80,12 @@ shinyServer(function(session, input, output) {
       session = session,
       title = "Strategy:",
       text = tags$span(
-        "Understand if you are dealing with the event or the compliment of the event",
+        "Understand if you are dealing with the event or the compliment of the
+        event",
         tags$br(),
         tags$br(),
-        "In order to change the diagram circle click the colored circles in the side bar"
+        "In order to change the diagram circle click the colored circles in
+        the side bar"
       )
     )
   })
@@ -121,136 +128,143 @@ shinyServer(function(session, input, output) {
         "3. Check for independent relationships",
         tags$br(),
         tags$br(),
-        "In order to change the diagram circles click the colored circles in the side bar"
-        ),
+        "In order to change the diagram circles click the colored 
+        circles in the side bar"
+      ),
       type = "info",
       html = TRUE
     )
   }
-
   
-
+  
+  
   output$challenge <- renderText({paste("Challenge")})
   
-################# 1 Event #############################
+  ################# 1 Event #############################
   
-######### Input Values 1 Event ##########
-
-
-    #output saying if answer is correct or not
-    output$answerl11 <- renderUI({
+  ######### Input Values 1 Event ##########
   
-      validate(
-        need(input$PA != "", ""),
-        errorClass = "inline"
-      )
   
-      if(input$PA == bank[numbersl1$quesanswerl1, 5]){
-        updateButton(session, "next11", disabled = F)
-        p("Great! You are right!", class = "answertext")
-      }
-      
-      else{
-        updateButton(session, "next11", disabled = F)
-        p("Please adjust your answer", class = "redtext")
-      }
+  #output saying if answer is correct or not
+  output$answerl11 <- renderUI({
+    
+    validate(
+      need(input$PA != "", ""),
+      errorClass = "inline"
+    )
+    
+    if(input$PA == bank[numbersl1$quesanswerl1, 5]){
+      updateButton(session, "next11", disabled = F)
+      p("Great! You are right!", class = "answertext")
+    }
+    
+    else{
+      updateButton(session, "next11", disabled = F)
+      p("Please adjust your answer", class = "redtext")
+    }
+    
+  })
   
-    })
-    
-    output$outsideNumericDiagram1 <- reactive({
-      {
-        validate(
-          need(input$PA != "", "Please enter the probability")
-        )
-        if(1 - input$PA <= 1 && 1 - input$PA >= 0)
-          1-input$PA
-        else
-          "Impossible to exist"
-      }
-    })
-  
-    
-    #Output the check or the X
-    output$answerl11Picture <- 
-      renderUI({
-        #input$SubmitNumeric1
-        validate(
-          need(input$PA != "", "")
-        )
-        if(input$PA == bank[numbersl1$quesanswerl1, 5]){
-          img(src = "correct.png", alt = "Correct", width = 30)
-        }
-        else{
-          img(src = "incorrect.png", alt = "Incorrect", width = 30)
-        }
-      })
-    
-    
-    
-    #Graph for One Event input number
-    
-    
-    w1 = reactive({
-      #input$SubmitNumeric1
-      print('where is this')
-      compute.Venn(Venn(SetNames = c("1", "2"), Weight = c(`01` = input$PA, `11` = .05, `10` = .01)), type = "circles", doEuler = TRUE) #ERROR IS COMING FROM HERE
-    })
-    output$enterplot1 <- renderPlot({
-      #input$SubmitNumeric1
+  output$outsideNumericDiagram1 <- reactive({
+    {
       validate(
         need(input$PA != "", "Please enter the probability")
       )
-      isolate({
-        plot(c(0, 1), c(0, 1), type = 'n', xaxt = 'n', yaxt = 'n', ann = FALSE)
-      })
-      
-      col1l1 <- rgb(red = 0, green = 0, blue = 1, alpha = 0.3)
-      
-      if(input$PA >= 0 && input$PA <= 1){
-        draw.circle(.5, .5,input$PA/1.77, col = col1l1)
-        enable("pic11")
+      if(1 - input$PA <= 1 && 1 - input$PA >= 0)
+        1-input$PA
+      else
+        "Impossible to exist"
+    }
+  })
+  
+  
+  #Output the check or the X
+  output$answerl11Picture <- 
+    renderUI({
+      #input$SubmitNumeric1
+      validate(
+        need(input$PA != "", "")
+      )
+      if(input$PA == bank[numbersl1$quesanswerl1, 5]){
+        img(src = "correct.png", alt = "Correct", width = 30)
       }
       else{
-        "Impossible to exist"
-        enable("pic11")
+        img(src = "incorrect.png", alt = "Incorrect", width = 30)
       }
-    }, width = 350, height = 350)
-    
-    
-    #pic1
-    observeEvent(input$pic1, {
-      toggle('pic1_div')
-      output$Feed11 <- renderUI({
-        img(src = bank[numbersl1$quesanswerl1, 19], alt = bank[numbersl1$quesanswerl1, 20],  height = "70%",  width = "70%")
-      })
     })
-    #observation 
-    observeEvent(input$pic11, 
-    {
-      toggle('pic11_div')
-      output$Feed1 <- renderUI({
-        img(src = bank[numbersl1$quesanswerl1, 19], alt = bank[numbersl1$quesanswerl1, 20], height = "70%",  width = "70%")
-      })
+  
+  
+  
+  #Graph for One Event input number
+  
+  
+  w1 = reactive({
+    #input$SubmitNumeric1
+    compute.Venn(Venn(SetNames = c("1", "2"), 
+                      Weight = c(`01` = input$PA, `11` = .05, `10` = .01)), 
+                 type = "circles", doEuler = TRUE) 
+  })
+  output$enterplot1 <- renderPlot({
+    #input$SubmitNumeric1
+    validate(
+      need(input$PA != "", "Please enter the probability")
+    )
+    isolate({
+      plot(c(0, 1), c(0, 1), type = 'n', xaxt = 'n', yaxt = 'n', ann = FALSE)
     })
     
-
+    col1l1 <- rgb(red = 0, green = 0, blue = 1, alpha = 0.3)
     
-    observeEvent(input$next11, {
-      hide('pic11_div')
-      numbersl1$quesanswerl1 <- sample(space[-numbersl1$quesanswerl1], 1)
-      updateNumericInput(session, "PA", label = NULL, value = NA,
-                         min = 0, max = 1, step = 0.01)
-      updateButton(session, "next11", disabled = F)
-      updateCheckboxInput(session, "pic1", value = F)
-      disable("pic11")
+    if(input$PA >= 0 && input$PA <= 1){
+      draw.circle(.5, .5,input$PA/1.77, col = col1l1)
+      enable("pic11")
+    }
+    else{
+      "Impossible to exist"
+      enable("pic11")
+    }
+  }, width = 350, height = 350)
+  
+  
+  #pic1
+  observeEvent(input$pic1, {
+    toggle('pic1_div')
+    output$Feed11 <- renderUI({
+      img(src = bank[numbersl1$quesanswerl1, 19], 
+          alt = bank[numbersl1$quesanswerl1, 20], 
+          height = "70%",  width = "70%")
     })
-
-
-######### Slider Values 1 Event ############
+  })
+  #observation 
+  observeEvent(input$pic11, 
+               {
+                 toggle('pic11_div')
+                 output$Feed1 <- renderUI({
+                   img(src = bank[numbersl1$quesanswerl1, 19],
+                       alt = bank[numbersl1$quesanswerl1, 20],
+                       height = "70%",  width = "70%")
+                 })
+               })
+  
+  
+  
+  observeEvent(input$next11, {
+    hide('pic11_div')
+    numbersl1$quesanswerl1 <- sample(space[-numbersl1$quesanswerl1], 1)
+    updateNumericInput(session, "PA", label = NULL, value = NA,
+                       min = 0, max = 1, step = 0.01)
+    updateButton(session, "next11", disabled = F)
+    updateCheckboxInput(session, "pic1", value = F)
+    disable("pic11")
+  })
+  
+  
+  ######### Slider Values 1 Event ############
   output$distPlotl1 <- renderPlot({
     
     isolate({
-      plot(c(0, 1), c(0, 1), type = 'n', xaxt = 'n', yaxt = 'n', ann = FALSE)
+      plot(c(0, 1), c(0, 1),
+           type = 'n', xaxt = 'n', yaxt = 'n', ann = FALSE)
     })
     
     col1l1 <- rgb(red = .0, green = 0, blue = 1, alpha = 0.3)
@@ -270,7 +284,8 @@ shinyServer(function(session, input, output) {
     ycoordl1 <- NULL
     
     for(i in 1:subdividel1){
-      xcoordl1 <- c(xcoordl1, seq(from = 1/subdividel1, to = 1, by = 1/subdividel1))
+      xcoordl1 <- c(xcoordl1, seq(from = 1/subdividel1,
+                                  to = 1, by = 1/subdividel1))
       ycoordl1 <- c(ycoordl1, rep(i/subdividel1, subdividel1))
     }
     
@@ -280,14 +295,16 @@ shinyServer(function(session, input, output) {
     samplespacel1$xcenterl1 <- input$movel1 
     samplespacel1$ycenterl1 <- input$move1l1
     #Here they seem to calculate the radius again
-    samplespacel1$diffl1 <- sqrt((samplespacel1$xcenterl1-samplespacel1$xcoordl1)^2
-                                 +(samplespacel1$ycenterl1-samplespacel1$ycoordl1)^2)
+    samplespacel1$diffl1 <- sqrt((samplespacel1$xcenterl1
+                                  -samplespacel1$xcoordl1)^2
+                                 +(samplespacel1$ycenterl1
+                                   -samplespacel1$ycoordl1)^2)
     samplespacel1$inc1l1 <- samplespacel1$diffl1 <= samplespacel1$radiusl1 
     
     probl1 <- mean(samplespacel1$inc1l1)
     probabilityl1$probc1l1 <- signif(probl1, 2)
   })
-
+  
   observe({
     output$labeldol1 <- renderUI({
       bsButton("dol1", "", class = "btn-group")
@@ -295,9 +312,12 @@ shinyServer(function(session, input, output) {
   })
   
   observeEvent(input$reset_buttonl1, {
-    updateSliderInput(session, "radiusl1", min = 0, max = 1.2, step = 0.01, value = 0.05)
-    updateSliderInput(session, "movel1", min = 0, max = 1, step = 0.01, value = 0.5)
-    updateSliderInput(session, "move1l1", min = 0, max = 1, step = 0.01, value = 0.5)
+    updateSliderInput(session, "radiusl1", min = 0, max = 1.2,
+                      step = 0.01, value = 0.05)
+    updateSliderInput(session, "movel1", min = 0, max = 1,
+                      step = 0.01, value = 0.5)
+    updateSliderInput(session, "move1l1", min = 0, max = 1,
+                      step = 0.01, value = 0.5)
   })
   ### random choose question
   numbersl1 <- reactiveValues(quesanswerl1 = c())
@@ -318,13 +338,16 @@ shinyServer(function(session, input, output) {
   observeEvent(input$next1, {
     hide('pic1_div')
     numbersl1$quesanswerl1 <- sample(space[-numbersl1$quesanswerl1], 1)
-    updateSliderInput(session, "radiusl1", min = 0, max = 1.2, step = 0.01, value = 0.05)
-    updateSliderInput(session, "movel1", min = 0, max = 1, step = 0.01, value = 0.49)
-    updateSliderInput(session, "move1l1", min = 0, max = 1, step = 0.01, value = 0.5)
+    updateSliderInput(session, "radiusl1", min = 0, max = 1.2,
+                      step = 0.01, value = 0.05)
+    updateSliderInput(session, "movel1", min = 0, max = 1,
+                      step = 0.01, value = 0.49)
+    updateSliderInput(session, "move1l1", min = 0, max = 1,
+                      step = 0.01, value = 0.5)
   })
   #question
   output$questionl1 <- renderText(bank[numbersl1$quesanswerl1, 4])
-
+  
   
   output$answerl1 <- renderUI({
     if(probabilityl1$probc1l1 == bank[numbersl1$quesanswerl1, 5]){
@@ -333,7 +356,8 @@ shinyServer(function(session, input, output) {
     }
     else{
       updateButton(session, "next1", disabled = F)
-      p("Keep changing the size of your circle to match the probability desired", class = "redtext")
+      p("Keep changing the size of your circle 
+        to match the probability desired", class = "redtext")
     }
   })
   output$answerl1Picture <- renderUI({
@@ -349,20 +373,22 @@ shinyServer(function(session, input, output) {
     toggle(id = "panelN1")
   })
   
-
-
   
-
   
-################# 2 Events #################################
   
-
+  
+  
+  ################# 2 Events #################################
+  
+  
   ######### 2 Events input #######
   
   observeEvent(input$pic22, {
     toggle('pic22_div')
     output$Feed2 <- renderUI({
-      img(src = bank[numbersl2$quesanswerl2, 19], alt = bank[numbersl2$quesanswerl2,20], height = "70%", width = "70%")
+      img(src = bank[numbersl2$quesanswerl2, 19],
+          alt = bank[numbersl2$quesanswerl2,20],
+          height = "70%", width = "70%")
     })
   })
   
@@ -370,7 +396,9 @@ shinyServer(function(session, input, output) {
     validate(
       need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "")
     )
-    if((input$P2A == bank[numbersl2$quesanswerl2, 5])&(input$P2B == bank[numbersl2$quesanswerl2, 6])&(input$A2B == bank[numbersl2$quesanswerl2, 8])){
+    if((input$P2A == bank[numbersl2$quesanswerl2, 5])&
+       (input$P2B == bank[numbersl2$quesanswerl2, 6])&
+       (input$A2B == bank[numbersl2$quesanswerl2, 8])){
       updateButton(session, "next22", disabled = F)
       p("Great! You are right!", class = "answertext")
       
@@ -387,7 +415,9 @@ shinyServer(function(session, input, output) {
     validate(
       need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "")
     )
-    if((input$P2A == bank[numbersl2$quesanswerl2, 5])&(input$P2B == bank[numbersl2$quesanswerl2, 6])&(input$A2B == bank[numbersl2$quesanswerl2, 8])){
+    if((input$P2A == bank[numbersl2$quesanswerl2, 5])&
+       (input$P2B == bank[numbersl2$quesanswerl2, 6])&
+       (input$A2B == bank[numbersl2$quesanswerl2, 8])){
       img(src = "correct.png", alt = "Correct", width = 30)
     }
     else{
@@ -399,16 +429,24 @@ shinyServer(function(session, input, output) {
   
   #Stuff not in the first yet
   w2 = reactive({
-    compute.Venn(Venn(SetNames = c("", ""), Weight = c(`01` = input$P2B-input$A2B, `11` = input$A2B, `10` = input$P2A-input$A2B)), type = "circles", doEuler = TRUE)
+    compute.Venn(Venn(SetNames = c("", ""),
+                      Weight = c(`01` = input$P2B-input$A2B,
+                                 `11` = input$A2B, 
+                                 `10` = input$P2A-input$A2B)),
+                 type = "circles", doEuler = TRUE)
   })
   
   output$outsideNumericDiagram2 = reactive({
     validate(
-      need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "Please enter the probabilities")
+      need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")),
+           "Please enter the probabilities")
     )
     
-    if(((min(input$P2A, input$P2B) == 0 ) & (input$A2B == 0) ) || ((input$P2A == input$P2B ) & (input$P2A == input$A2B) & (input$P2B == input$A2B)) 
-       || ((input$P2A + input$P2B - input$A2B <= 1) & (input$A2B <= min(input$P2A, input$P2B)) ))
+    if(((min(input$P2A, input$P2B) == 0 ) & (input$A2B == 0) ) ||
+       ((input$P2A == input$P2B ) & (input$P2A == input$A2B) & 
+        (input$P2B == input$A2B)) 
+       || ((input$P2A + input$P2B - input$A2B <= 1) & 
+           (input$A2B <= min(input$P2A, input$P2B)) ))
       1 - (input$P2B-input$A2B) - input$A2B - (input$P2A-input$A2B)
     else
       "Impossible to exist"
@@ -416,21 +454,27 @@ shinyServer(function(session, input, output) {
   output$enterplot2 = renderPlot({
     #Confirms that all 3 inputs are used. 
     validate(
-      need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "Please enter the probabilities")
+      need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")),
+           "Please enter the probabilities")
     )
-    #If 0 for combination and at least one 0 in a category output remind need more than 1 event
+    #If 0 for combination and at least one 0 in a category 
+    #   output remind need more than 1 event
     if ((min(input$P2A, input$P2B) == 0 ) & (input$A2B == 0) ) {
-      isolate({plot(1, 1, col = "white", type = 'n', xaxt = 'n', yaxt = 'n', ann = FALSE)})
+      isolate({plot(1, 1, col = "white", type = 'n', xaxt = 'n',
+                    yaxt = 'n', ann = FALSE)})
       text(1, 1, "Note that there are two events", cex = 1, col = "red")
     }
     #If all of the values are equal
-    else if ((input$P2A == input$P2B ) & (input$P2A == input$A2B) & (input$P2B == input$A2B)) {
-      isolate({plot(1, 1, col = "white", type = 'n', xaxt = 'n', yaxt = 'n', ann = FALSE)})
+    else if ((input$P2A == input$P2B ) & (input$P2A == input$A2B) &
+             (input$P2B == input$A2B)) {
+      isolate({plot(1, 1, col = "white", type = 'n', xaxt = 'n',
+                    yaxt = 'n', ann = FALSE)})
       enable("pic22")
       draw.circle(1, 1, .1, col = "#7cc9b2")
     }
     #If all the inputs are met
-    else if ((input$P2A + input$P2B - input$A2B <= 1) & (input$A2B <= min(input$P2A, input$P2B)) ) {
+    else if ((input$P2A + input$P2B - input$A2B <= 1) & 
+             (input$A2B <= min(input$P2A, input$P2B)) ) {
       gp <- VennThemes(w2())
       gp[["Face"]][["11"]]$fill <-  "#79CAB1" #original mitegreen
       gp[["Face"]][["01"]]$fill <-  "#B6FEB5" #original green
@@ -443,7 +487,8 @@ shinyServer(function(session, input, output) {
       plot(w2(), gp = gp, show = list(SetLabels = FALSE)) #calls the plot function
     }
     else{ #If both of these results invalid
-      plot(1, 1, col = "white", type = 'n', xaxt = 'n', yaxt = 'n', ann = FALSE)
+      plot(1, 1, col = "white", type = 'n', 
+           xaxt = 'n', yaxt = 'n', ann = FALSE)
       text(1, 1, "Error: impossible to exist", cex = 1, col = "red")
       enable("pic22")
     }
@@ -464,11 +509,11 @@ shinyServer(function(session, input, output) {
     disable("pic22")
   })
   
-
   
   
-
-########### Slider Plot 2 Events ##################  
+  
+  
+  ########### Slider Plot 2 Events ##################  
   
   output$distPlotl2 <- renderPlot({
     # input$calculatel2 #Re-run when the button is clicked
@@ -485,7 +530,7 @@ shinyServer(function(session, input, output) {
     col1l2 <- rgb(red = 0, green = 0, blue = 1, alpha = 0.3)
     col2l2 <- rgb(red = 0, green = 1, blue = 0, alpha = 0.3)
     
-
+    
     draw.circle(input$movel12, input$move1l2, input$radiusl2, col = col1l2)
     draw.circle(input$movel2, input$move2l2, input$radius2l2, col = col2l2)
     
@@ -502,7 +547,8 @@ shinyServer(function(session, input, output) {
     
   )
   observe({
-    probabilityl2$dl2 <- ((input$movel12-input$movel2)^2+(input$move1l2-input$move2l2)^2)^0.5
+    probabilityl2$dl2 <- ((input$movel12-input$movel2)^2+
+                            (input$move1l2-input$move2l2)^2)^0.5
     
     subdividel2 <- 350
     
@@ -511,7 +557,8 @@ shinyServer(function(session, input, output) {
     
     for(i in 1:subdividel2){
       
-      xcoordl2 <- c(xcoordl2, seq(from = 1/subdividel2, to= 1, by = 1/subdividel2))
+      xcoordl2 <- c(xcoordl2, seq(from = 1/subdividel2, to = 1, 
+                                  by = 1/subdividel2))
       ycoordl2 <- c(ycoordl2, rep(i/subdividel2, subdividel2))
       
     }
@@ -527,13 +574,21 @@ shinyServer(function(session, input, output) {
     samplespacel2$ycenterc2l2 <- input$move2l2
     
     
-    samplespacel2$diffc1l2 <- sqrt((samplespacel2$xcenterc1l2-samplespacel2$xcoordl2)^2+(samplespacel2$ycenterc1l2-samplespacel2$ycoordl2)^2)
+    samplespacel2$diffc1l2 <- sqrt((samplespacel2$xcenterc1l2
+                                    -samplespacel2$xcoordl2)^2
+                                   +(samplespacel2$ycenterc1l2
+                                     -samplespacel2$ycoordl2)^2)
     samplespacel2$inc1l2 <- samplespacel2$diffc1l2 <= samplespacel2$radiusc1l2
     
-    samplespacel2$diffc2l2 <- sqrt((samplespacel2$xcenterc2l2-samplespacel2$xcoordl2)^2+(samplespacel2$ycenterc2l2-samplespacel2$ycoordl2)^2)
+    samplespacel2$diffc2l2 <- sqrt((samplespacel2$xcenterc2l2
+                                    -samplespacel2$xcoordl2)^2
+                                   +(samplespacel2$ycenterc2l2
+                                     -samplespacel2$ycoordl2)^2)
     samplespacel2$inc2l2 <- samplespacel2$diffc2l2 <= samplespacel2$radiusc2l2
     
-    samplespacel2$intersectionl2 <- (samplespacel2$diffc1l2 <= samplespacel2$radiusc1l2) & (samplespacel2$diffc2l2 <= samplespacel2$radiusc2l2)
+    samplespacel2$intersectionl2 <- (samplespacel2$diffc1l2 <=
+                                       samplespacel2$radiusc1l2) & 
+      (samplespacel2$diffc2l2 <= samplespacel2$radiusc2l2)
     
     p1l2 <- mean(samplespacel2$inc1l2)
     probabilityl2$probc1l2 <- signif(p1l2, 2)
@@ -569,19 +624,25 @@ shinyServer(function(session, input, output) {
   
   #reset 
   observeEvent(input$reset_buttonl2, {
-    updateSliderInput(session, "radiusl2", min = 0, max = 1.2, step = 0.01, value = 0.05)
-    updateSliderInput(session, "movel12", min = 0, max = 1, step = 0.01, value = 0.45)
-    updateSliderInput(session, "move1l2", min = 0, max = 1, step = 0.01, value = 0.5)
+    updateSliderInput(session, "radiusl2", min = 0, max = 1.2,
+                      step = 0.01, value = 0.05)
+    updateSliderInput(session, "movel12", min = 0, max = 1,
+                      step = 0.01, value = 0.45)
+    updateSliderInput(session, "move1l2", min = 0, max = 1,
+                      step = 0.01, value = 0.5)
     
-    updateSliderInput(session, "radius2l2", min = 0, max = 1.2, step = 0.01, value = 0.05)
-    updateSliderInput(session, "movel2", min = 0, max = 1, step = 0.01, value = 0.55)
-    updateSliderInput(session, "move2l2", min = 0, max = 1, step = 0.01, value = 0.5)
+    updateSliderInput(session, "radius2l2", min = 0, max = 1.2,
+                      step = 0.01, value = 0.05)
+    updateSliderInput(session, "movel2", min = 0, max = 1,
+                      step = 0.01, value = 0.55)
+    updateSliderInput(session, "move2l2", min = 0, max = 1,
+                      step = 0.01, value = 0.5)
   })
   ### random choose question
-  numbersl2 <- reactiveValues( quesanswerl2=c())
+  numbersl2 <- reactiveValues( quesanswerl2 = c())
   
   observe({
-    numbersl2$quesanswerl2=sample(6:10, 1)
+    numbersl2$quesanswerl2 = sample(6:10, 1)
   })
   output$PA2 <- renderPrint({
     cat(bank[numbersl2$quesanswerl2, 12])
@@ -606,27 +667,35 @@ shinyServer(function(session, input, output) {
   #Generate next question, reset the sliders
   observeEvent(input$next2, {
     numbersl2$quesanswerl2 <- sample(space2[-numbersl2$quesanswerl2], 1)
-    updateSliderInput(session, "radiusl2", min = 0, max = 1.2, step = 0.01, value = 0.05)
-    updateSliderInput(session, "movel12", min = 0, max = 1, step = 0.01, value = 0.45)
-    updateSliderInput(session, "move1l2", min = 0, max = 1, step = 0.01, value = 0.5)
+    updateSliderInput(session, "radiusl2", min = 0, max = 1.2,
+                      step = 0.01, value = 0.05)
+    updateSliderInput(session, "movel12", min = 0, max = 1,
+                      step = 0.01, value = 0.45)
+    updateSliderInput(session, "move1l2", min = 0, max = 1,
+                      step = 0.01, value = 0.5)
     
-    updateSliderInput(session, "radius2l2", min = 0, max = 1.2, step = 0.01, value = 0.05)
-    updateSliderInput(session, "movel2", min = 0, max = 1, step = 0.01, value = 0.55)
-    updateSliderInput(session, "move2l2", min = 0, max = 1, step = 0.01, value = 0.5)
+    updateSliderInput(session, "radius2l2", min = 0, max = 1.2,
+                      step = 0.01, value = 0.05)
+    updateSliderInput(session, "movel2", min = 0, max = 1,
+                      step = 0.01, value = 0.55)
+    updateSliderInput(session, "move2l2", min = 0, max = 1,
+                      step = 0.01, value = 0.5)
     hide('pic2_div')
   })
-observeEvent(input$feedback2, {
+  observeEvent(input$feedback2, {
     toggle(id = "panelS2")
   })
-
-
-observeEvent(input$feedback22, {
-  toggle(id = "panelN2")
-})
-
+  
+  
+  observeEvent(input$feedback22, {
+    toggle(id = "panelN2")
+  })
+  
   
   output$answerl2 <- renderUI({
-    if ((probabilityl2$probc1l2==bank[numbersl2$quesanswerl2, 5])&(probabilityl2$probc2l2==bank[numbersl2$quesanswerl2, 6])& (probabilityl2$probintersectionl2 == bank[numbersl2$quesanswerl2, 8])) 
+    if ((probabilityl2$probc1l2 == bank[numbersl2$quesanswerl2, 5])&
+        (probabilityl2$probc2l2 == bank[numbersl2$quesanswerl2, 6])&
+        (probabilityl2$probintersectionl2 == bank[numbersl2$quesanswerl2, 8])) 
     {
       updateButton(session, "next2", disabled = F)
       p("Great! You are right!", class = "answertext")
@@ -634,13 +703,17 @@ observeEvent(input$feedback22, {
     
     else{
       updateButton(session, "next2", disabled = F)
-      p("Keep changing the size and placement of your circles to match the probabilities desired.", class = "redtext")
+      p("Keep changing the size and placement of your circles to match
+        the probabilities desired.", class = "redtext")
     }
   })
   
   
   output$answerl2Picture <- renderUI({
-    if((probabilityl2$probc1l2==bank[numbersl2$quesanswerl2, 5])&(probabilityl2$probc2l2==bank[numbersl2$quesanswerl2, 6])& (probabilityl2$probintersectionl2 == bank[numbersl2$quesanswerl2, 8])){
+    if((probabilityl2$probc1l2 == bank[numbersl2$quesanswerl2, 5])&
+       (probabilityl2$probc2l2 == bank[numbersl2$quesanswerl2, 6])&
+       (probabilityl2$probintersectionl2 == 
+        bank[numbersl2$quesanswerl2, 8])){
       img(src = "correct.png", alt = "Correct", width = 30)
     }
     else{
@@ -653,27 +726,28 @@ observeEvent(input$feedback22, {
     toggle('pic2_div')
     output$Feed22 <- renderUI({
       
-      img(src = bank[numbersl2$quesanswerl2, 19], alt = bank[numbersl2$quesanswerl2, 20], height = "70%", width = "70%")
-      
+      img(src = bank[numbersl2$quesanswerl2, 19],
+          alt = bank[numbersl2$quesanswerl2, 20],
+          height = "70%", width = "70%")
     })
   })
   
   
   
   
-################# 3 Events Body #################################
+  ################# 3 Events Body #################################
   
-
   
-
   
-  ############# level3 enter input ###################
+  
+  
+  ############# 3 Events Numeric Input ###################
   observeEvent(input$pic33, {
     toggle('pic33_div')
     output$Feed3 <- renderUI({
-      
-      img(src = bank[numbersl3$quesanswerl3, 19], alt = bank[numbersl3$quesanswerl3, 20], height = "70%", width = "70%")
-      
+      img(src = bank[numbersl3$quesanswerl3, 19],
+          alt = bank[numbersl3$quesanswerl3, 20],
+          height = "70%", width = "70%")
     })
   })
   
@@ -686,40 +760,56 @@ observeEvent(input$feedback22, {
       `101` = round(input$A3B-input$A3BC, 4), 
       `110` = round(input$A3C-input$A3BC, 4),
       `011` = round(input$B3C-input$A3BC, 4),
-      `111` = round(input$A3BC, 4))), type = "circles", doEuler= TRUE)
+      `111` = round(input$A3BC, 4))), type = "circles", doEuler = TRUE)
   })
   
   output$outsideNumericDiagram3 = reactive({
     validate(
-      need(((input$P3A != "")&(input$P3B != "")&(input$P3C != "")&(input$A3B != "")&(input$A3C != "")&(input$B3C != "")&(input$A3BC != "")), 
+      need(((input$P3A != "")&(input$P3B != "")&(input$P3C != "")&
+              (input$A3B != "")&(input$A3C != "")&(input$B3C != "")&
+              (input$A3BC != "")), 
            "Please enter the probabilities")
     )
-    
-    if(((min(input$P3A, input$P3B, input$P3C) == 0 ) & (input$A3B == 0) & (input$A3C == 0) & (input$B3C == 0) & (input$A3BC == 0)) || 
-       ((input$P3A + input$P3B + input$P3C - input$A3B - input$A3C - input$B3C  <= 1) & (0 <= min(input$P3B-input$A3B-input$B3C+input$A3BC,
-                                                                                                  input$P3C-input$A3C-input$B3C+input$A3BC, input$P3A-input$A3B-input$A3C+input$A3BC,
-                                                                                                  input$A3B-input$A3BC, input$A3C-input$A3BC, input$B3C-input$A3BC, input$A3BC))))
-      1 - round(input$P3B-input$A3B-input$B3C+input$A3BC, 4) - round(input$P3C-input$A3C-input$B3C+input$A3BC, 4) - round(input$P3A-input$A3B-input$A3C+input$A3BC, 4) - round(input$A3B-input$A3BC, 4) - 
-      round(input$A3C-input$A3BC, 4) - round(input$B3C-input$A3BC, 4) - round(input$A3BC, 4)
+    if((input$P3A + input$P3B + input$P3C - input$A3B - input$A3C 
+        - input$B3C  <= 1) #If all of the values combined are less than 1
+       & (0 <= min(round(input$P3B-input$A3B-input$B3C+input$A3BC,4),
+                   round(input$P3C-input$A3C-input$B3C+input$A3BC,4),
+                   round(input$P3A-input$A3B-input$A3C+input$A3BC,4),
+                   input$A3B-input$A3BC, input$A3C-input$A3BC,
+                   input$B3C-input$A3BC, input$A3BC)))
+      1 - round(input$P3B-input$A3B-input$B3C+input$A3BC, 4) - 
+      round(input$P3C-input$A3C-input$B3C+input$A3BC, 4) - 
+      round(input$P3A-input$A3B-input$A3C+input$A3BC, 4) - 
+      round(input$A3B-input$A3BC, 4) - 
+      round(input$A3C-input$A3BC, 4) - round(input$B3C-input$A3BC, 4) - 
+      round(input$A3BC, 4)
     else
       "Impossible to exist"
-    })
-
-  
+  })
   
   output$enterplot3 = renderPlot({
     validate(
-      need(((input$P3A != "")&(input$P3B != "")&(input$P3C != "")&(input$A3B != "")&(input$A3C != "")&(input$B3C != "")&(input$A3BC != "")), 
+      need(((input$P3A != "")&(input$P3B != "")&(input$P3C != "")&
+              (input$A3B != "")&(input$A3C != "")&(input$B3C != "")&
+              (input$A3BC != "")), 
            "Please enter the probabilities")
     )
-    if ((min(input$P3A, input$P3B, input$P3C) == 0 ) & (input$A3B == 0) & (input$A3C == 0) & (input$B3C == 0) & (input$A3BC == 0)) {
-      isolate({plot(1, 1, col= "white", type = 'n', xaxt='n', yaxt='n', ann =FALSE)})
+    if ((min(input$P3A, input$P3B, input$P3C) == 0 ) & (input$A3B == 0) & 
+        (input$A3C == 0) & (input$B3C == 0) & (input$A3BC == 0))
+      {
+      isolate({plot(1, 1, col = "white", type = 'n', xaxt = 'n',
+                    yaxt = 'n', ann = FALSE)})
       text(1, 1, "Note that there are three events", cex = 1, col = "red")
+
     }
-    else if ((input$P3A + input$P3B + input$P3C - input$A3B - input$A3C - input$B3C  <= 1) #If all of the values combined are less than 1
-                      & (0 <= min(input$P3B-input$A3B-input$B3C+input$A3BC, input$P3C-input$A3C-input$B3C+input$A3BC, input$P3A-input$A3B-input$A3C+input$A3BC,
-                                  input$A3B-input$A3BC, input$A3C-input$A3BC, input$B3C-input$A3BC, input$A3BC))
-             ) { 
+    else if ((input$P3A + input$P3B + input$P3C - input$A3B - input$A3C 
+              - input$B3C  <= 1) #If all of the values combined are less than 1
+             & (0 <= min(round(input$P3B-input$A3B-input$B3C+input$A3BC,4),
+                         round(input$P3C-input$A3C-input$B3C+input$A3BC,4),
+                         round(input$P3A-input$A3B-input$A3C+input$A3BC,4),
+                         input$A3B-input$A3BC, input$A3C-input$A3BC,
+                         input$B3C-input$A3BC, input$A3BC))
+    ) { 
       gp <- VennThemes(w3())
       enable("pic33")
       #Fills the Venn Diagram with color values
@@ -736,28 +826,33 @@ observeEvent(input$feedback22, {
       gp[["Set"]][["Set2"]]$lwd <- 1.5
       gp[["Set"]][["Set3"]]$col <- 'black'
       gp[["Set"]][["Set3"]]$lwd <- 1.5
-      
-      #plot(w3(), gp = gp, show = list(SetLabels = FALSE)) 
-      #Vennerable::
-      plot(w3(), gp = gp, show = list(SetLabels = FALSE))     
+      plot(w3(), gp = gp, show = list(SetLabels = FALSE))
+
     }
     else{
-      plot(1, 1, col= "white", type = 'n', xaxt='n', yaxt='n', ann =FALSE, )
+      plot(1, 1, col = "white", type = 'n', xaxt = 'n',
+           yaxt = 'n', ann = FALSE, )
       #Error catching section
       text(1, 1, "Error: impossible to exist", cex = 1, col = "red")
     }
   }, width = 300, height = 350)
-
   
-
+  
+  
   output$answerl33 <- renderUI({
     validate(
-      need(((input$P3A != "")&(input$P3B != "")&(input$P3C != "")&(input$A3B != "")&(input$A3C != "")&(input$B3C != "")&(input$A3BC != "")), 
+      need(((input$P3A != "")&(input$P3B != "")&(input$P3C != "")&
+              (input$A3B != "")&(input$A3C != "")&(input$B3C != "")&
+              (input$A3BC != "")), 
            "")
     )
-    if(any(bank[numbersl3$quesanswerl3, 3]==c(11, 12, 13, 14))){
-      if((input$P3A == bank[numbersl3$quesanswerl3, 5])&(input$P3B == bank[numbersl3$quesanswerl3, 6])&(input$P3C == bank[numbersl3$quesanswerl3, 7])
-         &(input$A3B == bank[numbersl3$quesanswerl3, 8])&(input$B3C == bank[numbersl3$quesanswerl3, 9])&(input$A3C == bank[numbersl3$quesanswerl3, 10])){
+    if(any(bank[numbersl3$quesanswerl3, 3] == c(11, 12, 13, 14))){
+      if((input$P3A == bank[numbersl3$quesanswerl3, 5])&
+         (input$P3B == bank[numbersl3$quesanswerl3, 6])&
+         (input$P3C == bank[numbersl3$quesanswerl3, 7])&
+         (input$A3B == bank[numbersl3$quesanswerl3, 8])&
+         (input$B3C == bank[numbersl3$quesanswerl3, 9])&
+         (input$A3C == bank[numbersl3$quesanswerl3, 10])){
         updateButton(session, "next33")
         p("Great! You are right!", class = "answerext")
       }
@@ -766,10 +861,14 @@ observeEvent(input$feedback22, {
         p("Please adjust your answer", class = "redtext")
       }
     }
-    else if(any(bank[numbersl3$quesanswerl3, 3]==c(15))){
-      if((input$P3A == bank[numbersl3$quesanswerl3, 5])&(input$P3B == bank[numbersl3$quesanswerl3, 6])&(input$P3C == bank[numbersl3$quesanswerl3, 7])
-         &(input$A3B == bank[numbersl3$quesanswerl3, 8])&(input$B3C == bank[numbersl3$quesanswerl3, 9])&(input$A3C == bank[numbersl3$quesanswerl3, 10])
-         &(input$A3BC == bank[numbersl3$quesanswerl3, 11])){
+    else if(any(bank[numbersl3$quesanswerl3, 3] == c(15))){
+      if((input$P3A == bank[numbersl3$quesanswerl3, 5])&
+         (input$P3B == bank[numbersl3$quesanswerl3, 6])&
+         (input$P3C == bank[numbersl3$quesanswerl3, 7])&
+         (input$A3B == bank[numbersl3$quesanswerl3, 8])&
+         (input$B3C == bank[numbersl3$quesanswerl3, 9])&
+         (input$A3C == bank[numbersl3$quesanswerl3, 10])&
+         (input$A3BC == bank[numbersl3$quesanswerl3, 11])){
         
         updateButton(session, "next33", disabled = F)
         p("Great! You are right!", class = "answertext")
@@ -783,23 +882,33 @@ observeEvent(input$feedback22, {
   
   output$answerl33Picture <- renderPrint({
     validate(
-      need(((input$P3A != "")&(input$P3B != "")&(input$P3C != "")&(input$A3B != "")&(input$A3C != "")&(input$B3C != "")&(input$A3BC != "")), 
+      need(((input$P3A != "")&(input$P3B != "")&(input$P3C != "")&
+              (input$A3B != "")&(input$A3C != "")&(input$B3C != "")&
+              (input$A3BC != "")), 
            "")
     )
-    if(any(bank[numbersl3$quesanswerl3, 3]==c(11, 12, 13, 14))){
-      if((input$P3A == bank[numbersl3$quesanswerl3, 5])&(input$P3B == bank[numbersl3$quesanswerl3, 6])&(input$P3C == bank[numbersl3$quesanswerl3, 7])
-         &(input$A3B == bank[numbersl3$quesanswerl3, 8])&(input$B3C == bank[numbersl3$quesanswerl3, 9])&(input$A3C == bank[numbersl3$quesanswerl3, 10])){
-      
+    if(any(bank[numbersl3$quesanswerl3, 3] == c(11, 12, 13, 14))){
+      if((input$P3A == bank[numbersl3$quesanswerl3, 5])&
+         (input$P3B == bank[numbersl3$quesanswerl3, 6])&
+         (input$P3C == bank[numbersl3$quesanswerl3, 7])&
+         (input$A3B == bank[numbersl3$quesanswerl3, 8])&
+         (input$B3C == bank[numbersl3$quesanswerl3, 9])&
+         (input$A3C == bank[numbersl3$quesanswerl3, 10])){
+        
         img(src = "correct.png", alt = "Correct", width = 30)
       }
       else{
         img(src = "incorrect.png", alt = "Incorrect", width = 30)
       }
     }
-    else if(any(bank[numbersl3$quesanswerl3, 3]==c(15))){
-      if((input$P3A == bank[numbersl3$quesanswerl3, 5])&(input$P3B == bank[numbersl3$quesanswerl3, 6])&(input$P3C == bank[numbersl3$quesanswerl3, 7])
-         &(input$A3B == bank[numbersl3$quesanswerl3, 8])&(input$B3C == bank[numbersl3$quesanswerl3, 9])&(input$A3C == bank[numbersl3$quesanswerl3, 10])
-         &(input$A3BC == bank[numbersl3$quesanswerl3, 11])){
+    else if(any(bank[numbersl3$quesanswerl3, 3] == c(15))){
+      if((input$P3A == bank[numbersl3$quesanswerl3, 5])&
+         (input$P3B == bank[numbersl3$quesanswerl3, 6])&
+         (input$P3C == bank[numbersl3$quesanswerl3, 7])&
+         (input$A3B == bank[numbersl3$quesanswerl3, 8])&
+         (input$B3C == bank[numbersl3$quesanswerl3, 9])&
+         (input$A3C == bank[numbersl3$quesanswerl3, 10])&
+         (input$A3BC == bank[numbersl3$quesanswerl3, 11])){
         img(src = "correct.png", alt = "Correct", width = 30)
       }
       else{
@@ -809,8 +918,8 @@ observeEvent(input$feedback22, {
   })
   
   
-
-
+  
+  
   observeEvent(input$next33, {
     numbersl3$quesanswerl3 <- sample(space3[-numbersl3$quesanswerl3], 1)
     updateNumericInput(session, "P3A", label = NULL, value = NA,
@@ -838,25 +947,34 @@ observeEvent(input$feedback22, {
     val <- floor(runif(1, 0, 3))
     if(val== 0){
       updateSelectInput(session, "modes", selected = "level1")
-      numbersl1$quesanswerl1=sample(1:5, 1)
+      numbersl1$quesanswerl1 = sample(1:5, 1)
       updateNumericInput(session, "PA", label = NULL, value = 0,
                          min = 0, max = 1, step = 0.01)
-      updateSliderInput(session, "radiusl1", min = 0, max = 1.2, step = 0.01, value = 0.05)
-      updateSliderInput(session, "movel1", min = 0, max = 1, step = 0.01, value = 0.5)
-      updateSliderInput(session, "move1l1", min = 0, max = 1, step = 0.01, value = 0.5)
+      updateSliderInput(session, "radiusl1", min = 0, max = 1.2,
+                        step = 0.01, value = 0.05)
+      updateSliderInput(session, "movel1", min = 0, max = 1,
+                        step = 0.01, value = 0.5)
+      updateSliderInput(session, "move1l1", min = 0, max = 1,
+                        step = 0.01, value = 0.5)
       updateButton(session, "next11", disabled = F)
       updateButton(session, "next1", disabled = F)
     }
-    else if(val== 1){
+    else if(val == 1){
       updateSelectInput(session, "modes", selected = "level2")
-      numbersl2$quesanswerl2=sample(6:10, 1)
-      updateSliderInput(session, "radiusl2", min = 0, max = 1.2, step = 0.01, value = 0.05)
-      updateSliderInput(session, "movel12", min = 0, max = 1, step = 0.01, value = 0.45)
-      updateSliderInput(session, "move1l2", min = 0, max = 1, step = 0.01, value = 0.5)
+      numbersl2$quesanswerl2 = sample(6:10, 1)
+      updateSliderInput(session, "radiusl2", min = 0, max = 1.2,
+                        step = 0.01, value = 0.05)
+      updateSliderInput(session, "movel12", min = 0, max = 1,
+                        step = 0.01, value = 0.45)
+      updateSliderInput(session, "move1l2", min = 0, max = 1,
+                        step = 0.01, value = 0.5)
       
-      updateSliderInput(session, "radius2l2", min = 0, max = 1.2, step = 0.01, value = 0.05)
-      updateSliderInput(session, "movel2", min = 0, max = 1, step = 0.01, value = 0.55)
-      updateSliderInput(session, "move2l2", min = 0, max = 1, step = 0.01, value = 0.5)
+      updateSliderInput(session, "radius2l2", min = 0, max = 1.2,
+                        step = 0.01, value = 0.05)
+      updateSliderInput(session, "movel2", min = 0, max = 1,
+                        step = 0.01, value = 0.55)
+      updateSliderInput(session, "move2l2", min = 0, max = 1,
+                        step = 0.01, value = 0.5)
       updateNumericInput(session, "P2A", label = NULL, value = 0,
                          min = 0, max = 1, step = 0.01)
       updateNumericInput(session, "P2B", label = NULL, value = 0,
@@ -866,20 +984,29 @@ observeEvent(input$feedback22, {
       updateButton(session, "next22", disabled = F)
       updateButton(session, "next2", disabled = F)
     }
-    else if(val== 2){
+    else if(val == 2){
       updateSelectInput(session, "modes", selected = "level3")
-      numbersl3$quesanswerl3=sample(11:15, 1)
-      updateSliderInput(session, "radiusl3", min = 0, max = 1.2, step = 0.01, value = 0.05)
-      updateSliderInput(session, "movel13", min = 0, max = 1, step = 0.01, value = 0.45)
-      updateSliderInput(session, "move1l3", min = 0, max = 1, step = 0.01, value = 0.5)
+      numbersl3$quesanswerl3 = sample(11:15, 1)
+      updateSliderInput(session, "radiusl3", min = 0, max = 1.2,
+                        step = 0.01, value = 0.05)
+      updateSliderInput(session, "movel13", min = 0, max = 1,
+                        step = 0.01, value = 0.45)
+      updateSliderInput(session, "move1l3", min = 0, max = 1,
+                        step = 0.01, value = 0.5)
       
-      updateSliderInput(session, "radius2l3", min = 0, max = 1.2, step = 0.01, value = 0.05)
-      updateSliderInput(session, "movel23", min = 0, max = 1, step = 0.01, value = 0.55)
-      updateSliderInput(session, "move2l3", min = 0, max = 1, step = 0.01, value = 0.5)
+      updateSliderInput(session, "radius2l3", min = 0, max = 1.2,
+                        step = 0.01, value = 0.05)
+      updateSliderInput(session, "movel23", min = 0, max = 1,
+                        step = 0.01, value = 0.55)
+      updateSliderInput(session, "move2l3", min = 0, max = 1,
+                        step = 0.01, value = 0.5)
       
-      updateSliderInput(session, "radius3l3", min = 0, max = 1.2, step = 0.01, value = 0.05)
-      updateSliderInput(session, "movel33", min = 0, max = 1, step = 0.01, value = 0.5)
-      updateSliderInput(session, "move3l3", min = 0, max = 1, step = 0.01, value = 0.45)
+      updateSliderInput(session, "radius3l3", min = 0, max = 1.2,
+                        step = 0.01, value = 0.05)
+      updateSliderInput(session, "movel33", min = 0, max = 1,
+                        step = 0.01, value = 0.5)
+      updateSliderInput(session, "move3l3", min = 0, max = 1,
+                        step = 0.01, value = 0.45)
       updateNumericInput(session, "P3A", label = NULL, value = 0,
                          min = 0, max = 1, step = 0.01)
       updateNumericInput(session, "P3B", label = NULL, value = 0,
@@ -899,7 +1026,7 @@ observeEvent(input$feedback22, {
     }
   })
   
-########### 3 Events Slider ###############################
+  ########### 3 Events Slider ###############################
   output$distPlotl3 <- renderPlot({
     
     # input$calculate.l3 #Re-run when the button is clicked
@@ -910,7 +1037,7 @@ observeEvent(input$feedback22, {
     # progress$set(message = "Making plot", value = 10)
     
     isolate({
-      plot(c(0, 1),c(0, 1), type = 'n', xaxt='n', yaxt='n', ann =FALSE)
+      plot(c(0, 1),c(0, 1), type = 'n', xaxt = 'n', yaxt = 'n', ann = FALSE)
       
     })
     
@@ -918,9 +1045,9 @@ observeEvent(input$feedback22, {
     col2l3 <- rgb(red = 0, green = 1, blue = 0, alpha = 0.3)
     col3l3 <- rgb(red = 1, green = 0, blue = 0, alpha = 0.3)
     #Creates the 3 circles for the plot
-    draw.circle(input$movel13, input$move1l3, input$radiusl3, col=col1l3)
-    draw.circle(input$movel23, input$move2l3, input$radius2l3, col=col2l3)
-    draw.circle(input$movel33, input$move3l3, input$radius3l3, col=col3l3)
+    draw.circle(input$movel13, input$move1l3, input$radiusl3, col = col1l3)
+    draw.circle(input$movel23, input$move2l3, input$radius2l3, col = col2l3)
+    draw.circle(input$movel33, input$move3l3, input$radius3l3, col = col3l3)
     
     
   }, width = 350, height = 350)
@@ -928,23 +1055,26 @@ observeEvent(input$feedback22, {
   
   probabilityl3 <- reactiveValues(
     
-    probc1l3= NULL,
-    probc2l3= NULL,
-    probc3l3= NULL,
-    intersectionc12l3= NULL,
-    intersectionc23l3= NULL,
-    intersectionc13l3= NULL,
-    intersectionc123l3= NULL,
-    d12l3= NULL,
-    d23l3= NULL,
-    d13l3= NULL
+    probc1l3 = NULL,
+    probc2l3 = NULL,
+    probc3l3 = NULL,
+    intersectionc12l3 = NULL,
+    intersectionc23l3 = NULL,
+    intersectionc13l3 = NULL,
+    intersectionc123l3 = NULL,
+    d12l3 = NULL,
+    d23l3 = NULL,
+    d13l3 = NULL
     
   )
   observe({
     
-    probabilityl3$d12l3 <- ((input$movel13-input$movel23)^2+(input$move1l3-input$move2l3)^2)^0.5
-    probabilityl3$d23l3 <- ((input$movel33-input$movel23)^2+(input$move3l3-input$move2l3)^2)^0.5
-    probabilityl3$d13l3 <- ((input$movel13-input$movel33)^2+(input$move1l3-input$move3l3)^2)^0.5
+    probabilityl3$d12l3 <- ((input$movel13-input$movel23)^2+
+                              (input$move1l3-input$move2l3)^2)^0.5
+    probabilityl3$d23l3 <- ((input$movel33-input$movel23)^2+
+                              (input$move3l3-input$move2l3)^2)^0.5
+    probabilityl3$d13l3 <- ((input$movel13-input$movel33)^2+
+                              (input$move1l3-input$move3l3)^2)^0.5
     
     subdividel3 <- 350
     
@@ -953,7 +1083,8 @@ observeEvent(input$feedback22, {
     
     for(i in 1:subdividel3){
       
-      xcoordl3 <- c(xcoordl3, seq(from = 1/subdividel3, to= 1, by = 1/subdividel3))
+      xcoordl3 <- c(xcoordl3, seq(from = 1/subdividel3, to = 1,
+                                  by = 1/subdividel3))
       ycoordl3 <- c(ycoordl3, rep(i/subdividel3, subdividel3))
       
     }
@@ -972,19 +1103,37 @@ observeEvent(input$feedback22, {
     samplespacel3$ycenterc3l3 <- input$move3l3
     
     
-    samplespacel3$diffc1l3 <- sqrt((samplespacel3$xcenterc1l3-samplespacel3$xcoordl3)^2+(samplespacel3$ycenterc1l3-samplespacel3$ycoordl3)^2)
+    samplespacel3$diffc1l3 <- sqrt((samplespacel3$xcenterc1l3
+                                    -samplespacel3$xcoordl3)^2
+                                   +(samplespacel3$ycenterc1l3
+                                     -samplespacel3$ycoordl3)^2)
     samplespacel3$inc1l3 <- samplespacel3$diffc1l3 <= samplespacel3$radiusc1l3
     
-    samplespacel3$diffc2l3 <- sqrt((samplespacel3$xcenterc2l3-samplespacel3$xcoordl3)^2+(samplespacel3$ycenterc2l3-samplespacel3$ycoordl3)^2)
+    samplespacel3$diffc2l3 <- sqrt((samplespacel3$xcenterc2l3
+                                    -samplespacel3$xcoordl3)^2
+                                   +(samplespacel3$ycenterc2l3
+                                     -samplespacel3$ycoordl3)^2)
     samplespacel3$inc2l3 <- samplespacel3$diffc2l3 <= samplespacel3$radiusc2l3
     
-    samplespacel3$diffc3l3 <- sqrt((samplespacel3$xcenterc3l3-samplespacel3$xcoordl3)^2+(samplespacel3$ycenterc3l3-samplespacel3$ycoordl3)^2)
+    samplespacel3$diffc3l3 <- sqrt((samplespacel3$xcenterc3l3
+                                    -samplespacel3$xcoordl3)^2
+                                   +(samplespacel3$ycenterc3l3
+                                     -samplespacel3$ycoordl3)^2)
     samplespacel3$inc3l3 <- samplespacel3$diffc3l3 <= samplespacel3$radiusc3l3
     
-    samplespacel3$intersectionc12l3 <- (samplespacel3$diffc1l3 <= samplespacel3$radiusc1l3) & (samplespacel3$diffc2l3 <= samplespacel3$radiusc2l3)
-    samplespacel3$intersectionc23l3 <- (samplespacel3$diffc3l3 <= samplespacel3$radiusc3l3) & (samplespacel3$diffc2l3 <= samplespacel3$radiusc2l3)
-    samplespacel3$intersectionc13l3 <- (samplespacel3$diffc1l3 <= samplespacel3$radiusc1l3) & (samplespacel3$diffc3l3 <= samplespacel3$radiusc3l3)
-    samplespacel3$intersectionc123l3 <- (samplespacel3$diffc1l3 <= samplespacel3$radiusc1l3) & (samplespacel3$diffc2l3 <= samplespacel3$radiusc2l3) & (samplespacel3$diffc3l3 <= samplespacel3$radiusc3l3)
+    samplespacel3$intersectionc12l3 <- (samplespacel3$diffc1l3 
+                                        <= samplespacel3$radiusc1l3) &
+      (samplespacel3$diffc2l3 <= samplespacel3$radiusc2l3)
+    samplespacel3$intersectionc23l3 <- (samplespacel3$diffc3l3 <=
+                                          samplespacel3$radiusc3l3) &
+      (samplespacel3$diffc2l3 <= samplespacel3$radiusc2l3)
+    samplespacel3$intersectionc13l3 <- (samplespacel3$diffc1l3 <=
+                                          samplespacel3$radiusc1l3) &
+      (samplespacel3$diffc3l3 <= samplespacel3$radiusc3l3)
+    samplespacel3$intersectionc123l3 <- (samplespacel3$diffc1l3 <=
+                                           samplespacel3$radiusc1l3) &
+      (samplespacel3$diffc2l3 <= samplespacel3$radiusc2l3) &
+      (samplespacel3$diffc3l3 <= samplespacel3$radiusc3l3)
     
     p1l3 <- mean(samplespacel3$inc1l3)
     probabilityl3$probc1l3 <- signif(p1l3, 2)
@@ -1013,51 +1162,60 @@ observeEvent(input$feedback22, {
   
   #reset
   observeEvent(input$reset_buttonl3, {
-    updateSliderInput(session, "radiusl3", min = 0, max = 1.2, step = 0.01, value = 0.05)
-    updateSliderInput(session, "movel13", min = 0, max = 1, step = 0.01, value = 0.45)
-    updateSliderInput(session, "move1l3", min = 0, max = 1, step = 0.01, value = 0.5)
+    updateSliderInput(session, "radiusl3", min = 0, max = 1.2,
+                      step = 0.01, value = 0.05)
+    updateSliderInput(session, "movel13", min = 0, max = 1,
+                      step = 0.01, value = 0.45)
+    updateSliderInput(session, "move1l3", min = 0, max = 1,
+                      step = 0.01, value = 0.5)
     
-    updateSliderInput(session, "radius2l3", min = 0, max = 1.2, step = 0.01, value = 0.05)
-    updateSliderInput(session, "movel23", min = 0, max = 1, step = 0.01, value = 0.55)
-    updateSliderInput(session, "move2l3", min = 0, max = 1, step = 0.01, value = 0.5)
+    updateSliderInput(session, "radius2l3", min = 0, max = 1.2,
+                      step = 0.01, value = 0.05)
+    updateSliderInput(session, "movel23", min = 0, max = 1,
+                      step = 0.01, value = 0.55)
+    updateSliderInput(session, "move2l3", min = 0, max = 1,
+                      step = 0.01, value = 0.5)
     
-    updateSliderInput(session, "radius3l3", min = 0, max = 1.2, step = 0.01, value = 0.05)
-    updateSliderInput(session, "movel33", min = 0, max = 1, step = 0.01, value = 0.5)
-    updateSliderInput(session, "move3l3", min = 0, max = 1, step = 0.01, value = 0.45)
+    updateSliderInput(session, "radius3l3", min = 0, max = 1.2,
+                      step = 0.01, value = 0.05)
+    updateSliderInput(session, "movel33", min = 0, max = 1,
+                      step = 0.01, value = 0.5)
+    updateSliderInput(session, "move3l3", min = 0, max = 1,
+                      step = 0.01, value = 0.45)
   })
   observe({
     output$labeldoBl3 <- renderUI({ #Output means  
       actionButton("dol3", "", class = "btn-group") #blue circle action button
     })
-    output$labeldoGl3 <- renderUI({
-      actionButton("do2l3", " ", class = "btn-group") #green circle action button
+    output$labeldoGl3 <- renderUI({ #green circle action button
+      actionButton("do2l3", "", class = "btn-group") 
     })
-    output$labeldoRl3 <- renderUI({
-      actionButton("do3l3", " ", class = "btn-group")#red circle action button
+    output$labeldoRl3 <- renderUI({ #red circle action button
+      actionButton("do3l3", "", class = "btn-group")
     })
-    output$labeldoBGl3 <- renderUI({
-      actionButton("do4l3", "", class = "btn-group") #cyan circle action button
+    output$labeldoBGl3 <- renderUI({ #cyan circle action button
+      actionButton("do4l3", "", class = "btn-group")
     })
-    output$labeldoBRl3 <- renderUI({
-      actionButton("do5l3", "", class = "btn-group") #purple circle action button
+    output$labeldoBRl3 <- renderUI({ #purple circle action button
+      actionButton("do5l3", "", class = "btn-group")
     })
-    output$labeldoGRl3 <- renderUI({
-      actionButton("do6l3", "", class = "btn-group") #darkolivegreen circle action button
+    output$labeldoGRl3 <- renderUI({ #darkolivegreen circle action button
+      actionButton("do6l3", "", class = "btn-group")
     })
-    output$labeldoBGRl3 <- renderUI({
-      actionButton("do7l3", "", class = "btn-group") #brown circle action button
+    output$labeldoBGRl3 <- renderUI({ #brown circle action button
+      actionButton("do7l3", "", class = "btn-group") 
     })
     output$labeldoBGl33 <- renderUI({ #Blue Green
-      actionButton("do4l3", "", class = "btn-group") #
+      actionButton("do4l3", "", class = "btn-group") 
     })
     output$labeldoBRl33 <- renderUI({ #Blue Red
-      actionButton("do5l3", "", class = "btn-group") #
+      actionButton("do5l3", "", class = "btn-group") 
     })
     output$labeldoGRl33 <- renderUI({ #Green Red
-      actionButton("do6l3", "", class = "btn-group") #
+      actionButton("do6l3", "", class = "btn-group") 
     })
     output$labeldoBGRl33 <- renderUI({ #Blue Green Red 
-      actionButton("do7l3", "", class = "btn-group") #
+      actionButton("do7l3", "", class = "btn-group") 
     })
   })
   
@@ -1078,10 +1236,10 @@ observeEvent(input$feedback22, {
   
   
   ### random choose question
-  numbersl3 <- reactiveValues( quesanswerl3=c())
+  numbersl3 <- reactiveValues( quesanswerl3 = c())
   
   observe({
-    numbersl3$quesanswerl3=sample(11:15, 1)
+    numbersl3$quesanswerl3 = sample(11:15, 1)
   })
   output$PA3 <- renderPrint({
     cat(bank[numbersl3$quesanswerl3, 12])
@@ -1130,17 +1288,26 @@ observeEvent(input$feedback22, {
   #Generate next question
   observeEvent(input$next3, {
     numbersl3$quesanswerl3 <- sample(space3[-numbersl3$quesanswerl3], 1)
-    updateSliderInput(session, "radiusl3", min = 0, max = 1.2, step = 0.01, value = 0.05)
-    updateSliderInput(session, "movel13", min = 0, max = 1, step = 0.01, value = 0.45)
-    updateSliderInput(session, "move1l3", min = 0, max = 1, step = 0.01, value = 0.5)
+    updateSliderInput(session, "radiusl3", min = 0, max = 1.2,
+                      step = 0.01, value = 0.05)
+    updateSliderInput(session, "movel13", min = 0, max = 1,
+                      step = 0.01, value = 0.45)
+    updateSliderInput(session, "move1l3", min = 0, max = 1,
+                      step = 0.01, value = 0.5)
     
-    updateSliderInput(session, "radius2l3", min = 0,max = 1.2, step = 0.01,value = 0.05)
-    updateSliderInput(session, "movel23", min = 0,max = 1, step = 0.01, value = 0.55)
-    updateSliderInput(session, "move2l3", min = 0,max = 1, step = 0.01, value = 0.5)
+    updateSliderInput(session, "radius2l3", min = 0,max = 1.2,
+                      step = 0.01,value = 0.05)
+    updateSliderInput(session, "movel23", min = 0,max = 1,
+                      step = 0.01, value = 0.55)
+    updateSliderInput(session, "move2l3", min = 0,max = 1,
+                      step = 0.01, value = 0.5)
     
-    updateSliderInput(session, "radius3l3", min = 0, max = 1.2, step = 0.01, value = 0.05)
-    updateSliderInput(session, "movel33", min = 0, max = 1, step = 0.01, value = 0.5)
-    updateSliderInput(session, "move3l3", min = 0, max = 1, step = 0.01, value = 0.45)
+    updateSliderInput(session, "radius3l3", min = 0, max = 1.2,
+                      step = 0.01, value = 0.05)
+    updateSliderInput(session, "movel33", min = 0, max = 1,
+                      step = 0.01, value = 0.5)
+    updateSliderInput(session, "move3l3", min = 0, max = 1,
+                      step = 0.01, value = 0.45)
     hide('pic3_div')
   })
   observeEvent(input$feedback3, {
@@ -1151,13 +1318,17 @@ observeEvent(input$feedback22, {
   observeEvent(input$feedback33, {
     toggle(id = "panelN3")
   }) 
-
+  
   output$answerl3 <- renderUI({
     
-    if(any(bank[numbersl3$quesanswerl3, 3]==c(11, 12, 13, 14))){
+    if(any(bank[numbersl3$quesanswerl3, 3] == c(11, 12, 13, 14))){
       
-      if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3, 5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3, 6])&(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3, 7])&
-         (probabilityl3$intersectionc12l3 ==bank[numbersl3$quesanswerl3, 8])&(probabilityl3$intersectionc23l3==bank[numbersl3$quesanswerl3, 9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10]))
+      if((probabilityl3$probc1l3 == bank[numbersl3$quesanswerl3, 5])&
+         (probabilityl3$probc2l3 == bank[numbersl3$quesanswerl3, 6])&
+         (probabilityl3$probc3l3 == bank[numbersl3$quesanswerl3, 7])&
+         (probabilityl3$intersectionc12l3 == bank[numbersl3$quesanswerl3, 8])&
+         (probabilityl3$intersectionc23l3 == bank[numbersl3$quesanswerl3, 9])&
+         (probabilityl3$intersectionc13l3 == bank[numbersl3$quesanswerl3, 10]))
       {
         updateButton(session, "next3", disabled = F)
         p("Great! You are right!", class = "answertext")
@@ -1165,20 +1336,26 @@ observeEvent(input$feedback22, {
       
       else{
         updateButton(session, "next3", disabled = F)
-        p("Keep changing the size and placement of your circles to match the probabilities desired.", class = "redtext")
+        p("Keep changing the size and placement of your circles 
+          to match the probabilities desired.", class = "redtext")
       }
     }
     
-    else if(any(bank[numbersl3$quesanswerl3, 3]==c(15))){
-      if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3, 5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3, 6])&(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3, 7])&
-         (probabilityl3$intersectionc12l3 ==bank[numbersl3$quesanswerl3, 8])&(probabilityl3$intersectionc23l3==bank[numbersl3$quesanswerl3, 9])&
-         (probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10])&(probabilityl3$intersectionc123l3==bank[numbersl3$quesanswerl3, 11]))
+    else if(any(bank[numbersl3$quesanswerl3, 3] == c(15))){
+      if((probabilityl3$probc1l3 == bank[numbersl3$quesanswerl3, 5])&
+         (probabilityl3$probc2l3 == bank[numbersl3$quesanswerl3, 6])&
+         (probabilityl3$probc3l3==bank[numbersl3$quesanswerl3, 7])&
+         (probabilityl3$intersectionc12l3 == bank[numbersl3$quesanswerl3, 8])&
+         (probabilityl3$intersectionc23l3 == bank[numbersl3$quesanswerl3, 9])&
+         (probabilityl3$intersectionc13l3 == bank[numbersl3$quesanswerl3, 10])&
+         (probabilityl3$intersectionc123l3 == bank[numbersl3$quesanswerl3, 11]))
       {
         cat("Great! You are right!")
         updateButton(session, "next3", disabled = F)
       }
       else{
-        cat("Keep changing the size and placement of your circles to match the probabilities desired.")
+        cat("Keep changing the size and placement of your 
+            circles to match the probabilities desired.")
         updateButton(session, "next3", disabled = F)
       }
     }
@@ -1186,10 +1363,14 @@ observeEvent(input$feedback22, {
   
   output$answerl3Picture <- renderPrint({
     
-    if(any(bank[numbersl3$quesanswerl3, 3]==c(11, 12, 13, 14))){
+    if(any(bank[numbersl3$quesanswerl3, 3] == c(11, 12, 13, 14))){
       
-      if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3, 5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3, 6])&(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3, 7])&
-         (probabilityl3$intersectionc12l3 ==bank[numbersl3$quesanswerl3, 8])&(probabilityl3$intersectionc23l3==bank[numbersl3$quesanswerl3, 9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10]))
+      if((probabilityl3$probc1l3 == bank[numbersl3$quesanswerl3, 5])&
+         (probabilityl3$probc2l3 == bank[numbersl3$quesanswerl3, 6])&
+         (probabilityl3$probc3l3 == bank[numbersl3$quesanswerl3, 7])&
+         (probabilityl3$intersectionc12l3 == bank[numbersl3$quesanswerl3, 8])&
+         (probabilityl3$intersectionc23l3 == bank[numbersl3$quesanswerl3, 9])&
+         (probabilityl3$intersectionc13l3 == bank[numbersl3$quesanswerl3, 10]))
       {
         img(src = "correct.png", alt = "Correct", width = 30)
       }
@@ -1199,10 +1380,14 @@ observeEvent(input$feedback22, {
       }
     }
     
-    else if(any(bank[numbersl3$quesanswerl3, 3]==c(15))){
-      if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3, 5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3, 6])&(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3, 7])&
-         (probabilityl3$intersectionc12l3 ==bank[numbersl3$quesanswerl3, 8])&(probabilityl3$intersectionc23l3==bank[numbersl3$quesanswerl3, 9])&
-         (probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10])&(probabilityl3$intersectionc123l3==bank[numbersl3$quesanswerl3, 11]))
+    else if(any(bank[numbersl3$quesanswerl3, 3] == c(15))){
+      if((probabilityl3$probc1l3 == bank[numbersl3$quesanswerl3, 5])&
+         (probabilityl3$probc2l3 == bank[numbersl3$quesanswerl3, 6])&
+         (probabilityl3$probc3l3 == bank[numbersl3$quesanswerl3, 7])&
+         (probabilityl3$intersectionc12l3 == bank[numbersl3$quesanswerl3, 8])&
+         (probabilityl3$intersectionc23l3 == bank[numbersl3$quesanswerl3, 9])&
+         (probabilityl3$intersectionc13l3 == bank[numbersl3$quesanswerl3, 10])&
+         (probabilityl3$intersectionc123l3 == bank[numbersl3$quesanswerl3, 11]))
       {
         img(src = "correct.png", alt = "Correct", width = 30)
       }
@@ -1218,7 +1403,9 @@ observeEvent(input$feedback22, {
     toggle('pic3_div')
     output$Feed33 <- renderUI({
       
-      img(src = bank[numbersl3$quesanswerl3, 19], alt = bank[numbersl3$quesanswerl3, 20], height = "70%", width = "70%")
+      img(src = bank[numbersl3$quesanswerl3, 19],
+          alt = bank[numbersl3$quesanswerl3, 20],
+          height = "70%", width = "70%")
       
     })
   })
@@ -1228,112 +1415,175 @@ observeEvent(input$feedback22, {
 
 ####### large segments removed ####################
 
-{
-  
-  #THE FOLLOWING TWO OUTPUTS OF FDBC GIVE SLIGHLY MORE ADVICE ON MODIFYING THE CIRCLES. THERE USED TO
-    #BE ONE FOR ALL 6 OF THE EXAMPLES. REMOVED BECAUSE THE INFORMATION WASN'T VERY HELPFUL AND CLUTTERED 
-    #THE SCREEN. CAN BRING BACK IF YOU'D LIKE
-  
-  # output$fdbc33 = renderPrint({
-  #   validate(
-  #     need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), "Please enter all your probabilities")
-  #   )
-  #   
-  #   if(any(bank[numbersl3$quesanswerl3,3]==c(11, 12, 13, 14))){
-  #     
-  #     if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&
-  #(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3,7])&(probabilityl3$intersectionc12l3 ==bank[numbersl3$quesanswerl3,8])
-  #&(probabilityl3$intersectionc23l3==bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10]))
-  #     {cat("Great! You are right!")
-  #       updateButton(session, "next3", disabled = F)
-  #     }
-  #     else if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])
-  #&(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3,7])&((probabilityl3$intersectionc12l3!=bank[numbersl3$quesanswerl3,8])
-  #|(probabilityl3$intersectionc23l3!=bank[numbersl3$quesanswerl3,9])|(probabilityl3$intersectionc13l3!=bank[numbersl3$quesanswerl3, 10])))
-  #     {cat("Probability is right, but the relationship is Wrong. Try again.")
-  #       updateButton(session, "next3", disabled = F)}
-  #     else if(((probabilityl3$probc1l3!=bank[numbersl3$quesanswerl3,5])|(probabilityl3$probc2l3!=bank[numbersl3$quesanswerl3,6])
-  #|(probabilityl3$probc3l3!=bank[numbersl3$quesanswerl3,7]))&(probabilityl3$intersectionc12l3==bank[numbersl3$quesanswerl3,8])
-  #&(probabilityl3$intersectionc23l3== bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10]))
-  #     {cat("The relationship is right, but the probability is Wrong. Try again.")
-  #       updateButton(session, "next3", disabled = F)}
-  #     else{
-  #       cat("Keep changing the size and placement of your circles to match the probabilities desired.")
-  #       updateButton(session, "next3", disabled = F)
-  #     }
-  #   }
-  #   
-  #   else if(any(bank[numbersl3$quesanswerl3,3]==c(15))){
-  #     if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&
-  #(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3,7])&(probabilityl3$intersectionc12l3 ==bank[numbersl3$quesanswerl3,8])&
-  #(probabilityl3$intersectionc23l3==bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10])&(probabilityl3$intersectionc123l3==bank[numbersl3$quesanswerl3, 11]))
-  #     {cat("Great! You are right!")
-  #       updateButton(session, "next3", disabled = F)
-  #     }
-  #     else if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])
-  #&(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3,7])&((probabilityl3$intersectionc12l3!=bank[numbersl3$quesanswerl3,8])
-  #|(probabilityl3$intersectionc23l3!=bank[numbersl3$quesanswerl3,9])|(probabilityl3$intersectionc13l3!=bank[numbersl3$quesanswerl3, 10])|(probabilityl3$intersectionc123l3!=bank[numbersl3$quesanswerl3, 11])))
-  #     {cat("Probability is right, but the relationship is Wrong. Try again.")
-  #       updateButton(session, "next3", disabled = F)}
-  #     else if(((probabilityl3$probc1l3!=bank[numbersl3$quesanswerl3,5])|(probabilityl3$probc2l3!=bank[numbersl3$quesanswerl3,6])
-  #|(probabilityl3$probc3l3!=bank[numbersl3$quesanswerl3,7]))&(probabilityl3$intersectionc12l3==bank[numbersl3$quesanswerl3,8])
-  #&(probabilityl3$intersectionc23l3== bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10])&(probabilityl3$intersectionc123l3==bank[numbersl3$quesanswerl3, 11]))
-  #     {cat("The relationship is right, but the probability is Wrong. Try again.")
-  #       updateButton(session, "next3", disabled = F)}
-  #     else{
-  #       cat("Keep changing the size and placement of your circles to match the probabilities desired.")
-  #       updateButton(session, "next3", disabled = F)
-  #     }
-  #   }
-  # })
-  
-  # output$fdbc3 = renderPrint({
-  #   
-  #   if(any(bank[numbersl3$quesanswerl3,3]==c(11, 12, 13, 14))){
-  #     
-  #     if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&(probabilityl3$probc3l3==
-  #bank[numbersl3$quesanswerl3,7])&(probabilityl3$intersectionc12l3 ==bank[numbersl3$quesanswerl3,8])&(probabilityl3$intersectionc23l3==
-  #bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10]))
-  #     {cat("Great! You are right!")
-  #       updateButton(session, "next3", disabled = F)
-  #     }
-  #     else if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&(probabilityl3$probc3l3
-  #==bank[numbersl3$quesanswerl3,7])&((probabilityl3$intersectionc12l3!=bank[numbersl3$quesanswerl3,8])|(probabilityl3$intersectionc23l3!=
-  #bank[numbersl3$quesanswerl3,9])|(probabilityl3$intersectionc13l3!=bank[numbersl3$quesanswerl3, 10])))
-  #     {cat("Probability is right, but the relationship is Wrong. Try again.")
-  #       updateButton(session, "next3", disabled = F)}
-  #     else if(((probabilityl3$probc1l3!=bank[numbersl3$quesanswerl3,5])|(probabilityl3$probc2l3!=
-  #bank[numbersl3$quesanswerl3,6])|(probabilityl3$probc3l3!=bank[numbersl3$quesanswerl3,7]))&(probabilityl3$intersectionc12l3==bank[numbersl3$quesanswerl3,8])
-  #&(probabilityl3$intersectionc23l3== bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10]))
-  #     {cat("The relationship is right, but the probability is Wrong. Try again.")
-  #       updateButton(session, "next3", disabled = F)}
-  #     else{
-  #       cat("Keep changing the size and placement of your circles to match the probabilities desired.")
-  #       updateButton(session, "next3", disabled = F)
-  #     }
-  #   }
-  #   
-  #   else if(any(bank[numbersl3$quesanswerl3,3]==c(15))){
-  #     if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&(probabilityl3$probc3l3
-  #==bank[numbersl3$quesanswerl3,7])&(probabilityl3$intersectionc12l3 ==bank[numbersl3$quesanswerl3,8])&(probabilityl3$intersectionc23l3
-  #==bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10])&(probabilityl3$intersectionc123l3==bank[numbersl3$quesanswerl3, 11]))
-  #     {cat("Great! You are right!")
-  #       updateButton(session, "next3", disabled = F)
-  #     }
-  #     else if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&(probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&(probabilityl3$probc3l3
-  #==bank[numbersl3$quesanswerl3,7])&((probabilityl3$intersectionc12l3!=bank[numbersl3$quesanswerl3,8])|(probabilityl3$intersectionc23l3!=bank[numbersl3$quesanswerl3,9])|
-  #(probabilityl3$intersectionc13l3!=bank[numbersl3$quesanswerl3, 10])|(probabilityl3$intersectionc123l3!=bank[numbersl3$quesanswerl3, 11])))
-  #     {cat("Probability is right, but the relationship is Wrong. Try again.")
-  #       updateButton(session, "next3", disabled = F)}
-  #     else if(((probabilityl3$probc1l3!=bank[numbersl3$quesanswerl3,5])|(probabilityl3$probc2l3!=bank[numbersl3$quesanswerl3,6])|(probabilityl3$probc3l3!=bank[numbersl3$quesanswerl3,7]))
-  #&(probabilityl3$intersectionc12l3==bank[numbersl3$quesanswerl3,8])&(probabilityl3$intersectionc23l3== bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3
-  #==bank[numbersl3$quesanswerl3, 10])&(probabilityl3$intersectionc123l3==bank[numbersl3$quesanswerl3, 11]))
-  #     {cat("The relationship is right, but the probability is Wrong. Try again.")
-  #       updateButton(session, "next3", disabled = F)}
-  #     else{
-  #       cat("Keep changing the size and placement of your circles to match the probabilities desired.")
-  #       updateButton(session, "next3", disabled = F)
-  #     }
-  #   }
-  # })
-}
+# {
+#   
+#   #THE FOLLOWING TWO OUTPUTS OF FDBC GIVE SLIGHLY 
+#     #MORE ADVICE ON MODIFYING THE CIRCLES. THERE USED TO
+#   #BE ONE FOR ALL 6 OF THE EXAMPLES. REMOVED BECAUSE THE INFORMATION WASN'T 
+#     #VERY HELPFUL AND CLUTTERED
+#   #THE SCREEN. CAN BRING BACK IF YOU'D LIKE
+# 
+#   output$fdbc33 = renderPrint({
+#     validate(
+#       need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")), 
+#            "Please enter all your probabilities")
+#     )
+# 
+#     if(any(bank[numbersl3$quesanswerl3,3]==c(11, 12, 13, 14))){
+# 
+#       if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&
+#          (probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&
+#   (probabilityl3$probc3l3==bank[numbersl3$quesanswerl3,7])&
+#   (probabilityl3$intersectionc12l3 ==bank[numbersl3$quesanswerl3,8])&
+#   (probabilityl3$intersectionc23l3==bank[numbersl3$quesanswerl3,9])&
+#   (probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10]))
+#       {cat("Great! You are right!")
+#         updateButton(session, "next3", disabled = F)
+#       }
+#       else if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&
+#               (probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])
+#   &(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3,7])&
+#   ((probabilityl3$intersectionc12l3!=bank[numbersl3$quesanswerl3,8])
+#   |(probabilityl3$intersectionc23l3!=bank[numbersl3$quesanswerl3,9])|
+#   (probabilityl3$intersectionc13l3!=bank[numbersl3$quesanswerl3, 10])))
+#       {cat("Probability is right, but the relationship is Wrong. Try again.")
+#         updateButton(session, "next3", disabled = F)}
+#       else if(((probabilityl3$probc1l3!=bank[numbersl3$quesanswerl3,5])|
+#                (probabilityl3$probc2l3!=bank[numbersl3$quesanswerl3,6])
+#   |(probabilityl3$probc3l3!=bank[numbersl3$quesanswerl3,7]))&
+#   (probabilityl3$intersectionc12l3==bank[numbersl3$quesanswerl3,8])
+#   &(probabilityl3$intersectionc23l3== bank[numbersl3$quesanswerl3,9])&
+#   (probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10]))
+#       {cat("The relationship is right, but the probability is Wrong. Try again.")
+#         updateButton(session, "next3", disabled = F)}
+#       else{
+#         cat("Keep changing the size and placement of your
+#             circles to match the probabilities desired.")
+#         updateButton(session, "next3", disabled = F)
+#       }
+#     }
+# 
+#     else if(any(bank[numbersl3$quesanswerl3,3]==c(15))){
+#       if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&
+#          (probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&
+#   (probabilityl3$probc3l3==bank[numbersl3$quesanswerl3,7])&
+#   (probabilityl3$intersectionc12l3 ==bank[numbersl3$quesanswerl3,8])&
+#   (probabilityl3$intersectionc23l3==bank[numbersl3$quesanswerl3,9])&
+#   (probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10])&
+#   (probabilityl3$intersectionc123l3==bank[numbersl3$quesanswerl3, 11]))
+#       {cat("Great! You are right!")
+#         updateButton(session, "next3", disabled = F)
+#       }
+#       else if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&
+#               (probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])
+#   &(probabilityl3$probc3l3==bank[numbersl3$quesanswerl3,7])&
+#   ((probabilityl3$intersectionc12l3!=bank[numbersl3$quesanswerl3,8])
+#   |(probabilityl3$intersectionc23l3!=bank[numbersl3$quesanswerl3,9])|
+#   (probabilityl3$intersectionc13l3!=bank[numbersl3$quesanswerl3, 10])|
+#   (probabilityl3$intersectionc123l3!=bank[numbersl3$quesanswerl3, 11])))
+#       {cat("Probability is right, but the relationship is Wrong. 
+#            Try again.")
+#         updateButton(session, "next3", disabled = F)}
+#       else if(((probabilityl3$probc1l3!=bank[numbersl3$quesanswerl3,5])|
+#                (probabilityl3$probc2l3!=bank[numbersl3$quesanswerl3,6])
+#   |(probabilityl3$probc3l3!=bank[numbersl3$quesanswerl3,7]))&
+#   (probabilityl3$intersectionc12l3==bank[numbersl3$quesanswerl3,8])
+#   &(probabilityl3$intersectionc23l3== bank[numbersl3$quesanswerl3,9])&
+#   (probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10])&
+#   (probabilityl3$intersectionc123l3==bank[numbersl3$quesanswerl3, 11]))
+#       {cat("The relationship is right, but the probability is Wrong. 
+#            Try again.")
+#         updateButton(session, "next3", disabled = F)}
+#       else{
+#         cat("Keep changing the size and placement of your 
+#             circles to match the probabilities desired.")
+#         updateButton(session, "next3", disabled = F)
+#       }
+#     }
+#   })
+# 
+#   output$fdbc3 = renderPrint({
+# 
+#     if(any(bank[numbersl3$quesanswerl3,3]==c(11, 12, 13, 14))){
+# 
+#       if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&
+#          (probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&
+#          (probabilityl3$probc3l3==
+#   bank[numbersl3$quesanswerl3,7])&(probabilityl3$intersectionc12l3 ==
+#                                    bank[numbersl3$quesanswerl3,8])&
+#   (probabilityl3$intersectionc23l3==
+#   bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==
+#                                    bank[numbersl3$quesanswerl3, 10]))
+#       {cat("Great! You are right!")
+#         updateButton(session, "next3", disabled = F)
+#       }
+#       else if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&
+#               (probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&
+#               (probabilityl3$probc3l3
+#   ==bank[numbersl3$quesanswerl3,7])&((probabilityl3$intersectionc12l3!=
+#                                       bank[numbersl3$quesanswerl3,8])|
+#                                      (probabilityl3$intersectionc23l3!=
+#   bank[numbersl3$quesanswerl3,9])|(probabilityl3$intersectionc13l3!=
+#                                    bank[numbersl3$quesanswerl3, 10])))
+#       {cat("Probability is right, but the relationship is Wrong. Try again.")
+#         updateButton(session, "next3", disabled = F)}
+#       else if(((probabilityl3$probc1l3!=bank[numbersl3$quesanswerl3,5])|
+#                (probabilityl3$probc2l3!=
+#   bank[numbersl3$quesanswerl3,6])|(probabilityl3$probc3l3!=
+#                                    bank[numbersl3$quesanswerl3,7]))&
+#   (probabilityl3$intersectionc12l3==bank[numbersl3$quesanswerl3,8])
+#   &(probabilityl3$intersectionc23l3== bank[numbersl3$quesanswerl3,9])&
+#   (probabilityl3$intersectionc13l3==bank[numbersl3$quesanswerl3, 10]))
+#       {cat("The relationship is right, but the probability is Wrong.
+#            Try again.")
+#         updateButton(session, "next3", disabled = F)}
+#       else{
+#         cat("Keep changing the size and placement of your circles to
+#             match the probabilities desired.")
+#         updateButton(session, "next3", disabled = F)
+#       }
+#     }
+# 
+#     else if(any(bank[numbersl3$quesanswerl3,3]==c(15))){
+#       if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&
+#          (probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&
+#          (probabilityl3$probc3l3
+#   ==bank[numbersl3$quesanswerl3,7])&(probabilityl3$intersectionc12l3
+#                                      ==bank[numbersl3$quesanswerl3,8])&
+#   (probabilityl3$intersectionc23l3
+#   ==bank[numbersl3$quesanswerl3,9])&(probabilityl3$intersectionc13l3==
+#                                      bank[numbersl3$quesanswerl3, 10])&
+#   (probabilityl3$intersectionc123l3==bank[numbersl3$quesanswerl3, 11]))
+#       {cat("Great! You are right!")
+#         updateButton(session, "next3", disabled = F)
+#       }
+#       else if((probabilityl3$probc1l3==bank[numbersl3$quesanswerl3,5])&
+#               (probabilityl3$probc2l3==bank[numbersl3$quesanswerl3,6])&
+#               (probabilityl3$probc3l3
+#   ==bank[numbersl3$quesanswerl3,7])&((probabilityl3$intersectionc12l3!=
+#                                       bank[numbersl3$quesanswerl3,8])|
+#                                      (probabilityl3$intersectionc23l3!=
+#                                       bank[numbersl3$quesanswerl3,9])|
+#   (probabilityl3$intersectionc13l3!=bank[numbersl3$quesanswerl3, 10])|
+#   (probabilityl3$intersectionc123l3!=bank[numbersl3$quesanswerl3, 11])))
+#       {cat("Probability is right, but the relationship is Wrong. Try again.")
+#         updateButton(session, "next3", disabled = F)}
+#       else if(((probabilityl3$probc1l3!=bank[numbersl3$quesanswerl3,5])|
+#                (probabilityl3$probc2l3!=bank[numbersl3$quesanswerl3,6])|
+#                (probabilityl3$probc3l3!=bank[numbersl3$quesanswerl3,7]))
+#   &(probabilityl3$intersectionc12l3==bank[numbersl3$quesanswerl3,8])&
+#   (probabilityl3$intersectionc23l3== bank[numbersl3$quesanswerl3,9])&
+#   (probabilityl3$intersectionc13l3
+#   ==bank[numbersl3$quesanswerl3, 10])&(probabilityl3$intersectionc123l3==
+#                                        bank[numbersl3$quesanswerl3, 11]))
+#       {cat("The relationship is right, but the probability is Wrong.
+#            Try again.")
+#         updateButton(session, "next3", disabled = F)}
+#       else{
+#         cat("Keep changing the size and placement of your circles to 
+#             match the probabilities desired.")
+#         updateButton(session, "next3", disabled = F)
+#       }
+#     }
+#   })
+# }
