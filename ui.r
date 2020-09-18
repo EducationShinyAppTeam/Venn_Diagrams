@@ -115,7 +115,8 @@ ui <- list(
                 
                 # fresh the whole page
                 useShinyjs(),
-                extendShinyjs(text = jsResetCode),
+                extendShinyjs(text = jsResetCode, functions = c("hidden", "disable", "enable", "toggle")), #If there are any functions that
+                      #use javascript simply put thme inside of the c().
                 sidebarLayout(
                   sidebarPanel( #SIDEBAR PANEL OF THE 
                     #hides value of slider bar

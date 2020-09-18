@@ -948,7 +948,7 @@ shinyServer(function(session, input, output) {
     if(val== 0){
       updateSelectInput(session, "modes", selected = "level1")
       numbersl1$quesanswerl1 = sample(1:5, 1)
-      updateNumericInput(session, "PA", label = NULL, value = 0,
+      updateNumericInput(session, "PA", label = NULL, value = NA,
                          min = 0, max = 1, step = 0.01)
       updateSliderInput(session, "radiusl1", min = 0, max = 1.2,
                         step = 0.01, value = 0.05)
@@ -975,11 +975,11 @@ shinyServer(function(session, input, output) {
                         step = 0.01, value = 0.55)
       updateSliderInput(session, "move2l2", min = 0, max = 1,
                         step = 0.01, value = 0.5)
-      updateNumericInput(session, "P2A", label = NULL, value = 0,
+      updateNumericInput(session, "P2A", label = NULL, value = NA,
                          min = 0, max = 1, step = 0.01)
-      updateNumericInput(session, "P2B", label = NULL, value = 0,
+      updateNumericInput(session, "P2B", label = NULL, value = NA,
                          min = 0, max = 1, step = 0.01)
-      updateNumericInput(session, "A2B", label = NULL, value = 0,
+      updateNumericInput(session, "A2B", label = NULL, value = NA,
                          min = 0, max = 1, step = 0.01)
       updateButton(session, "next22", disabled = F)
       updateButton(session, "next2", disabled = F)
@@ -1007,19 +1007,19 @@ shinyServer(function(session, input, output) {
                         step = 0.01, value = 0.5)
       updateSliderInput(session, "move3l3", min = 0, max = 1,
                         step = 0.01, value = 0.45)
-      updateNumericInput(session, "P3A", label = NULL, value = 0,
+      updateNumericInput(session, "P3A", label = NULL, value = NA,
                          min = 0, max = 1, step = 0.01)
-      updateNumericInput(session, "P3B", label = NULL, value = 0,
+      updateNumericInput(session, "P3B", label = NULL, value = NA,
                          min = 0, max = 1, step = 0.01)
-      updateNumericInput(session, "P3C", label = NULL, value = 0,
+      updateNumericInput(session, "P3C", label = NULL, value = NA,
                          min = 0, max = 1, step = 0.01)
-      updateNumericInput(session, "A3B", label = NULL, value = 0,
+      updateNumericInput(session, "A3B", label = NULL, value = NA,
                          min = 0, max = 1, step = 0.01)
-      updateNumericInput(session, "A3C", label = NULL, value = 0,
+      updateNumericInput(session, "A3C", label = NULL, value = NA,
                          min = 0, max = 1, step = 0.01)
-      updateNumericInput(session, "B3C", label = NULL, value = 0,
+      updateNumericInput(session, "B3C", label = NULL, value = NA,
                          min = 0, max = 1, step = 0.01)
-      updateNumericInput(session, "A3BC", label = NULL, value = 0,
+      updateNumericInput(session, "A3BC", label = NULL, value = NA,
                          min = 0, max = 1, step = 0.01)
       updateButton(session, "next33", disabled = F)
       updateButton(session, "next3", disabled = F)
