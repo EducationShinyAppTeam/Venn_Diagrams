@@ -39,7 +39,7 @@ shinyServer(function(session, input, output) {
         "1. Move or change the size of the circles 
         using sliders (accessed by the button).",
         tags$br(),
-        "2. Once the correct image appears move on to the next question",
+        "2. Once the correct image appears move on to the next question.",
         
         tags$br(),
         tags$br(),
@@ -199,13 +199,11 @@ shinyServer(function(session, input, output) {
   
   
   w1 = reactive({
-    #input$SubmitNumeric1
     compute.Venn(Venn(SetNames = c("1", "2"), 
                       Weight = c(`01` = input$PA, `11` = .05, `10` = .01)), 
                  type = "circles", doEuler = TRUE) 
   })
   output$enterplot1 <- renderPlot({
-    #input$SubmitNumeric1
     validate(
       need(input$PA != "", "Please enter the probability")
     )
@@ -319,7 +317,7 @@ shinyServer(function(session, input, output) {
     updateSliderInput(session, "move1l1", min = 0, max = 1,
                       step = 0.01, value = 0.5)
   })
-  ### random choose question
+  #---- Randomly choose question ----
   numbersl1 <- reactiveValues(quesanswerl1 = c())
   observe({
     numbersl1$quesanswerl1 = sample(1:5, 1)
@@ -457,8 +455,7 @@ shinyServer(function(session, input, output) {
       need(((input$P2A != "")&(input$P2B != "")&(input$A2B != "")),
            "Please enter the probabilities")
     )
-    #If 0 for combination and at least one 0 in a category 
-    #   output remind need more than 1 event
+    #If only one circle has value and the other has zero output this
     if ((min(input$P2A, input$P2B) == 0 ) & (input$A2B == 0) ) {
       isolate({plot(1, 1, col = "white", type = 'n', xaxt = 'n',
                     yaxt = 'n', ann = FALSE)})
@@ -516,12 +513,6 @@ shinyServer(function(session, input, output) {
   ########### Slider Plot 2 Events ##################  
   
   output$distPlotl2 <- renderPlot({
-    # input$calculatel2 #Re-run when the button is clicked
-    # # Create a Progress object
-    # progress <- shiny::Progress$new()
-    # # Make sure it closes when we exit this reactive, even if there's an error
-    # on.exit(progress$close())
-    # progress$set(message = "Making plot", value = 10)
     isolate({
       plot(c(0, 1), c(0, 1), type = 'n', xaxt = 'n', yaxt = 'n', ann = FALSE)
       
@@ -638,7 +629,7 @@ shinyServer(function(session, input, output) {
     updateSliderInput(session, "move2l2", min = 0, max = 1,
                       step = 0.01, value = 0.5)
   })
-  ### random choose question
+  ### randomly choose question
   numbersl2 <- reactiveValues( quesanswerl2 = c())
   
   observe({
@@ -1029,13 +1020,6 @@ shinyServer(function(session, input, output) {
   ########### 3 Events Slider ###############################
   output$distPlotl3 <- renderPlot({
     
-    # input$calculate.l3 #Re-run when the button is clicked
-    # # Create a Progress object
-    # progress <- shiny::Progress$new()
-    # # Make sure it closes when we exit this reactive, even if there's an error
-    # on.exit(progress$close())
-    # progress$set(message = "Making plot", value = 10)
-    
     isolate({
       plot(c(0, 1),c(0, 1), type = 'n', xaxt = 'n', yaxt = 'n', ann = FALSE)
       
@@ -1235,7 +1219,7 @@ shinyServer(function(session, input, output) {
   output$ABCl3 <- renderPrint({cat(probabilityl3$intersectionc123l3)})
   
   
-  ### random choose question
+  ### Randomly choose question
   numbersl3 <- reactiveValues( quesanswerl3 = c())
   
   observe({

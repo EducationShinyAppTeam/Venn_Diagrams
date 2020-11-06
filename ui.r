@@ -15,9 +15,9 @@ library(boastUtils)
 ## App Meta Data----------------------------------------------------------------
 APP_TITLE  <<- "Venn Diagram App"
 APP_DESCP  <<- paste(
-  "Meant to show the probability of different combinations of events 
+  "This app is meant to show the probability of different combinations of events 
   illistrated by a Venn Diagram.",
-  "User can either type in values or use sliders to make them larger 
+  "The user can either type in values or use sliders to make them larger 
   or smaller."
 )
 ## End App Meta Data------------------------------------------------------------
@@ -118,7 +118,7 @@ ui <- list(
                 extendShinyjs(text = jsResetCode, functions = c("hidden", "disable", "enable", "toggle")), #If there are any functions that
                       #use javascript simply put thme inside of the c().
                 sidebarLayout(
-                  sidebarPanel( #SIDEBAR PANEL OF THE 
+                  sidebarPanel( 
                     #hides value of slider bar
                     tags$head(
                     tags$style(HTML('.irs-from, .irs-to,
@@ -498,14 +498,14 @@ ui <- list(
                           column(4, offset = 0, style = 'padding:0px;',
                                  verbatimTextOutput("ACl3"))
                         ),
-                        #darkolivegreen
+                        #Darkolivegreen
                         fluidRow(
                           column(5, uiOutput("labeldoGRl3")),
                           column(6, offset = 0, uiOutput("BC3")),
                           column(4, offset = 0, style = 'padding:0px;',
                                  verbatimTextOutput("BCl3"))
                         ),
-                        #central part
+                        #Central part
                         fluidRow(
                           column(5, uiOutput("labeldoBGRl3")),
                           column(6, offset = 0, uiOutput("ABC3")),
@@ -553,7 +553,7 @@ ui <- list(
                           column(6, numericInput("A3C", label = "", value = NULL, 
                                                  min = 0, max = 1, step = 0.01 ))
                         ),
-                        #darkolivegreen
+                        #Darkolivegreen
                         fluidRow(
                           column(4, uiOutput("labeldoGRl33")),
                           column(6, offset = 0, uiOutput("BC33")),
@@ -574,9 +574,7 @@ ui <- list(
                   
     ###################MAIN PANEL OF THE VENN DIAGRAM #####################
                   mainPanel(
-                    #fluidRow(column(1, textOutput("challenge"))),
                     fluidRow(column(1, h2('Challenge'))),
-                    
                     fluidRow(column(11, textOutput("instruction"))),
      #################1 Element Probabilities ##############################
                     conditionalPanel(
@@ -635,12 +633,11 @@ ui <- list(
                           
                         ),
                         
-                        p(uiOutput("answerl1")), #style = "width : 50%;background-color: #ffffff;",
+                        p(uiOutput("answerl1")), 
                         htmlOutput("answerl1Picture"),
                         
                         br(),
                         useShinyjs(),
-                        #div(actionButton("feedback1", "Feedback")),
                         div(actionButton("next1", "Next Question")),
                         
                         br(), br(),
