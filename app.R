@@ -42,7 +42,7 @@ ui <- list(
       tags$li(
         class = "dropdown",
         tags$a(target = "_blank", icon("comments"),
-               href = "https://pennstate.qualtrics.com/jfe/form/SV_7TLIkFtJEJ7fEPz?appName=Venn_Diagrams]")
+               href = "https://pennstate.qualtrics.com/jfe/form/SV_7TLIkFtJEJ7fEPz?appName=Venn_Diagrams")
       ),
       tags$li(
         class = "dropdown",
